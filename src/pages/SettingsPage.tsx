@@ -73,6 +73,10 @@ export default function SettingsPage() {
         if (data.mealTemplates) await db.mealTemplates.bulkAdd(data.mealTemplates)
         if (data.mealPlans) await db.mealPlans.bulkAdd(data.mealPlans)
         if (data.dailyLogs) await db.dailyLogs.bulkAdd(data.dailyLogs)
+        if (data.settings && data.settings.length > 0) {
+          await db.settings.clear()
+          await db.settings.bulkAdd(data.settings)
+        }
 
         window.location.reload()
       } catch {
