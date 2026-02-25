@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
-  base: '/時間の流れ/',
+  base: '/-/',
   plugins: [
     react(),
     tailwindcss(),

@@ -40,7 +40,7 @@ export default function App() {
   }, [tasks, settings])
 
   return (
-    <BrowserRouter basename="/時間の流れ">
+    <BrowserRouter basename="/-">
       <Routes>
         <Route element={<AppShell />}>
           <Route path="/" element={<DashboardPage />} />
