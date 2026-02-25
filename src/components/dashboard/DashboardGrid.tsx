@@ -19,12 +19,17 @@ export default function DashboardGrid() {
   const tasks = useScheduleStore(s => s.tasks)
   const dailyLogs = useScheduleStore(s => s.dailyLogs)
   const toggleTaskComplete = useScheduleStore(s => s.toggleTaskComplete)
+  const toggleSubtaskComplete = useScheduleStore(s => s.toggleSubtaskComplete)
   const protocols = useProtocolStore(s => s.protocols)
   const settings = useSettingsStore(s => s.settings)
 
   const handleQuickComplete = async (taskId: number) => {
     await toggleTaskComplete(taskId)
     showToast('Task completed')
+  }
+
+  const handleSubtaskToggle = async (taskId: number, subtaskId: string) => {
+    await toggleSubtaskComplete(taskId, subtaskId)
   }
 
   useMinuteTick()
@@ -45,14 +50,17 @@ export default function DashboardGrid() {
 
   return (
     <div className="max-w-lg mx-auto">
-      <div className="grid grid-cols-2 gap-3 px-5 py-4">
+      <div className="pt-4">
         <UpNextCard
           tasks={todayTasks}
           dailyLogs={dailyLogs}
           onNavigateToSchedule={() => navigate('/schedule')}
           onCompleteTask={handleQuickComplete}
+          onToggleSubtask={handleSubtaskToggle}
         />
+      </div>
 
+      <div className="grid grid-cols-2 gap-3 px-5 pb-4">
         <ProgressCard
           tasks={todayTasks}
           dailyLogs={dailyLogs}
