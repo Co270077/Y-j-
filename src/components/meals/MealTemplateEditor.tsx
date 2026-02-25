@@ -102,7 +102,7 @@ export default function MealTemplateEditor({ isOpen, onClose, onSave, onDelete, 
             <div key={f.id} className="flex items-center gap-2 mb-2 p-2.5 bg-charcoal rounded-[var(--radius-md)]">
               <div className="flex-1 min-w-0">
                 <p className="text-sm text-text-primary">{f.name}</p>
-                <p className="text-[10px] text-text-muted">{f.calories} cal · P{f.protein}g · C{f.carbs}g · F{f.fat}g</p>
+                <p className="text-[10px] text-text-muted">{Math.round(f.calories)} cal · P{Math.round(f.protein)}g · C{Math.round(f.carbs)}g · F{Math.round(f.fat)}g</p>
               </div>
               <button onClick={() => removeFood(f.id)} className="text-text-muted hover:text-danger transition-colors cursor-pointer p-1">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -137,19 +137,19 @@ export default function MealTemplateEditor({ isOpen, onClose, onSave, onDelete, 
         {foods.length > 0 && (
           <div className="grid grid-cols-4 gap-2 p-3 bg-charcoal rounded-[var(--radius-md)]">
             <div className="text-center">
-              <p className="text-xs font-semibold text-cat-meal">{totals.calories}</p>
+              <p className="text-xs font-semibold text-cat-meal">{Math.round(totals.calories)}</p>
               <p className="text-[10px] text-text-muted">Cal</p>
             </div>
             <div className="text-center">
-              <p className="text-xs font-semibold text-text-primary">{totals.protein}g</p>
+              <p className="text-xs font-semibold text-text-primary">{Math.round(totals.protein)}g</p>
               <p className="text-[10px] text-text-muted">Protein</p>
             </div>
             <div className="text-center">
-              <p className="text-xs font-semibold text-text-primary">{totals.carbs}g</p>
+              <p className="text-xs font-semibold text-text-primary">{Math.round(totals.carbs)}g</p>
               <p className="text-[10px] text-text-muted">Carbs</p>
             </div>
             <div className="text-center">
-              <p className="text-xs font-semibold text-text-primary">{totals.fat}g</p>
+              <p className="text-xs font-semibold text-text-primary">{Math.round(totals.fat)}g</p>
               <p className="text-[10px] text-text-muted">Fat</p>
             </div>
           </div>

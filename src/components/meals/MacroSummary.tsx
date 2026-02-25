@@ -7,18 +7,23 @@ interface MacroSummaryProps {
 }
 
 export default function MacroSummary({ calories, protein, carbs, fat, compact = false }: MacroSummaryProps) {
+  const cal = Math.round(calories)
+  const p = Math.round(protein)
+  const c = Math.round(carbs)
+  const f = Math.round(fat)
+
   if (compact) {
     return (
       <p className="text-[10px] text-text-muted">
-        {calories} cal · P{protein}g · C{carbs}g · F{fat}g
+        {cal} cal · P{p}g · C{c}g · F{f}g
       </p>
     )
   }
 
-  const total = protein + carbs + fat
-  const proteinPct = total > 0 ? (protein / total) * 100 : 0
-  const carbsPct = total > 0 ? (carbs / total) * 100 : 0
-  const fatPct = total > 0 ? (fat / total) * 100 : 0
+  const total = p + c + f
+  const proteinPct = total > 0 ? (p / total) * 100 : 0
+  const carbsPct = total > 0 ? (c / total) * 100 : 0
+  const fatPct = total > 0 ? (f / total) * 100 : 0
 
   return (
     <div>
@@ -31,19 +36,19 @@ export default function MacroSummary({ calories, protein, carbs, fat, compact = 
 
       <div className="grid grid-cols-4 gap-1">
         <div className="text-center">
-          <p className="text-sm font-bold text-cat-meal">{calories}</p>
+          <p className="text-sm font-bold text-cat-meal">{cal}</p>
           <p className="text-[10px] text-text-muted">Cal</p>
         </div>
         <div className="text-center">
-          <p className="text-sm font-bold text-cat-workout">{protein}g</p>
+          <p className="text-sm font-bold text-cat-workout">{p}g</p>
           <p className="text-[10px] text-text-muted">Protein</p>
         </div>
         <div className="text-center">
-          <p className="text-sm font-bold text-cat-supplement">{carbs}g</p>
+          <p className="text-sm font-bold text-cat-supplement">{c}g</p>
           <p className="text-[10px] text-text-muted">Carbs</p>
         </div>
         <div className="text-center">
-          <p className="text-sm font-bold text-cat-meal">{fat}g</p>
+          <p className="text-sm font-bold text-cat-meal">{f}g</p>
           <p className="text-[10px] text-text-muted">Fat</p>
         </div>
       </div>
