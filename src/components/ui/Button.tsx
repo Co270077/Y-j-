@@ -1,0 +1,52 @@
+import { forwardRef, type ButtonHTMLAttributes } from 'react'
+
+type Variant = 'primary' | 'secondary' | 'ghost' | 'danger'
+type Size = 'sm' | 'md' | 'lg'
+
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: Variant
+  size?: Size
+  fullWidth?: boolean
+}
+
+const variantStyles: Record<Variant, string> = {
+  primary: 'bg-bamboo text-warm-white hover:bg-bamboo-dark active:bg-bamboo-dark',
+  secondary: 'bg-surface-raised text-text-primary border border-border hover:bg-surface-overlay',
+  ghost: 'bg-transparent text-text-secondary hover:text-text-primary hover:bg-surface-raised',
+  danger: 'bg-danger/15 text-danger hover:bg-danger/25',
+}
+
+const sizeStyles: Record<Size, string> = {
+  sm: 'px-3 py-1.5 text-xs rounded-[var(--radius-sm)]',
+  md: 'px-4 py-2.5 text-sm rounded-[var(--radius-md)]',
+  lg: 'px-6 py-3 text-base rounded-[var(--radius-md)]',
+}
+
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button({
+  variant = 'primary',
+  size = 'md',
+  fullWidth = false,
+  className = '',
+  children,
+  ...props
+}, ref) {
+  return (
+    <button
+      ref={ref}
+      className={`
+        inline-flex items-center justify-center font-medium
+        transition-colors duration-150 cursor-pointer
+        disabled:opacity-40 disabled:cursor-not-allowed
+        ${variantStyles[variant]}
+        ${sizeStyles[size]}
+        ${fullWidth ? 'w-full' : ''}
+        ${className}
+      `}
+      {...props}
+    >
+      {children}
+    </button>
+  )
+})
+
+export default Button

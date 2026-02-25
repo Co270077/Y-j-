@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1A1A2E"/>
+      <stop offset="100%" style="stop-color:#2C2C2C"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="512" height="512" rx="96" fill="url(#bg)"/>
+  <!-- Subtle circle (enso-inspired) -->
+  <circle cx="256" cy="256" r="180" fill="none" stroke="#4A4A4A" stroke-width="2" opacity="0.5"/>
+  <!-- Kanji 時 (time) -->
+  <text x="256" y="290" text-anchor="middle" font-family="'Hiragino Sans', 'Noto Sans JP', serif" font-size="240" font-weight="300" fill="#F5F0E8">時</text>
+  <!-- Small bamboo accent dot -->
+  <circle cx="410" cy="102" r="12" fill="#6B8E6B" opacity="0.8"/>
+</svg>
