@@ -23,9 +23,9 @@ Requirements for the UX overhaul. Each maps to roadmap phases.
 ### Interactions
 
 - [x] **INTR-01**: All buttons, checkboxes, and toggles show micro-interaction feedback on tap
-- [ ] **INTR-02**: User can swipe right on schedule tasks to complete them
-- [ ] **INTR-03**: User can swipe left on items to reveal delete action with undo toast
-- [ ] **INTR-04**: Bottom sheet slides up for adding tasks, meals, and viewing details
+- [x] **INTR-02**: User can swipe right on schedule tasks to complete them
+- [x] **INTR-03**: User can swipe left on items to reveal delete action with undo toast
+- [x] **INTR-04**: Bottom sheet slides up for adding tasks, meals, and viewing details
 - [x] **INTR-05**: All animations use spring physics instead of linear/ease curves
 
 ### Data Visualization
@@ -37,8 +37,8 @@ Requirements for the UX overhaul. Each maps to roadmap phases.
 
 ### Layout
 
-- [ ] **LAYT-01**: Full-page modals replaced with bottom sheet overlays where content is compact
-- [ ] **LAYT-02**: User can tap protocol/meal items to expand details inline without navigating away
+- [x] **LAYT-01**: Full-page modals replaced with bottom sheet overlays where content is compact
+- [x] **LAYT-02**: User can tap protocol/meal items to expand details inline without navigating away
 
 ## v2 Requirements
 
@@ -77,16 +77,16 @@ Which phases cover which requirements. Updated during roadmap creation.
 | NAV-03 | Phase 2 | Complete |
 | NAV-04 | Phase 2 | Complete |
 | INTR-01 | Phase 3 | Complete |
-| INTR-02 | Phase 4 | Pending |
-| INTR-03 | Phase 4 | Pending |
-| INTR-04 | Phase 4 | Pending |
+| INTR-02 | Phase 4 | Complete |
+| INTR-03 | Phase 4 | Complete |
+| INTR-04 | Phase 4 | Complete |
 | INTR-05 | Phase 3 | Complete |
 | DATV-01 | Phase 3 | Complete |
 | DATV-02 | Phase 3 | Complete |
 | DATV-03 | Phase 3 | Complete |
 | DATV-04 | Phase 3 | Complete |
-| LAYT-01 | Phase 4 | Pending |
-| LAYT-02 | Phase 4 | Pending |
+| LAYT-01 | Phase 4 | Complete |
+| LAYT-02 | Phase 4 | Complete |
 
 **Coverage:**
 - v1 requirements: 18 total
