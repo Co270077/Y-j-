@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import Modal from '../ui/Modal'
+import BottomSheet from '../ui/BottomSheet'
 import Input from '../ui/Input'
 import Button from '../ui/Button'
 import type { Protocol, SupplementEntry, CyclePattern, TimingRule, DayOfWeek } from '../../db/types'
@@ -176,7 +176,7 @@ export default function ProtocolEditor({ isOpen, onClose, onSave, onDelete, init
   const needsOffset = ['before_meal', 'after_meal', 'on_wake', 'before_sleep'].includes(suppTimingType)
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title={initial ? 'Edit Protocol' : 'New Protocol'}>
+    <BottomSheet isOpen={isOpen} onClose={onClose} title={initial ? 'Edit Protocol' : 'New Protocol'} detent="full">
       <div className="flex flex-col gap-5">
         <Input label="Protocol Name" value={name} onChange={e => setName(e.target.value)} placeholder="e.g. Morning Stack" />
 
@@ -326,6 +326,6 @@ export default function ProtocolEditor({ isOpen, onClose, onSave, onDelete, init
           </Button>
         </div>
       </div>
-    </Modal>
+    </BottomSheet>
   )
 }

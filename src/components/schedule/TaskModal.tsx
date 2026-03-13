@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import Modal from '../ui/Modal'
+import BottomSheet from '../ui/BottomSheet'
 import Input from '../ui/Input'
 import Button from '../ui/Button'
 import Toggle from '../ui/Toggle'
@@ -117,7 +117,7 @@ export default function TaskModal({ isOpen, onClose, onSave, onDelete, initialTa
   }, [existingTasks, days, startTime, durationMinutes, initialTask])
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title={isEditing ? 'Edit Task' : 'New Task'}>
+    <BottomSheet isOpen={isOpen} onClose={onClose} title={isEditing ? 'Edit Task' : 'New Task'} detent="half">
       <div className="flex flex-col gap-5">
         {/* Title */}
         <Input
@@ -323,6 +323,6 @@ export default function TaskModal({ isOpen, onClose, onSave, onDelete, initialTa
           </Button>
         </div>
       </div>
-    </Modal>
+    </BottomSheet>
   )
 }

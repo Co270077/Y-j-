@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import Modal from '../ui/Modal'
+import BottomSheet from '../ui/BottomSheet'
 import Input from '../ui/Input'
 import Button from '../ui/Button'
 import type { MealTemplate, FoodItem } from '../../db/types'
@@ -91,7 +91,7 @@ export default function MealTemplateEditor({ isOpen, onClose, onSave, onDelete, 
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title={initial ? 'Edit Meal' : 'New Meal Template'}>
+    <BottomSheet isOpen={isOpen} onClose={onClose} title={initial ? 'Edit Meal' : 'New Meal Template'} detent="full">
       <div className="flex flex-col gap-5">
         <Input label="Meal Name" value={name} onChange={e => setName(e.target.value)} placeholder="e.g. Breakfast Bowl" />
 
@@ -164,6 +164,6 @@ export default function MealTemplateEditor({ isOpen, onClose, onSave, onDelete, 
           </Button>
         </div>
       </div>
-    </Modal>
+    </BottomSheet>
   )
 }

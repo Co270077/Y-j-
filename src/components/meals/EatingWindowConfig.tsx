@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import Modal from '../ui/Modal'
+import BottomSheet from '../ui/BottomSheet'
 import Input from '../ui/Input'
 import Button from '../ui/Button'
 import type { EatingWindow, FastingProtocol } from '../../db/types'
@@ -48,7 +48,7 @@ export default function EatingWindowConfig({ isOpen, onClose, onSave, current }:
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Eating Window">
+    <BottomSheet isOpen={isOpen} onClose={onClose} title="Eating Window" detent="half">
       <div className="flex flex-col gap-5">
         <div>
           <label className="text-xs font-medium text-text-secondary block mb-2">Fasting Protocol</label>
@@ -83,7 +83,7 @@ export default function EatingWindowConfig({ isOpen, onClose, onSave, current }:
           <Button variant="primary" size="md" onClick={handleSave} fullWidth>Save</Button>
         </div>
       </div>
-    </Modal>
+    </BottomSheet>
   )
 }
 

@@ -1,21 +1,44 @@
 import { useEffect, useRef, useId } from 'react'
 import * as m from 'motion/react-m'
-import { AnimatePresence } from 'motion/react'
-import { slideUp } from '../../motion/variants'
+import { AnimatePresence, useMotionValue, useTransform, animate } from 'motion/react'
+import { useDrag } from '@use-gesture/react'
+import { snappy, gentle } from '../../motion/transitions'
 
-interface ModalProps {
+interface BottomSheetProps {
   isOpen: boolean
   onClose: () => void
   title: string
   children: React.ReactNode
+  detent?: 'peek' | 'half' | 'full'
 }
 
-export default function Modal({ isOpen, onClose, title, children }: ModalProps) {
+export default function BottomSheet({ isOpen, onClose, title, children, detent = 'half' }: BottomSheetProps) {
   const overlayRef = useRef<HTMLDivElement>(null)
   const dialogRef = useRef<HTMLDivElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
   const titleId = useId()
 
-  // Lock body scroll when open
+  const vh = typeof window !== 'undefined' ? window.innerHeight || 600 : 600
+  const DETENTS = {
+    peek: vh * 0.6,
+    half: vh * 0.5,
+    full: vh * 0.1,
+  }
+
+  const currentDetentY = DETENTS[detent]
+  const y = useMotionValue(vh)
+  const backdropOpacity = useTransform(y, [DETENTS.full, vh], [0.5, 0])
+
+  // Open / close animation
+  useEffect(() => {
+    if (isOpen) {
+      animate(y, currentDetentY, { type: 'spring', ...gentle })
+    } else {
+      animate(y, vh, { type: 'spring', ...snappy })
+    }
+  }, [isOpen, currentDetentY, vh, y])
+
+  // Body scroll lock
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden'
@@ -25,7 +48,7 @@ export default function Modal({ isOpen, onClose, title, children }: ModalProps) 
     return () => { document.body.style.overflow = '' }
   }, [isOpen])
 
-  // Escape key to close
+  // Escape key
   useEffect(() => {
     if (!isOpen) return
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -35,7 +58,7 @@ export default function Modal({ isOpen, onClose, title, children }: ModalProps) 
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [isOpen, onClose])
 
-  // Auto-focus first input when modal opens
+  // Auto-focus
   useEffect(() => {
     if (!isOpen || !dialogRef.current) return
     const focusTarget =
@@ -44,14 +67,37 @@ export default function Modal({ isOpen, onClose, title, children }: ModalProps) 
     focusTarget?.focus()
   }, [isOpen])
 
+  const handleDismiss = () => {
+    animate(y, vh, { type: 'spring', ...snappy }).then(onClose)
+  }
+
+  const bind = useDrag(
+    ({ active, movement: [, my], velocity: [, vy], last }) => {
+      // Only drag if content is scrolled to top
+      if (contentRef.current && contentRef.current.scrollTop > 0 && my > 0) return
+
+      if (active) {
+        y.set(Math.max(DETENTS.full, currentDetentY + my))
+      } else if (last) {
+        if (my > vh * 0.3 || vy > 0.5) {
+          handleDismiss()
+        } else {
+          animate(y, currentDetentY, { type: 'spring', ...snappy })
+        }
+      }
+    },
+    { axis: 'y', filterTaps: true }
+  )
+
   return (
     <AnimatePresence>
       {isOpen && (
         <>
           <m.div
-            className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm"
+            data-testid="sheet-backdrop"
+            className="fixed inset-0 z-[100] bg-black backdrop-blur-sm"
+            style={{ opacity: backdropOpacity }}
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             ref={overlayRef}
             onClick={(e) => {
@@ -63,15 +109,18 @@ export default function Modal({ isOpen, onClose, title, children }: ModalProps) 
             role="dialog"
             aria-modal="true"
             aria-labelledby={titleId}
-            variants={slideUp}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            className="fixed bottom-0 left-0 right-0 z-[101] flex justify-center"
+            data-testid="sheet-panel"
+            style={{ y }}
+            className="fixed left-0 right-0 z-[101] flex justify-center overflow-hidden"
+            exit={{ y: vh, transition: { ...snappy } }}
           >
             <div className="w-full max-w-lg bg-charcoal border-t border-border rounded-t-[var(--radius-xl)] max-h-[90vh] flex flex-col">
-              {/* Handle bar */}
-              <div className="flex justify-center pt-3 pb-1">
+              {/* Handle bar — drag target */}
+              <div
+                {...bind()}
+                className="flex justify-center pt-3 pb-1 cursor-grab active:cursor-grabbing"
+                style={{ touchAction: 'none' }}
+              >
                 <div className="w-10 h-1 rounded-full bg-surface-overlay" />
               </div>
 
@@ -91,7 +140,7 @@ export default function Modal({ isOpen, onClose, title, children }: ModalProps) 
               </div>
 
               {/* Content */}
-              <div className="flex-1 overflow-y-auto px-5 pb-8">
+              <div ref={contentRef} className="flex-1 overflow-y-auto px-5 pb-8">
                 {children}
               </div>
             </div>
