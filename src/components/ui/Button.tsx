@@ -1,4 +1,6 @@
 import { forwardRef, type ButtonHTMLAttributes } from 'react'
+import * as m from 'motion/react-m'
+import { snappy } from '../../motion/transitions'
 
 type Variant = 'primary' | 'secondary' | 'ghost' | 'danger'
 type Size = 'sm' | 'md' | 'lg'
@@ -31,8 +33,9 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button({
   ...props
 }, ref) {
   return (
-    <button
+    <m.button
       ref={ref}
+      whileTap={!props.disabled ? { scale: 0.97, transition: snappy } : undefined}
       className={`
         inline-flex items-center justify-center font-medium
         transition-colors duration-150 cursor-pointer
@@ -45,7 +48,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button({
       {...props}
     >
       {children}
-    </button>
+    </m.button>
   )
 })
 
