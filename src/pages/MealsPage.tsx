@@ -11,6 +11,7 @@ import { useSettingsStore } from '../stores/settingsStore'
 import { formatTimeDisplay } from '../utils/time'
 import type { MealTemplate, EatingWindow } from '../db/types'
 import { showToast } from '../components/ui/Toast'
+import FAB from '../components/ui/FAB'
 
 export default function MealsPage() {
   const [ewConfigOpen, setEwConfigOpen] = useState(false)
@@ -188,6 +189,8 @@ export default function MealsPage() {
         onConfirm={handleDeleteConfirm}
         onCancel={() => setConfirmDelete(false)}
       />
+
+      <FAB onClick={() => { setEditingTemplate(null); setTemplateEditorOpen(true) }} label="Log meal" />
     </>
   )
 }

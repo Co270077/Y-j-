@@ -6,6 +6,7 @@ import ConfirmDialog from '../components/ui/ConfirmDialog'
 import { useProtocolStore } from '../stores/protocolStore'
 import type { Protocol } from '../db/types'
 import { showToast } from '../components/ui/Toast'
+import FAB from '../components/ui/FAB'
 
 export default function ProtocolsPage() {
   const [editorOpen, setEditorOpen] = useState(false)
@@ -102,6 +103,8 @@ export default function ProtocolsPage() {
         onConfirm={handleDeleteConfirm}
         onCancel={() => setConfirmDelete(false)}
       />
+
+      <FAB onClick={() => { setEditingProtocol(null); setEditorOpen(true) }} label="Add protocol" />
     </>
   )
 }

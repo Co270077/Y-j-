@@ -14,6 +14,7 @@ import type { Task, DayOfWeek, TaskCategory } from '../db/types'
 import { getCurrentDay, DAYS_ORDERED } from '../utils/time'
 import { showToast } from '../components/ui/Toast'
 import { hapticLight } from '../utils/haptics'
+import FAB from '../components/ui/FAB'
 
 export default function SchedulePage() {
   const location = useLocation()
@@ -190,6 +191,8 @@ export default function SchedulePage() {
         onConfirm={handleDeleteConfirm}
         onCancel={() => setConfirmDelete(false)}
       />
+
+      <FAB onClick={handleNewTask} label="Add new task" />
     </>
   )
 }
