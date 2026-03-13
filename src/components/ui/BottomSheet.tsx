@@ -101,7 +101,7 @@ export default function BottomSheet({ isOpen, onClose, title, children, detent =
             exit={{ opacity: 0 }}
             ref={overlayRef}
             onClick={(e) => {
-              if (e.target === overlayRef.current) onClose()
+              if (e.target === overlayRef.current) handleDismiss()
             }}
           />
           <m.div
@@ -111,7 +111,7 @@ export default function BottomSheet({ isOpen, onClose, title, children, detent =
             aria-labelledby={titleId}
             data-testid="sheet-panel"
             style={{ y }}
-            className="fixed left-0 right-0 z-[101] flex justify-center overflow-hidden"
+            className="fixed top-0 left-0 right-0 z-[101] flex justify-center overflow-hidden"
             exit={{ y: vh, transition: { ...snappy } }}
           >
             <div className="w-full max-w-lg bg-charcoal border-t border-border rounded-t-[var(--radius-xl)] max-h-[90vh] flex flex-col">
