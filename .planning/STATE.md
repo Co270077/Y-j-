@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 04-01-PLAN.md
-last_updated: "2026-03-13T16:36:45.129Z"
+stopped_at: Completed 04-03-PLAN.md
+last_updated: "2026-03-13T16:43:55.682Z"
 last_activity: 2026-03-13 — Roadmap created
 progress:
   total_phases: 4
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 13
-  completed_plans: 12
+  completed_plans: 13
   percent: 0
 ---
 
@@ -62,6 +62,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 04-gesture-interactions-layout P00 | 5min | 1 tasks | 5 files |
 | Phase 04-gesture-interactions-layout P02 | 6min | 2 tasks | 3 files |
 | Phase 04-gesture-interactions-layout P01 | 8min | 2 tasks | 7 files |
+| Phase 04-gesture-interactions-layout P03 | 12min | 3 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -96,6 +97,9 @@ Recent decisions affecting current work:
 - [Phase 04-gesture-interactions-layout]: BottomSheet keeps identical props to Modal (isOpen, onClose, title, children) plus optional detent — zero-migration for all 4 consumers
 - [Phase 04-gesture-interactions-layout]: Drag-to-dismiss only allowed when content scrollTop === 0 — prevents accidental dismiss during scroll
 - [Phase 04-gesture-interactions-layout]: ToastItem as sub-component per toast — correct requestAnimationFrame timing for countdown bar useEffect
+- [Phase 04-gesture-interactions-layout]: onComplete={isComplete ? undefined : onToggleComplete} — SwipeActionRow only shows green reveal when onComplete provided, preventing right-swipe on completed tasks
+- [Phase 04-gesture-interactions-layout]: pendingDelete stored in useRef — avoids re-renders during timer lifecycle, commit on unmount via useEffect cleanup
+- [Phase 04-gesture-interactions-layout]: Remove useSwipe from SchedulePage — page-level swipe conflicts with item-level SwipeActionRow gestures
 
 ### Pending Todos
 
@@ -108,6 +112,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-13T16:36:45.127Z
-Stopped at: Completed 04-01-PLAN.md
+Last session: 2026-03-13T16:43:55.680Z
+Stopped at: Completed 04-03-PLAN.md
 Resume file: None
