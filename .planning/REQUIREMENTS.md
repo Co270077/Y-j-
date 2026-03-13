@@ -31,7 +31,7 @@ Requirements for the UX overhaul. Each maps to roadmap phases.
 ### Data Visualization
 
 - [x] **DATV-01**: Dashboard progress rings/bars animate on load and value change
-- [ ] **DATV-02**: List items enter with staggered cascade animation
+- [x] **DATV-02**: List items enter with staggered cascade animation
 - [x] **DATV-03**: Macro counters and dashboard stats animate with count-up effect
 - [x] **DATV-04**: Skeleton shimmer states display during initial data load
 
@@ -82,7 +82,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INTR-04 | Phase 4 | Pending |
 | INTR-05 | Phase 3 | Complete |
 | DATV-01 | Phase 3 | Complete |
-| DATV-02 | Phase 3 | Pending |
+| DATV-02 | Phase 3 | Complete |
 | DATV-03 | Phase 3 | Complete |
 | DATV-04 | Phase 3 | Complete |
 | LAYT-01 | Phase 4 | Pending |

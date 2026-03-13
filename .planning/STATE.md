@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 03-01-PLAN.md
-last_updated: "2026-03-13T15:59:00.686Z"
+stopped_at: Completed 03-ui-primitives-animations 03-00-PLAN.md
+last_updated: "2026-03-13T16:00:04.247Z"
 last_activity: 2026-03-13 — Roadmap created
 progress:
   total_phases: 4
   completed_phases: 2
   total_plans: 9
-  completed_plans: 7
+  completed_plans: 8
   percent: 0
 ---
 
@@ -57,6 +57,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 02-navigation P02 | 4 | 2 tasks | 7 files |
 | Phase 03-ui-primitives-animations P02 | 10 | 2 tasks | 7 files |
 | Phase 03-ui-primitives-animations P01 | 2m 26s | 2 tasks | 8 files |
+| Phase 03-ui-primitives-animations P00 | 525844 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -81,6 +82,7 @@ Recent decisions affecting current work:
 - [Phase 03-ui-primitives-animations]: ProgressRing starts empty (circumference offset) and springs to target on mount via m.circle
 - [Phase 03-ui-primitives-animations]: whileTap inline object (not tap variant spread) — consistent with FAB, cleaner TypeScript
 - [Phase 03-ui-primitives-animations]: Toggle knob position via animate.x, bg via animate.backgroundColor — Motion fully owns transforms and color
+- [Phase 03-ui-primitives-animations]: Post-migration test assertions that pass against pre-migration code run as non-skipped; only truly breaking assertions marked it.skip
 
 ### Pending Todos
 
@@ -93,6 +95,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-13T15:59:00.684Z
-Stopped at: Completed 03-01-PLAN.md
+Last session: 2026-03-13T16:00:04.245Z
+Stopped at: Completed 03-ui-primitives-animations 03-00-PLAN.md
 Resume file: None

@@ -60,7 +60,7 @@ Plans:
   3. Macro counters and dashboard stat numbers animate with a count-up effect when values change
   4. List items on all pages enter the screen with a staggered cascade (not all at once)
   5. Content that hasn't loaded yet shows a shimmer skeleton — no blank areas or layout jumps
-**Plans:** 2/4 plans executed
+**Plans:** 3/4 plans executed
 
 Plans:
 - [ ] 03-00-PLAN.md — Test scaffolds for all Phase 3 requirements (Wave 0)
@@ -88,5 +88,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/2 | Complete    | 2026-03-13 |
 | 2. Navigation | 3/3 | Complete    | 2026-03-13 |
-| 3. UI Primitives + Animations | 2/4 | In Progress|  |
+| 3. UI Primitives + Animations | 3/4 | In Progress|  |
 | 4. Gesture Interactions + Layout | 0/TBD | Not started | - |
