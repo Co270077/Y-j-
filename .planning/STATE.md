@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 04-00-PLAN.md
-last_updated: "2026-03-13T16:32:46.253Z"
+stopped_at: Completed 04-01-PLAN.md
+last_updated: "2026-03-13T16:36:45.129Z"
 last_activity: 2026-03-13 — Roadmap created
 progress:
   total_phases: 4
   completed_phases: 3
   total_plans: 13
-  completed_plans: 10
+  completed_plans: 12
   percent: 0
 ---
 
@@ -60,6 +60,8 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 03-ui-primitives-animations P00 | 525844 | 2 tasks | 3 files |
 | Phase 03-ui-primitives-animations P03 | 8m | 2 tasks | 9 files |
 | Phase 04-gesture-interactions-layout P00 | 5min | 1 tasks | 5 files |
+| Phase 04-gesture-interactions-layout P02 | 6min | 2 tasks | 3 files |
+| Phase 04-gesture-interactions-layout P01 | 8min | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -89,6 +91,11 @@ Recent decisions affecting current work:
 - [Phase 03-ui-primitives-animations]: DashboardGrid isLoaded: tasks.length > 0 || protocols.length > 0 || settings !== null — any store hydrated = loaded
 - [Phase 04-gesture-interactions-layout]: All test stubs use it.skip with commented implementation — preserves expected API shape without importing non-existent components
 - [Phase 04-gesture-interactions-layout]: window.innerWidth=375 and window.innerHeight=800 set in beforeEach for consistent threshold math across CI environments
+- [Phase 04-gesture-interactions-layout]: animate() only on release, x.set() during active drag — avoids conflicting animations mid-gesture
+- [Phase 04-gesture-interactions-layout]: pointer.capture:false in useDrag — allows browser scroll to reclaim when vertical intent detected
+- [Phase 04-gesture-interactions-layout]: BottomSheet keeps identical props to Modal (isOpen, onClose, title, children) plus optional detent — zero-migration for all 4 consumers
+- [Phase 04-gesture-interactions-layout]: Drag-to-dismiss only allowed when content scrollTop === 0 — prevents accidental dismiss during scroll
+- [Phase 04-gesture-interactions-layout]: ToastItem as sub-component per toast — correct requestAnimationFrame timing for countdown bar useEffect
 
 ### Pending Todos
 
@@ -101,6 +108,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-13T16:32:41.272Z
-Stopped at: Completed 04-00-PLAN.md
+Last session: 2026-03-13T16:36:45.127Z
+Stopped at: Completed 04-01-PLAN.md
 Resume file: None
