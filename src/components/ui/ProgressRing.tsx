@@ -1,3 +1,8 @@
+import { useEffect } from 'react'
+import * as m from 'motion/react-m'
+import { useMotionValue, useSpring } from 'motion/react'
+import { gentle } from '../../motion/transitions'
+
 interface ProgressRingProps {
   progress: number    // 0 to 100
   size?: number
@@ -17,7 +22,14 @@ export default function ProgressRing({
 }: ProgressRingProps) {
   const radius = (size - strokeWidth) / 2
   const circumference = 2 * Math.PI * radius
-  const offset = circumference - (Math.min(progress, 100) / 100) * circumference
+  const targetOffset = circumference - (Math.min(progress, 100) / 100) * circumference
+
+  const offsetValue = useMotionValue(circumference) // start empty
+  const springOffset = useSpring(offsetValue, gentle)
+
+  useEffect(() => {
+    offsetValue.set(targetOffset)
+  }, [targetOffset, offsetValue])
 
   return (
     <div className="relative inline-flex items-center justify-center" style={{ width: size, height: size }}>
@@ -30,7 +42,7 @@ export default function ProgressRing({
           stroke={bgColor}
           strokeWidth={strokeWidth}
         />
-        <circle
+        <m.circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
@@ -39,8 +51,7 @@ export default function ProgressRing({
           strokeWidth={strokeWidth}
           strokeLinecap="round"
           strokeDasharray={circumference}
-          strokeDashoffset={offset}
-          className="transition-all duration-500"
+          style={{ strokeDashoffset: springOffset }}
         />
       </svg>
       {children && (
