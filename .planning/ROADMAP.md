@@ -31,8 +31,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans:** 2/2 plans complete
 
 Plans:
-- [ ] 01-01-PLAN.md — Install motion, create animation config, wire providers, migrate AppShell, fix PWA manifest
-- [ ] 01-02-PLAN.md — Migrate all component CSS animations to Motion, remove CSS keyframes
+- [x] 01-01-PLAN.md — Install motion, create animation config, wire providers, migrate AppShell, fix PWA manifest
+- [x] 01-02-PLAN.md — Migrate all component CSS animations to Motion, remove CSS keyframes
 
 ### Phase 2: Navigation
 **Goal**: Navigating between all 5 pages feels native — transitions animate, the active tab indicator slides
@@ -43,7 +43,11 @@ Plans:
   2. The active tab indicator in the bottom nav slides as an animated pill — it does not jump
   3. Opening the Schedule page auto-scrolls to the current time block without user action
   4. Primary action buttons (add task, log meal, etc.) are reachable without stretching — positioned in the lower 60% of the screen on all pages
-**Plans**: TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — Direction-aware page transitions and animated layoutId pill in bottom nav
+- [ ] 02-02-PLAN.md — Floating action buttons on action pages and Schedule auto-scroll enhancement
 
 ### Phase 3: UI Primitives + Animations
 **Goal**: Every tap target gives tactile feedback and every data visualization animates — nothing on screen is static
@@ -76,6 +80,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/2 | Complete    | 2026-03-13 |
-| 2. Navigation | 0/TBD | Not started | - |
+| 2. Navigation | 0/2 | Not started | - |
 | 3. UI Primitives + Animations | 0/TBD | Not started | - |
 | 4. Gesture Interactions + Layout | 0/TBD | Not started | - |
