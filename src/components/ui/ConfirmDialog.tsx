@@ -1,4 +1,7 @@
 import { useEffect, useRef } from 'react'
+import * as m from 'motion/react-m'
+import { AnimatePresence } from 'motion/react'
+import { scaleIn } from '../../motion/variants'
 import Button from './Button'
 
 interface ConfirmDialogProps {
@@ -39,24 +42,43 @@ export default function ConfirmDialog({
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [isOpen, onCancel])
 
-  if (!isOpen) return null
-
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/60 backdrop-blur-sm p-5">
-      <div
-        role="alertdialog"
-        aria-modal="true"
-        aria-labelledby="confirm-dialog-title"
-        aria-describedby="confirm-dialog-message"
-        className="w-full max-w-sm bg-charcoal border border-border rounded-[var(--radius-lg)] p-5 animate-scale-in"
-      >
-        <h3 id="confirm-dialog-title" className="text-base font-semibold text-text-primary mb-1">{title}</h3>
-        <p id="confirm-dialog-message" className="text-sm text-text-secondary mb-5">{message}</p>
-        <div className="flex gap-3 justify-end">
-          <Button ref={cancelRef} variant="ghost" size="sm" onClick={onCancel}>Cancel</Button>
-          <Button variant={variant} size="sm" onClick={onConfirm}>{confirmLabel}</Button>
-        </div>
-      </div>
-    </div>
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          <m.div
+            className="fixed inset-0 z-[200] bg-black/60 backdrop-blur-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          />
+          <m.div
+            className="fixed inset-0 z-[201] flex items-center justify-center p-5"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <m.div
+              role="alertdialog"
+              aria-modal="true"
+              aria-labelledby="confirm-dialog-title"
+              aria-describedby="confirm-dialog-message"
+              variants={scaleIn}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              className="w-full max-w-sm bg-charcoal border border-border rounded-[var(--radius-lg)] p-5"
+            >
+              <h3 id="confirm-dialog-title" className="text-base font-semibold text-text-primary mb-1">{title}</h3>
+              <p id="confirm-dialog-message" className="text-sm text-text-secondary mb-5">{message}</p>
+              <div className="flex gap-3 justify-end">
+                <Button ref={cancelRef} variant="ghost" size="sm" onClick={onCancel}>Cancel</Button>
+                <Button variant={variant} size="sm" onClick={onConfirm}>{confirmLabel}</Button>
+              </div>
+            </m.div>
+          </m.div>
+        </>
+      )}
+    </AnimatePresence>
   )
 }
