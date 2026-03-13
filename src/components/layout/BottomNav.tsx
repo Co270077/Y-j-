@@ -1,5 +1,8 @@
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
+import * as m from 'motion/react-m'
 import { hapticLight } from '../../utils/haptics'
+import { useNavigation } from '../../contexts/NavigationContext'
+import { snappy } from '../../motion/transitions'
 
 const tabs = [
   { path: '/', label: 'Dashboard', icon: DashboardIcon },
@@ -10,7 +13,7 @@ const tabs = [
 
 export default function BottomNav() {
   const location = useLocation()
-  const navigate = useNavigate()
+  const { navigateTo } = useNavigation()
 
   return (
     <nav aria-label="Main navigation" className="fixed bottom-0 left-0 right-0 z-50 safe-area-bottom bg-charcoal border-t border-border">
@@ -20,18 +23,24 @@ export default function BottomNav() {
           return (
             <button
               key={path}
-              onClick={() => { hapticLight(); navigate(path) }}
+              onClick={() => { hapticLight(); navigateTo(path, 'tab') }}
               aria-current={isActive ? 'page' : undefined}
               className={`relative flex flex-col items-center justify-center gap-1 flex-1 h-full transition-colors cursor-pointer ${
                 isActive ? 'text-bamboo' : 'text-stone hover:text-stone-light'
               }`}
             >
-              {/* Active indicator bar */}
+              {/* Animated pill indicator */}
               {isActive && (
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-6 h-[2px] rounded-full bg-bamboo" />
+                <m.div
+                  layoutId="active-tab-indicator"
+                  className="absolute inset-x-1 inset-y-1 rounded-xl bg-bamboo/15"
+                  transition={snappy}
+                />
               )}
-              <Icon active={isActive} />
-              <span className="text-[10px] font-medium">{label}</span>
+              <span className="relative z-10">
+                <Icon active={isActive} />
+              </span>
+              <span className="relative z-10 text-[10px] font-medium">{label}</span>
             </button>
           )
         })}

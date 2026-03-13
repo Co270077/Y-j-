@@ -6,6 +6,7 @@ import SchedulePage from './pages/SchedulePage'
 import ProtocolsPage from './pages/ProtocolsPage'
 import MealsPage from './pages/MealsPage'
 import SettingsPage from './pages/SettingsPage'
+import { NavigationProvider } from './contexts/NavigationContext'
 import { useSettingsStore } from './stores/settingsStore'
 import { useScheduleStore } from './stores/scheduleStore'
 import { useProtocolStore } from './stores/protocolStore'
@@ -40,17 +41,19 @@ export default function App() {
   }, [tasks, settings])
 
   return (
-    <BrowserRouter basename="/-">
-      <Routes>
-        <Route element={<AppShell />}>
-          <Route path="/" element={<DashboardPage />} />
-          <Route path="/schedule" element={<SchedulePage />} />
-          <Route path="/protocols" element={<ProtocolsPage />} />
-          <Route path="/meals" element={<MealsPage />} />
-          <Route path="/settings" element={<SettingsPage />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Route>
-      </Routes>
+    <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '')}>
+      <NavigationProvider>
+        <Routes>
+          <Route element={<AppShell />}>
+            <Route path="/" element={<DashboardPage />} />
+            <Route path="/schedule" element={<SchedulePage />} />
+            <Route path="/protocols" element={<ProtocolsPage />} />
+            <Route path="/meals" element={<MealsPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Route>
+        </Routes>
+      </NavigationProvider>
     </BrowserRouter>
   )
 }

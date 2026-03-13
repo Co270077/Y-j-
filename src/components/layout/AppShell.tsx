@@ -4,24 +4,38 @@ import { AnimatePresence } from 'motion/react'
 import * as m from 'motion/react-m'
 import BottomNav from './BottomNav'
 import ToastContainer from '../ui/Toast'
-import { fadeIn } from '../../motion/variants'
+import { fadeIn, slideRight, slideLeft } from '../../motion/variants'
+import { useNavigation } from '../../contexts/NavigationContext'
 
 export default function AppShell() {
   const location = useLocation()
   const outlet = useOutlet()
   const mainRef = useRef<HTMLElement>(null)
+  const { direction } = useNavigation()
 
   // Scroll to top on navigation
+  // Skip /schedule (handles its own scroll) and drill-down directions
   useEffect(() => {
-    mainRef.current?.scrollTo(0, 0)
-  }, [location.pathname])
+    const isTabSwitch = direction.current === 'tab'
+    const isSchedule = location.pathname === '/schedule'
+    if (isTabSwitch && !isSchedule) {
+      mainRef.current?.scrollTo(0, 0)
+    }
+  }, [location.pathname, direction])
+
+  const pageVariants =
+    direction.current === 'tab'
+      ? fadeIn
+      : direction.current === 'forward'
+        ? slideRight
+        : slideLeft
 
   return (
-    <div className="flex flex-col min-h-screen min-h-dvh bg-charcoal">
+    <div className="flex flex-col min-h-screen min-h-dvh bg-charcoal overflow-hidden">
       <ToastContainer />
       <main ref={mainRef} className="flex-1 pb-20 overflow-y-auto overscroll-contain">
         <AnimatePresence mode="wait">
-          <m.div key={location.pathname} variants={fadeIn} initial="initial" animate="animate" exit="exit">
+          <m.div key={location.pathname} variants={pageVariants} initial="initial" animate="animate" exit="exit">
             {outlet}
           </m.div>
         </AnimatePresence>
