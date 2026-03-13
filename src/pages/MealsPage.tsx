@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import * as m from 'motion/react-m'
 import Header from '../components/layout/Header'
 import Card from '../components/ui/Card'
 import Button from '../components/ui/Button'
@@ -12,6 +13,13 @@ import { formatTimeDisplay } from '../utils/time'
 import type { MealTemplate, EatingWindow } from '../db/types'
 import { showToast } from '../components/ui/Toast'
 import FAB from '../components/ui/FAB'
+import { slideUp } from '../motion/variants'
+
+const listStagger = {
+  animate: {
+    transition: { staggerChildren: 0.05, delayChildren: 0 },
+  },
+}
 
 export default function MealsPage() {
   const [ewConfigOpen, setEwConfigOpen] = useState(false)
@@ -87,8 +95,9 @@ export default function MealsPage() {
         }
       />
 
-      <div className="px-5 py-4 max-w-lg mx-auto flex flex-col gap-4">
+      <m.div className="px-5 py-4 max-w-lg mx-auto flex flex-col gap-4" variants={listStagger} initial="initial" animate="animate">
         {/* Eating Window Card */}
+        <m.div variants={slideUp}>
         <Card onClick={() => setEwConfigOpen(true)}>
           <div className="flex items-center justify-between mb-2">
             <p className="text-xs text-text-muted uppercase tracking-wider font-medium">Eating Window</p>
@@ -105,22 +114,25 @@ export default function MealsPage() {
             <p className="text-sm text-text-muted">Tap to configure your fasting protocol</p>
           )}
         </Card>
+        </m.div>
 
         {/* Daily macro summary (if templates exist) */}
         {templates.length > 0 && (
-          <Card>
-            <p className="text-xs text-text-muted uppercase tracking-wider font-medium mb-3">Daily Totals</p>
-            <MacroSummary
-              calories={dailyTotals.calories}
-              protein={dailyTotals.protein}
-              carbs={dailyTotals.carbs}
-              fat={dailyTotals.fat}
-            />
-          </Card>
+          <m.div variants={slideUp}>
+            <Card>
+              <p className="text-xs text-text-muted uppercase tracking-wider font-medium mb-3">Daily Totals</p>
+              <MacroSummary
+                calories={dailyTotals.calories}
+                protein={dailyTotals.protein}
+                carbs={dailyTotals.carbs}
+                fat={dailyTotals.fat}
+              />
+            </Card>
+          </m.div>
         )}
 
         {/* Meal Templates */}
-        <div>
+        <m.div variants={slideUp}>
           <h2 className="text-xs text-text-muted uppercase tracking-wider font-medium mb-3">Meal Templates</h2>
 
           {templates.length === 0 ? (
@@ -146,24 +158,26 @@ export default function MealsPage() {
               </Button>
             </div>
           ) : (
-            <div className="flex flex-col gap-3">
-              {templates.map(tpl => (
-                <Card key={tpl.id} onClick={() => { setEditingTemplate(tpl); setTemplateEditorOpen(true) }}>
-                  <h3 className="text-sm font-semibold text-text-primary mb-1">{tpl.name}</h3>
-                  <p className="text-xs text-text-muted mb-2">{tpl.foods.length} food{tpl.foods.length !== 1 ? 's' : ''}</p>
-                  <MacroSummary
-                    calories={tpl.totalCalories}
-                    protein={tpl.totalProtein}
-                    carbs={tpl.totalCarbs}
-                    fat={tpl.totalFat}
-                    compact
-                  />
-                </Card>
+            <m.div className="flex flex-col gap-3" variants={listStagger} initial="initial" animate="animate">
+              {templates.map((tpl, index) => (
+                <m.div key={tpl.id} variants={index < 10 ? slideUp : undefined}>
+                  <Card onClick={() => { setEditingTemplate(tpl); setTemplateEditorOpen(true) }}>
+                    <h3 className="text-sm font-semibold text-text-primary mb-1">{tpl.name}</h3>
+                    <p className="text-xs text-text-muted mb-2">{tpl.foods.length} food{tpl.foods.length !== 1 ? 's' : ''}</p>
+                    <MacroSummary
+                      calories={tpl.totalCalories}
+                      protein={tpl.totalProtein}
+                      carbs={tpl.totalCarbs}
+                      fat={tpl.totalFat}
+                      compact
+                    />
+                  </Card>
+                </m.div>
               ))}
-            </div>
+            </m.div>
           )}
-        </div>
-      </div>
+        </m.div>
+      </m.div>
 
       <EatingWindowConfig
         isOpen={ewConfigOpen}

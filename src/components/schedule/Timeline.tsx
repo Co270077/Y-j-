@@ -1,8 +1,16 @@
 import { useRef, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
+import * as m from 'motion/react-m'
 import type { Task, DayOfWeek, DailyLog } from '../../db/types'
 import { minutesSinceMidnight, getCurrentTime } from '../../utils/time'
 import TaskBlock from './TaskBlock'
+import { slideUp } from '../../motion/variants'
+
+const listStagger = {
+  animate: {
+    transition: { staggerChildren: 0.05, delayChildren: 0 },
+  },
+}
 
 interface TimelineProps {
   tasks: Task[]
@@ -66,20 +74,17 @@ export default function Timeline({
   }
 
   return (
-    <div ref={scrollRef} className="px-5 py-3 flex flex-col gap-2.5">
-      {sortedTasks.map((task) => {
+    <m.div ref={scrollRef} className="px-5 py-3 flex flex-col gap-2.5" variants={listStagger} initial="initial" animate="animate">
+      {sortedTasks.map((task, index) => {
         const taskMinutes = minutesSinceMidnight(task.startTime)
         const isCurrentTask = taskMinutes <= currentMinutes &&
           taskMinutes + task.durationMinutes > currentMinutes
         const log = dailyLogs.find(l => l.taskId === task.id)
         const isScrollTarget = task === scrollTargetTask
+        const shouldAnimate = index < 10
 
-        return (
-          <div
-            key={task.id}
-            ref={isScrollTarget ? scrollTargetRef : undefined}
-            className={isScrollTarget ? 'border-l-[3px] border-bamboo pl-2 -ml-2 rounded-sm' : ''}
-          >
+        const inner = (
+          <>
             {/* Current time indicator */}
             {isCurrentTask && (
               <div className="flex items-center gap-2 mb-1.5">
@@ -96,9 +101,32 @@ export default function Timeline({
               onEdit={() => onEditTask(task)}
               onDuplicate={onDuplicateTask ? () => onDuplicateTask(task) : undefined}
             />
+          </>
+        )
+
+        if (shouldAnimate) {
+          return (
+            <m.div
+              key={task.id}
+              ref={isScrollTarget ? scrollTargetRef : undefined}
+              className={isScrollTarget ? 'border-l-[3px] border-bamboo pl-2 -ml-2 rounded-sm' : ''}
+              variants={slideUp}
+            >
+              {inner}
+            </m.div>
+          )
+        }
+
+        return (
+          <div
+            key={task.id}
+            ref={isScrollTarget ? scrollTargetRef : undefined}
+            className={isScrollTarget ? 'border-l-[3px] border-bamboo pl-2 -ml-2 rounded-sm' : ''}
+          >
+            {inner}
           </div>
         )
       })}
-    </div>
+    </m.div>
   )
 }

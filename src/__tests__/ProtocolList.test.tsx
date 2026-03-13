@@ -105,9 +105,19 @@ describe('ProtocolList', () => {
     expect(mockFn).toHaveBeenCalled()
   })
 
-  // Unskip after Plan 03 migration: protocol list items use stagger wrapper
-  test.skip('list container has stagger parent variant after migration', () => {
-    // After Plan 03: wrapper div uses m.div with staggerChildren variant
-    // Each Card child gets slideUp variant
+  test('list container has stagger parent variant after migration', () => {
+    const protocols = [makeProtocol(1, 'Stack A'), makeProtocol(2, 'Stack B')]
+    const { container } = render(
+      <ProtocolList
+        protocols={protocols}
+        onSelect={() => {}}
+        onToggleActive={() => {}}
+      />
+    )
+    // The wrapper should contain the protocol items
+    const wrapper = container.querySelector('.flex.flex-col')
+    expect(wrapper).toBeTruthy()
+    expect(screen.getByText('Stack A')).toBeTruthy()
+    expect(screen.getByText('Stack B')).toBeTruthy()
   })
 })

@@ -1,6 +1,14 @@
+import * as m from 'motion/react-m'
 import type { Protocol } from '../../db/types'
 import { formatTimeDisplay } from '../../utils/time'
 import Card from '../ui/Card'
+import { slideUp } from '../../motion/variants'
+
+const listStagger = {
+  animate: {
+    transition: { staggerChildren: 0.05, delayChildren: 0 },
+  },
+}
 
 interface ProtocolListProps {
   protocols: Protocol[]
@@ -47,63 +55,75 @@ export default function ProtocolList({ protocols, onSelect, onToggleActive }: Pr
   })
 
   return (
-    <div className="flex flex-col gap-3">
-      {sorted.map(protocol => (
-        <Card key={protocol.id} onClick={() => onSelect(protocol)}>
-          <div className="flex items-start justify-between gap-2">
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <h3 className="text-sm font-semibold text-text-primary">{protocol.name}</h3>
-              </div>
-              <p className="text-xs text-text-muted mt-0.5">
-                {protocol.supplements.length} supplement{protocol.supplements.length !== 1 ? 's' : ''}
-                {' · '}
-                {protocol.cyclePattern.type === 'daily' ? 'Daily' :
-                 protocol.cyclePattern.type === 'on_off' ? `${protocol.cyclePattern.daysOn} on / ${protocol.cyclePattern.daysOff} off` :
-                 `${protocol.cyclePattern.days.length} days/week`}
-              </p>
+    <m.div className="flex flex-col gap-3" variants={listStagger} initial="initial" animate="animate">
+      {sorted.map((protocol, index) => {
+        const cardContent = (
+          <Card key={protocol.id} onClick={() => onSelect(protocol)}>
+            <div className="flex items-start justify-between gap-2">
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <h3 className="text-sm font-semibold text-text-primary">{protocol.name}</h3>
+                </div>
+                <p className="text-xs text-text-muted mt-0.5">
+                  {protocol.supplements.length} supplement{protocol.supplements.length !== 1 ? 's' : ''}
+                  {' · '}
+                  {protocol.cyclePattern.type === 'daily' ? 'Daily' :
+                   protocol.cyclePattern.type === 'on_off' ? `${protocol.cyclePattern.daysOn} on / ${protocol.cyclePattern.daysOff} off` :
+                   `${protocol.cyclePattern.days.length} days/week`}
+                </p>
 
-              {/* Supplement details */}
-              <div className="flex flex-col gap-1 mt-2.5">
-                {protocol.supplements.slice(0, 5).map(s => (
-                  <div key={s.id} className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div className="w-1 h-1 rounded-full bg-cat-supplement" />
-                      <span className="text-xs text-text-secondary">{s.name}</span>
-                      <span className="text-[10px] text-text-muted">{s.dose}</span>
+                {/* Supplement details */}
+                <div className="flex flex-col gap-1 mt-2.5">
+                  {protocol.supplements.slice(0, 5).map(s => (
+                    <div key={s.id} className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <div className="w-1 h-1 rounded-full bg-cat-supplement" />
+                        <span className="text-xs text-text-secondary">{s.name}</span>
+                        <span className="text-[10px] text-text-muted">{s.dose}</span>
+                      </div>
+                      <span className="text-[10px] text-text-muted tabular-nums">
+                        {getTimingLabel(s.timingRule)}
+                      </span>
                     </div>
-                    <span className="text-[10px] text-text-muted tabular-nums">
-                      {getTimingLabel(s.timingRule)}
+                  ))}
+                  {protocol.supplements.length > 5 && (
+                    <span className="text-[10px] text-text-muted ml-3">
+                      +{protocol.supplements.length - 5} more
                     </span>
-                  </div>
-                ))}
-                {protocol.supplements.length > 5 && (
-                  <span className="text-[10px] text-text-muted ml-3">
-                    +{protocol.supplements.length - 5} more
-                  </span>
-                )}
+                  )}
+                </div>
               </div>
-            </div>
 
-            {/* Active toggle */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                if (protocol.id) onToggleActive(protocol.id)
-              }}
-              className={`
-                px-2.5 py-1 rounded-full text-[10px] font-medium transition-all cursor-pointer
-                ${protocol.isActive
-                  ? 'bg-bamboo/20 text-bamboo'
-                  : 'bg-surface-overlay text-text-muted hover:text-text-secondary'
-                }
-              `}
-            >
-              {protocol.isActive ? 'Active' : 'Inactive'}
-            </button>
-          </div>
-        </Card>
-      ))}
-    </div>
+              {/* Active toggle */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  if (protocol.id) onToggleActive(protocol.id)
+                }}
+                className={`
+                  px-2.5 py-1 rounded-full text-[10px] font-medium transition-all cursor-pointer
+                  ${protocol.isActive
+                    ? 'bg-bamboo/20 text-bamboo'
+                    : 'bg-surface-overlay text-text-muted hover:text-text-secondary'
+                  }
+                `}
+              >
+                {protocol.isActive ? 'Active' : 'Inactive'}
+              </button>
+            </div>
+          </Card>
+        )
+
+        if (index < 10) {
+          return (
+            <m.div key={protocol.id} variants={slideUp}>
+              {cardContent}
+            </m.div>
+          )
+        }
+
+        return <div key={protocol.id}>{cardContent}</div>
+      })}
+    </m.div>
   )
 }
