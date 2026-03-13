@@ -1,8 +1,12 @@
+import { useState } from 'react'
 import * as m from 'motion/react-m'
+import { AnimatePresence } from 'motion/react'
 import type { Protocol } from '../../db/types'
 import { formatTimeDisplay } from '../../utils/time'
 import Card from '../ui/Card'
+import SwipeActionRow from '../ui/SwipeActionRow'
 import { slideUp } from '../../motion/variants'
+import { snappy } from '../../motion/transitions'
 
 const listStagger = {
   animate: {
@@ -14,6 +18,7 @@ interface ProtocolListProps {
   protocols: Protocol[]
   onSelect: (protocol: Protocol) => void
   onToggleActive: (id: number) => void
+  onDelete?: (protocol: Protocol) => void
 }
 
 function getTimingLabel(rule: Protocol['supplements'][0]['timingRule']): string {
@@ -27,7 +32,9 @@ function getTimingLabel(rule: Protocol['supplements'][0]['timingRule']): string 
   }
 }
 
-export default function ProtocolList({ protocols, onSelect, onToggleActive }: ProtocolListProps) {
+export default function ProtocolList({ protocols, onSelect, onToggleActive, onDelete }: ProtocolListProps) {
+  const [expandedId, setExpandedId] = useState<number | null>(null)
+
   if (protocols.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-16 px-5">
@@ -54,64 +61,127 @@ export default function ProtocolList({ protocols, onSelect, onToggleActive }: Pr
     return a.name.localeCompare(b.name)
   })
 
+  const toggleExpand = (id: number) => {
+    setExpandedId(prev => prev === id ? null : id)
+  }
+
   return (
     <m.div className="flex flex-col gap-3" variants={listStagger} initial="initial" animate="animate">
       {sorted.map((protocol, index) => {
+        const isExpanded = expandedId === protocol.id
+
         const cardContent = (
-          <Card key={protocol.id} onClick={() => onSelect(protocol)}>
-            <div className="flex items-start justify-between gap-2">
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-semibold text-text-primary">{protocol.name}</h3>
-                </div>
-                <p className="text-xs text-text-muted mt-0.5">
-                  {protocol.supplements.length} supplement{protocol.supplements.length !== 1 ? 's' : ''}
-                  {' · '}
-                  {protocol.cyclePattern.type === 'daily' ? 'Daily' :
-                   protocol.cyclePattern.type === 'on_off' ? `${protocol.cyclePattern.daysOn} on / ${protocol.cyclePattern.daysOff} off` :
-                   `${protocol.cyclePattern.days.length} days/week`}
-                </p>
+          <SwipeActionRow
+            key={protocol.id}
+            onDelete={onDelete ? () => onDelete(protocol) : undefined}
+          >
+            <Card
+              onClick={() => protocol.id && toggleExpand(protocol.id)}
+              className={isExpanded ? 'shadow-lg' : ''}
+            >
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-sm font-semibold text-text-primary">{protocol.name}</h3>
+                  </div>
+                  <p className="text-xs text-text-muted mt-0.5">
+                    {protocol.supplements.length} supplement{protocol.supplements.length !== 1 ? 's' : ''}
+                    {' · '}
+                    {protocol.cyclePattern.type === 'daily' ? 'Daily' :
+                     protocol.cyclePattern.type === 'on_off' ? `${protocol.cyclePattern.daysOn} on / ${protocol.cyclePattern.daysOff} off` :
+                     `${protocol.cyclePattern.days.length} days/week`}
+                  </p>
 
-                {/* Supplement details */}
-                <div className="flex flex-col gap-1 mt-2.5">
-                  {protocol.supplements.slice(0, 5).map(s => (
-                    <div key={s.id} className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <div className="w-1 h-1 rounded-full bg-cat-supplement" />
-                        <span className="text-xs text-text-secondary">{s.name}</span>
-                        <span className="text-[10px] text-text-muted">{s.dose}</span>
-                      </div>
-                      <span className="text-[10px] text-text-muted tabular-nums">
-                        {getTimingLabel(s.timingRule)}
-                      </span>
+                  {/* Collapsed: show first few supplements */}
+                  {!isExpanded && (
+                    <div className="flex flex-col gap-1 mt-2.5">
+                      {protocol.supplements.slice(0, 5).map(s => (
+                        <div key={s.id} className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <div className="w-1 h-1 rounded-full bg-cat-supplement" />
+                            <span className="text-xs text-text-secondary">{s.name}</span>
+                            <span className="text-[10px] text-text-muted">{s.dose}</span>
+                          </div>
+                          <span className="text-[10px] text-text-muted tabular-nums">
+                            {getTimingLabel(s.timingRule)}
+                          </span>
+                        </div>
+                      ))}
+                      {protocol.supplements.length > 5 && (
+                        <span className="text-[10px] text-text-muted ml-3">
+                          +{protocol.supplements.length - 5} more
+                        </span>
+                      )}
                     </div>
-                  ))}
-                  {protocol.supplements.length > 5 && (
-                    <span className="text-[10px] text-text-muted ml-3">
-                      +{protocol.supplements.length - 5} more
-                    </span>
                   )}
-                </div>
-              </div>
 
-              {/* Active toggle */}
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  if (protocol.id) onToggleActive(protocol.id)
-                }}
-                className={`
-                  px-2.5 py-1 rounded-full text-[10px] font-medium transition-all cursor-pointer
-                  ${protocol.isActive
-                    ? 'bg-bamboo/20 text-bamboo'
-                    : 'bg-surface-overlay text-text-muted hover:text-text-secondary'
-                  }
-                `}
-              >
-                {protocol.isActive ? 'Active' : 'Inactive'}
-              </button>
-            </div>
-          </Card>
+                  {/* Expanded: full supplement list + edit button */}
+                  <AnimatePresence initial={false}>
+                    {isExpanded && (
+                      <m.div
+                        key="expanded"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1, transition: snappy }}
+                        exit={{ height: 0, opacity: 0, transition: snappy }}
+                        style={{ overflow: 'hidden' }}
+                      >
+                        <div className="flex flex-col gap-1 mt-2.5">
+                          {protocol.supplements.map(s => (
+                            <div key={s.id} className="flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <div className="w-1 h-1 rounded-full bg-cat-supplement" />
+                                <span className="text-xs text-text-secondary">{s.name}</span>
+                                <span className="text-[10px] text-text-muted">{s.dose}</span>
+                              </div>
+                              <span className="text-[10px] text-text-muted tabular-nums">
+                                {getTimingLabel(s.timingRule)}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                        {protocol.notes && (
+                          <p className="text-xs text-text-muted mt-2 leading-relaxed">{protocol.notes}</p>
+                        )}
+                        <div className="mt-3">
+                          <m.button
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              onSelect(protocol)
+                            }}
+                            whileTap={{ scale: 0.97, transition: snappy }}
+                            className="flex items-center gap-1.5 text-[10px] text-text-muted hover:text-bamboo transition-colors font-medium uppercase tracking-wider cursor-pointer"
+                          >
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                            </svg>
+                            Edit
+                          </m.button>
+                        </div>
+                      </m.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                {/* Active toggle */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    if (protocol.id) onToggleActive(protocol.id)
+                  }}
+                  className={`
+                    px-2.5 py-1 rounded-full text-[10px] font-medium transition-all cursor-pointer
+                    ${protocol.isActive
+                      ? 'bg-bamboo/20 text-bamboo'
+                      : 'bg-surface-overlay text-text-muted hover:text-text-secondary'
+                    }
+                  `}
+                >
+                  {protocol.isActive ? 'Active' : 'Inactive'}
+                </button>
+              </div>
+            </Card>
+          </SwipeActionRow>
         )
 
         if (index < 10) {

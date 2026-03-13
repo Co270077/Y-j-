@@ -1,5 +1,5 @@
 import { describe, test, expect, vi } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import ProtocolList from '../components/protocols/ProtocolList'
 import type { Protocol } from '../db/types'
 
@@ -91,9 +91,61 @@ describe('ProtocolList', () => {
     expect(screen.getByText('Inactive')).toBeTruthy()
   })
 
-  test('calls onSelect when protocol card is clicked', () => {
-    const mockFn = vi.fn()
+  test('expands protocol details on tap', () => {
     const protocols = [makeProtocol(1, 'Click Me Stack')]
+    render(
+      <ProtocolList
+        protocols={protocols}
+        onSelect={() => {}}
+        onToggleActive={() => {}}
+      />
+    )
+    // Edit button not visible before expansion
+    expect(screen.queryByText('Edit')).toBeNull()
+    // Tap the card title to expand
+    fireEvent.click(screen.getByText('Click Me Stack'))
+    // Edit button appears in expanded state
+    expect(screen.getByText('Edit')).toBeTruthy()
+  })
+
+  test('collapses expanded protocol on second tap', () => {
+    const protocols = [makeProtocol(1, 'Toggle Stack')]
+    render(
+      <ProtocolList
+        protocols={protocols}
+        onSelect={() => {}}
+        onToggleActive={() => {}}
+      />
+    )
+    fireEvent.click(screen.getByText('Toggle Stack'))
+    expect(screen.getByText('Edit')).toBeTruthy()
+    fireEvent.click(screen.getByText('Toggle Stack'))
+    expect(screen.queryByText('Edit')).toBeNull()
+  })
+
+  test('only one protocol expanded at a time', () => {
+    const protocols = [
+      makeProtocol(1, 'Stack A'),
+      makeProtocol(2, 'Stack B'),
+    ]
+    render(
+      <ProtocolList
+        protocols={protocols}
+        onSelect={() => {}}
+        onToggleActive={() => {}}
+      />
+    )
+    // Expand Stack A
+    fireEvent.click(screen.getByText('Stack A'))
+    expect(screen.getAllByText('Edit')).toHaveLength(1)
+    // Expand Stack B — Stack A should collapse
+    fireEvent.click(screen.getByText('Stack B'))
+    expect(screen.getAllByText('Edit')).toHaveLength(1)
+  })
+
+  test('calls onSelect when Edit button is clicked in expanded view', () => {
+    const mockFn = vi.fn()
+    const protocols = [makeProtocol(1, 'Edit Test Stack')]
     render(
       <ProtocolList
         protocols={protocols}
@@ -101,7 +153,8 @@ describe('ProtocolList', () => {
         onToggleActive={() => {}}
       />
     )
-    screen.getByText('Click Me Stack').click()
+    fireEvent.click(screen.getByText('Edit Test Stack'))
+    fireEvent.click(screen.getByText('Edit'))
     expect(mockFn).toHaveBeenCalled()
   })
 

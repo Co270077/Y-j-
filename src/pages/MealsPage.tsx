@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import * as m from 'motion/react-m'
+import { AnimatePresence } from 'motion/react'
 import Header from '../components/layout/Header'
 import Card from '../components/ui/Card'
 import Button from '../components/ui/Button'
-import ConfirmDialog from '../components/ui/ConfirmDialog'
+import SwipeActionRow from '../components/ui/SwipeActionRow'
 import MacroSummary from '../components/meals/MacroSummary'
 import EatingWindowConfig from '../components/meals/EatingWindowConfig'
 import MealTemplateEditor from '../components/meals/MealTemplateEditor'
@@ -11,9 +12,10 @@ import { useMealStore } from '../stores/mealStore'
 import { useSettingsStore } from '../stores/settingsStore'
 import { formatTimeDisplay } from '../utils/time'
 import type { MealTemplate, EatingWindow } from '../db/types'
-import { showToast } from '../components/ui/Toast'
+import { showToast, showToastWithAction } from '../components/ui/Toast'
 import FAB from '../components/ui/FAB'
 import { slideUp } from '../motion/variants'
+import { snappy } from '../motion/transitions'
 
 const listStagger = {
   animate: {
@@ -25,7 +27,9 @@ export default function MealsPage() {
   const [ewConfigOpen, setEwConfigOpen] = useState(false)
   const [templateEditorOpen, setTemplateEditorOpen] = useState(false)
   const [editingTemplate, setEditingTemplate] = useState<MealTemplate | null>(null)
-  const [confirmDelete, setConfirmDelete] = useState(false)
+  const [expandedTemplateId, setExpandedTemplateId] = useState<number | null>(null)
+  const [hiddenTemplateIds, setHiddenTemplateIds] = useState<Set<number>>(new Set())
+  const pendingDelete = useRef<{ templateId: number; timer: ReturnType<typeof setTimeout> } | null>(null)
 
   const templates = useMealStore(s => s.templates)
   const addTemplate = useMealStore(s => s.addTemplate)
@@ -52,22 +56,64 @@ export default function MealsPage() {
     setEditingTemplate(null)
   }
 
-  const handleDeleteRequest = () => {
-    setConfirmDelete(true)
+  const toggleExpand = (id: number) => {
+    setExpandedTemplateId(prev => prev === id ? null : id)
   }
 
-  const handleDeleteConfirm = async () => {
-    if (editingTemplate?.id) {
-      await deleteTemplate(editingTemplate.id)
-      showToast('Meal template deleted')
-      setEditingTemplate(null)
-      setTemplateEditorOpen(false)
-      setConfirmDelete(false)
+  const handleSwipeDeleteTemplate = useCallback((tpl: MealTemplate) => {
+    if (!tpl.id) return
+
+    // Commit any existing pending delete immediately
+    if (pendingDelete.current) {
+      clearTimeout(pendingDelete.current.timer)
+      deleteTemplate(pendingDelete.current.templateId)
+      pendingDelete.current = null
     }
-  }
 
-  // Calculate daily macro totals across all templates
-  const dailyTotals = templates.reduce(
+    const templateId = tpl.id
+    setHiddenTemplateIds(prev => new Set([...prev, templateId]))
+
+    const undoFn = () => {
+      if (pendingDelete.current?.templateId === templateId) {
+        clearTimeout(pendingDelete.current.timer)
+        pendingDelete.current = null
+      }
+      setHiddenTemplateIds(prev => {
+        const next = new Set(prev)
+        next.delete(templateId)
+        return next
+      })
+    }
+
+    const timer = setTimeout(() => {
+      deleteTemplate(templateId)
+      pendingDelete.current = null
+      setHiddenTemplateIds(prev => {
+        const next = new Set(prev)
+        next.delete(templateId)
+        return next
+      })
+    }, 5000)
+
+    pendingDelete.current = { templateId, timer }
+    showToastWithAction('Meal template deleted', 'Undo', undoFn, 5000)
+  }, [deleteTemplate])
+
+  // Commit pending delete on unmount
+  useEffect(() => {
+    return () => {
+      if (pendingDelete.current) {
+        clearTimeout(pendingDelete.current.timer)
+        deleteTemplate(pendingDelete.current.templateId)
+        pendingDelete.current = null
+      }
+    }
+  }, [deleteTemplate])
+
+  const visibleTemplates = templates.filter(t => t.id == null || !hiddenTemplateIds.has(t.id))
+
+  // Calculate daily macro totals across all visible templates
+  const dailyTotals = visibleTemplates.reduce(
     (acc, tpl) => ({
       calories: acc.calories + tpl.totalCalories,
       protein: acc.protein + tpl.totalProtein,
@@ -81,7 +127,7 @@ export default function MealsPage() {
     <>
       <Header
         title="Meals"
-        subtitle={`${templates.length} template${templates.length !== 1 ? 's' : ''}`}
+        subtitle={`${visibleTemplates.length} template${visibleTemplates.length !== 1 ? 's' : ''}`}
         rightAction={
           <button
             onClick={() => { setEditingTemplate(null); setTemplateEditorOpen(true) }}
@@ -96,7 +142,7 @@ export default function MealsPage() {
       />
 
       <m.div className="px-5 py-4 max-w-lg mx-auto flex flex-col gap-4" variants={listStagger} initial="initial" animate="animate">
-        {/* Eating Window Card */}
+        {/* Eating Window Card — not swipeable (summary card) */}
         <m.div variants={slideUp}>
         <Card onClick={() => setEwConfigOpen(true)}>
           <div className="flex items-center justify-between mb-2">
@@ -116,8 +162,8 @@ export default function MealsPage() {
         </Card>
         </m.div>
 
-        {/* Daily macro summary (if templates exist) */}
-        {templates.length > 0 && (
+        {/* Daily macro summary — not swipeable (summary card) */}
+        {visibleTemplates.length > 0 && (
           <m.div variants={slideUp}>
             <Card>
               <p className="text-xs text-text-muted uppercase tracking-wider font-medium mb-3">Daily Totals</p>
@@ -135,7 +181,7 @@ export default function MealsPage() {
         <m.div variants={slideUp}>
           <h2 className="text-xs text-text-muted uppercase tracking-wider font-medium mb-3">Meal Templates</h2>
 
-          {templates.length === 0 ? (
+          {visibleTemplates.length === 0 ? (
             <div className="text-center py-8">
               <div className="w-14 h-14 rounded-full bg-surface-raised flex items-center justify-center mb-3 mx-auto">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-text-muted">
@@ -159,21 +205,84 @@ export default function MealsPage() {
             </div>
           ) : (
             <m.div className="flex flex-col gap-3" variants={listStagger} initial="initial" animate="animate">
-              {templates.map((tpl, index) => (
-                <m.div key={tpl.id} variants={index < 10 ? slideUp : undefined}>
-                  <Card onClick={() => { setEditingTemplate(tpl); setTemplateEditorOpen(true) }}>
-                    <h3 className="text-sm font-semibold text-text-primary mb-1">{tpl.name}</h3>
-                    <p className="text-xs text-text-muted mb-2">{tpl.foods.length} food{tpl.foods.length !== 1 ? 's' : ''}</p>
-                    <MacroSummary
-                      calories={tpl.totalCalories}
-                      protein={tpl.totalProtein}
-                      carbs={tpl.totalCarbs}
-                      fat={tpl.totalFat}
-                      compact
-                    />
-                  </Card>
-                </m.div>
-              ))}
+              {visibleTemplates.map((tpl, index) => {
+                const isExpanded = expandedTemplateId === tpl.id
+
+                return (
+                  <m.div key={tpl.id} variants={index < 10 ? slideUp : undefined}>
+                    <SwipeActionRow onDelete={() => handleSwipeDeleteTemplate(tpl)}>
+                      <Card
+                        onClick={() => tpl.id && toggleExpand(tpl.id)}
+                        className={isExpanded ? 'shadow-lg' : ''}
+                      >
+                        <h3 className="text-sm font-semibold text-text-primary mb-1">{tpl.name}</h3>
+                        <p className="text-xs text-text-muted mb-2">{tpl.foods.length} food{tpl.foods.length !== 1 ? 's' : ''}</p>
+
+                        {/* Collapsed: compact macro summary */}
+                        {!isExpanded && (
+                          <MacroSummary
+                            calories={tpl.totalCalories}
+                            protein={tpl.totalProtein}
+                            carbs={tpl.totalCarbs}
+                            fat={tpl.totalFat}
+                            compact
+                          />
+                        )}
+
+                        {/* Expanded: full food list + macro detail + edit button */}
+                        <AnimatePresence initial={false}>
+                          {isExpanded && (
+                            <m.div
+                              key="expanded"
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: 'auto', opacity: 1, transition: snappy }}
+                              exit={{ height: 0, opacity: 0, transition: snappy }}
+                              style={{ overflow: 'hidden' }}
+                            >
+                              <div className="flex flex-col gap-1 mb-3">
+                                {tpl.foods.map((food, i) => (
+                                  <div key={i} className="flex items-center justify-between">
+                                    <div className="flex items-center gap-2">
+                                      <div className="w-1 h-1 rounded-full bg-cat-meal" />
+                                      <span className="text-xs text-text-secondary">{food.name}</span>
+                                    </div>
+                                    <span className="text-[10px] text-text-muted tabular-nums">
+                                      {food.calories}kcal · {food.protein}g P
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
+                              <MacroSummary
+                                calories={tpl.totalCalories}
+                                protein={tpl.totalProtein}
+                                carbs={tpl.totalCarbs}
+                                fat={tpl.totalFat}
+                              />
+                              <div className="mt-3">
+                                <m.button
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    setEditingTemplate(tpl)
+                                    setTemplateEditorOpen(true)
+                                  }}
+                                  whileTap={{ scale: 0.97, transition: snappy }}
+                                  className="flex items-center gap-1.5 text-[10px] text-text-muted hover:text-bamboo transition-colors font-medium uppercase tracking-wider cursor-pointer"
+                                >
+                                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                  </svg>
+                                  Edit
+                                </m.button>
+                              </div>
+                            </m.div>
+                          )}
+                        </AnimatePresence>
+                      </Card>
+                    </SwipeActionRow>
+                  </m.div>
+                )
+              })}
             </m.div>
           )}
         </m.div>
@@ -190,18 +299,14 @@ export default function MealsPage() {
         isOpen={templateEditorOpen}
         onClose={() => { setTemplateEditorOpen(false); setEditingTemplate(null) }}
         onSave={handleSaveTemplate}
-        onDelete={editingTemplate ? handleDeleteRequest : undefined}
+        onDelete={editingTemplate ? () => {
+          if (editingTemplate?.id) {
+            handleSwipeDeleteTemplate(editingTemplate)
+            setTemplateEditorOpen(false)
+            setEditingTemplate(null)
+          }
+        } : undefined}
         initial={editingTemplate}
-      />
-
-      <ConfirmDialog
-        isOpen={confirmDelete}
-        title="Delete Template"
-        message={`Delete "${editingTemplate?.name}"? This cannot be undone.`}
-        confirmLabel="Delete"
-        variant="danger"
-        onConfirm={handleDeleteConfirm}
-        onCancel={() => setConfirmDelete(false)}
       />
 
       <FAB onClick={() => { setEditingTemplate(null); setTemplateEditorOpen(true) }} label="Log meal" />

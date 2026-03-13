@@ -1,17 +1,19 @@
-import { useState } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import Header from '../components/layout/Header'
 import ProtocolList from '../components/protocols/ProtocolList'
 import ProtocolEditor from '../components/protocols/ProtocolEditor'
 import ConfirmDialog from '../components/ui/ConfirmDialog'
 import { useProtocolStore } from '../stores/protocolStore'
 import type { Protocol } from '../db/types'
-import { showToast } from '../components/ui/Toast'
+import { showToast, showToastWithAction } from '../components/ui/Toast'
 import FAB from '../components/ui/FAB'
 
 export default function ProtocolsPage() {
   const [editorOpen, setEditorOpen] = useState(false)
   const [editingProtocol, setEditingProtocol] = useState<Protocol | null>(null)
   const [confirmDelete, setConfirmDelete] = useState(false)
+  const [hiddenProtocolIds, setHiddenProtocolIds] = useState<Set<number>>(new Set())
+  const pendingDelete = useRef<{ protocolId: number; timer: ReturnType<typeof setTimeout> } | null>(null)
 
   const protocols = useProtocolStore(s => s.protocols)
   const addProtocol = useProtocolStore(s => s.addProtocol)
@@ -59,6 +61,58 @@ export default function ProtocolsPage() {
     }
   }
 
+  const handleSwipeDelete = useCallback((protocol: Protocol) => {
+    if (!protocol.id) return
+
+    // Commit any existing pending delete immediately
+    if (pendingDelete.current) {
+      clearTimeout(pendingDelete.current.timer)
+      deleteProtocol(pendingDelete.current.protocolId)
+      pendingDelete.current = null
+    }
+
+    const protocolId = protocol.id
+    setHiddenProtocolIds(prev => new Set([...prev, protocolId]))
+
+    const undoFn = () => {
+      if (pendingDelete.current?.protocolId === protocolId) {
+        clearTimeout(pendingDelete.current.timer)
+        pendingDelete.current = null
+      }
+      setHiddenProtocolIds(prev => {
+        const next = new Set(prev)
+        next.delete(protocolId)
+        return next
+      })
+    }
+
+    const timer = setTimeout(() => {
+      deleteProtocol(protocolId)
+      pendingDelete.current = null
+      setHiddenProtocolIds(prev => {
+        const next = new Set(prev)
+        next.delete(protocolId)
+        return next
+      })
+    }, 5000)
+
+    pendingDelete.current = { protocolId, timer }
+    showToastWithAction('Protocol deleted', 'Undo', undoFn, 5000)
+  }, [deleteProtocol])
+
+  // Commit pending delete on unmount
+  useEffect(() => {
+    return () => {
+      if (pendingDelete.current) {
+        clearTimeout(pendingDelete.current.timer)
+        deleteProtocol(pendingDelete.current.protocolId)
+        pendingDelete.current = null
+      }
+    }
+  }, [deleteProtocol])
+
+  const visibleProtocols = protocols.filter(p => p.id == null || !hiddenProtocolIds.has(p.id))
+
   return (
     <>
       <Header
@@ -80,9 +134,10 @@ export default function ProtocolsPage() {
 
       <div className="px-5 py-4 max-w-lg mx-auto">
         <ProtocolList
-          protocols={protocols}
+          protocols={visibleProtocols}
           onSelect={handleSelect}
           onToggleActive={handleToggleActive}
+          onDelete={handleSwipeDelete}
         />
       </div>
 
