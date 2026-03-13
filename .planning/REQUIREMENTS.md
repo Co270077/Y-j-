@@ -9,9 +9,9 @@ Requirements for the UX overhaul. Each maps to roadmap phases.
 
 ### Foundation
 
-- [ ] **FOUN-01**: App uses LazyMotion with centralized animation config (variants, transitions, spring constants)
-- [ ] **FOUN-02**: MotionConfig provider wraps app with consistent spring physics defaults
-- [ ] **FOUN-03**: iOS safe area handling verified in PWA mode
+- [x] **FOUN-01**: App uses LazyMotion with centralized animation config (variants, transitions, spring constants)
+- [x] **FOUN-02**: MotionConfig provider wraps app with consistent spring physics defaults
+- [x] **FOUN-03**: iOS safe area handling verified in PWA mode
 
 ### Navigation
 
@@ -69,9 +69,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| FOUN-01 | Phase 1 | Pending |
-| FOUN-02 | Phase 1 | Pending |
-| FOUN-03 | Phase 1 | Pending |
+| FOUN-01 | Phase 1 | Complete |
+| FOUN-02 | Phase 1 | Complete |
+| FOUN-03 | Phase 1 | Complete |
 | NAV-01 | Phase 2 | Pending |
 | NAV-02 | Phase 2 | Pending |
 | NAV-03 | Phase 2 | Pending |

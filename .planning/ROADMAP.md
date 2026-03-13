@@ -28,7 +28,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. iOS safe areas are correct in PWA mode — bottom nav does not overlap the home indicator on iPhone X+
   3. A centralized `motion/variants.ts` and `motion/transitions.ts` exist and at least one component imports from them
   4. MotionConfig wraps the app and `reducedMotion="user"` is set — animations are suppressed when OS reduce-motion is enabled
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
 - [ ] 01-01-PLAN.md — Install motion, create animation config, wire providers, migrate AppShell, fix PWA manifest
@@ -75,7 +75,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/2 | Planning complete | - |
+| 1. Foundation | 1/2 | In Progress|  |
 | 2. Navigation | 0/TBD | Not started | - |
 | 3. UI Primitives + Animations | 0/TBD | Not started | - |
 | 4. Gesture Interactions + Layout | 0/TBD | Not started | - |
