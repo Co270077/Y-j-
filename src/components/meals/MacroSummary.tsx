@@ -1,3 +1,7 @@
+import * as m from 'motion/react-m'
+import { useCountUp } from '../../hooks/useCountUp'
+import { snappy } from '../../motion/transitions'
+
 interface MacroSummaryProps {
   calories: number
   protein: number
@@ -12,10 +16,15 @@ export default function MacroSummary({ calories, protein, carbs, fat, compact = 
   const c = Math.round(carbs)
   const f = Math.round(fat)
 
+  const animatedCal = useCountUp(cal)
+  const animatedP = useCountUp(p)
+  const animatedC = useCountUp(c)
+  const animatedF = useCountUp(f)
+
   if (compact) {
     return (
       <p className="text-[10px] text-text-muted">
-        {cal} cal · P{p}g · C{c}g · F{f}g
+        {animatedCal} cal · P{animatedP}g · C{animatedC}g · F{animatedF}g
       </p>
     )
   }
@@ -29,26 +38,26 @@ export default function MacroSummary({ calories, protein, carbs, fat, compact = 
     <div>
       {/* Macro bar */}
       <div className="flex h-2 rounded-full overflow-hidden bg-charcoal mb-2">
-        <div className="bg-cat-workout transition-all" style={{ width: `${proteinPct}%` }} />
-        <div className="bg-cat-supplement transition-all" style={{ width: `${carbsPct}%` }} />
-        <div className="bg-cat-meal transition-all" style={{ width: `${fatPct}%` }} />
+        <m.div className="bg-cat-workout" animate={{ width: `${proteinPct}%` }} transition={snappy} />
+        <m.div className="bg-cat-supplement" animate={{ width: `${carbsPct}%` }} transition={snappy} />
+        <m.div className="bg-cat-meal" animate={{ width: `${fatPct}%` }} transition={snappy} />
       </div>
 
       <div className="grid grid-cols-4 gap-1">
         <div className="text-center">
-          <p className="text-sm font-bold text-cat-meal">{cal}</p>
+          <p className="text-sm font-bold text-cat-meal">{animatedCal}</p>
           <p className="text-[10px] text-text-muted">Cal</p>
         </div>
         <div className="text-center">
-          <p className="text-sm font-bold text-cat-workout">{p}g</p>
+          <p className="text-sm font-bold text-cat-workout">{animatedP}g</p>
           <p className="text-[10px] text-text-muted">Protein</p>
         </div>
         <div className="text-center">
-          <p className="text-sm font-bold text-cat-supplement">{c}g</p>
+          <p className="text-sm font-bold text-cat-supplement">{animatedC}g</p>
           <p className="text-[10px] text-text-muted">Carbs</p>
         </div>
         <div className="text-center">
-          <p className="text-sm font-bold text-cat-meal">{f}g</p>
+          <p className="text-sm font-bold text-cat-meal">{animatedF}g</p>
           <p className="text-[10px] text-text-muted">Fat</p>
         </div>
       </div>
