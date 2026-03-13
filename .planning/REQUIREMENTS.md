@@ -15,10 +15,10 @@ Requirements for the UX overhaul. Each maps to roadmap phases.
 
 ### Navigation
 
-- [ ] **NAV-01**: Page transitions animate between all routes (slide for drill-down, cross-fade for tab switches)
-- [ ] **NAV-02**: Primary actions positioned within thumb-zone (lower 60% of screen) on all pages
-- [ ] **NAV-03**: Schedule page auto-scrolls to current time block on open
-- [ ] **NAV-04**: Bottom navigation active state animates smoothly during transitions
+- [x] **NAV-01**: Page transitions animate between all routes (slide for drill-down, cross-fade for tab switches)
+- [x] **NAV-02**: Primary actions positioned within thumb-zone (lower 60% of screen) on all pages
+- [x] **NAV-03**: Schedule page auto-scrolls to current time block on open
+- [x] **NAV-04**: Bottom navigation active state animates smoothly during transitions
 
 ### Interactions
 
@@ -72,10 +72,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | FOUN-01 | Phase 1 | Complete |
 | FOUN-02 | Phase 1 | Complete |
 | FOUN-03 | Phase 1 | Complete |
-| NAV-01 | Phase 2 | Pending |
-| NAV-02 | Phase 2 | Pending |
-| NAV-03 | Phase 2 | Pending |
-| NAV-04 | Phase 2 | Pending |
+| NAV-01 | Phase 2 | Complete |
+| NAV-02 | Phase 2 | Complete |
+| NAV-03 | Phase 2 | Complete |
+| NAV-04 | Phase 2 | Complete |
 | INTR-01 | Phase 3 | Pending |
 | INTR-02 | Phase 4 | Pending |
 | INTR-03 | Phase 4 | Pending |

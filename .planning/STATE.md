@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Phase 2 plans verified
-last_updated: "2026-03-13T15:09:30.931Z"
+stopped_at: Completed 02-00-PLAN.md
+last_updated: "2026-03-13T15:12:19.729Z"
 last_activity: 2026-03-13 — Roadmap created
 progress:
   total_phases: 4
   completed_phases: 1
   total_plans: 5
-  completed_plans: 2
+  completed_plans: 3
   percent: 0
 ---
 
@@ -52,6 +52,7 @@ Progress: [░░░░░░░░░░] 0%
 *Updated after each plan completion*
 | Phase 01-foundation P01 | 2 | 2 tasks | 5 files |
 | Phase 01-foundation P02 | 2 | 2 tasks | 5 files |
+| Phase 02-navigation P00 | 8 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -67,6 +68,8 @@ Recent decisions affecting current work:
 - [Phase 01-foundation]: Centralized all springs in transitions.ts, all variants in variants.ts — single source of truth
 - [Phase 01-foundation]: Modal overlay uses ref on m.div backdrop for click-outside detection
 - [Phase 01-foundation]: AnimatePresence pattern: always render, gate content with isOpen inside AnimatePresence (replaces if/return null)
+- [Phase 02-navigation]: vitest/config reference added to vite.config.ts so test block is type-checked alongside build config
+- [Phase 02-navigation]: jsdom environment with globals:true in vitest config removes per-file import boilerplate
 
 ### Pending Todos
 
@@ -79,6 +82,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-13T15:09:30.929Z
-Stopped at: Phase 2 plans verified
-Resume file: .planning/phases/02-navigation/02-01-PLAN.md
+Last session: 2026-03-13T15:12:19.727Z
+Stopped at: Completed 02-00-PLAN.md
+Resume file: None
