@@ -107,16 +107,17 @@ export default function TaskBlock({ task, log, onToggleComplete, onToggleSubtask
           </div>
 
           {/* Complete button */}
-          <button
+          <m.button
             onClick={(e) => {
               e.stopPropagation()
               if (!isComplete) hapticSuccess()
               else hapticLight()
               onToggleComplete()
             }}
+            whileTap={{ scale: 0.9, transition: snappy }}
             className={`
               mt-1.5 w-7 h-7 min-w-[28px] rounded-full border-2 flex items-center justify-center
-              transition-all duration-200 cursor-pointer active:scale-90
+              cursor-pointer
               ${isComplete
                 ? 'border-bamboo bg-bamboo'
                 : 'border-stone/60 hover:border-bamboo/60'
@@ -133,7 +134,7 @@ export default function TaskBlock({ task, log, onToggleComplete, onToggleSubtask
                 />
               </svg>
             )}
-          </button>
+          </m.button>
         </div>
 
         {/* Expanded content */}
@@ -177,11 +178,12 @@ export default function TaskBlock({ task, log, onToggleComplete, onToggleSubtask
 
               {/* Action buttons */}
               <div className="mt-3 flex items-center gap-4">
-                <button
+                <m.button
                   onClick={(e) => {
                     e.stopPropagation()
                     onEdit()
                   }}
+                  whileTap={{ scale: 0.97, transition: snappy }}
                   className="flex items-center gap-1.5 text-[10px] text-text-muted hover:text-bamboo transition-colors font-medium uppercase tracking-wider cursor-pointer"
                 >
                   <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -189,13 +191,14 @@ export default function TaskBlock({ task, log, onToggleComplete, onToggleSubtask
                     <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
                   </svg>
                   Edit
-                </button>
+                </m.button>
                 {onDuplicate && (
-                  <button
+                  <m.button
                     onClick={(e) => {
                       e.stopPropagation()
                       onDuplicate()
                     }}
+                    whileTap={{ scale: 0.97, transition: snappy }}
                     className="flex items-center gap-1.5 text-[10px] text-text-muted hover:text-bamboo transition-colors font-medium uppercase tracking-wider cursor-pointer"
                   >
                     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -203,7 +206,7 @@ export default function TaskBlock({ task, log, onToggleComplete, onToggleSubtask
                       <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
                     </svg>
                     Duplicate
-                  </button>
+                  </m.button>
                 )}
               </div>
             </m.div>
