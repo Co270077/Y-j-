@@ -12,7 +12,7 @@ Four phases transform an existing functional PWA into a native-feeling mobile ap
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation** - Animation infrastructure correctly wired before any UI touches it
+- [x] **Phase 1: Foundation** - Animation infrastructure correctly wired before any UI touches it (completed 2026-03-13)
 - [ ] **Phase 2: Navigation** - All routes transition natively; bottom nav active state animates
 - [ ] **Phase 3: UI Primitives + Animations** - Every tap target has feedback; data comes alive on screen
 - [ ] **Phase 4: Gesture Interactions + Layout** - Swipe gestures and bottom sheets replace high-friction flows
@@ -28,7 +28,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. iOS safe areas are correct in PWA mode — bottom nav does not overlap the home indicator on iPhone X+
   3. A centralized `motion/variants.ts` and `motion/transitions.ts` exist and at least one component imports from them
   4. MotionConfig wraps the app and `reducedMotion="user"` is set — animations are suppressed when OS reduce-motion is enabled
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 - [ ] 01-01-PLAN.md — Install motion, create animation config, wire providers, migrate AppShell, fix PWA manifest
@@ -75,7 +75,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 1/2 | In Progress|  |
+| 1. Foundation | 2/2 | Complete   | 2026-03-13 |
 | 2. Navigation | 0/TBD | Not started | - |
 | 3. UI Primitives + Animations | 0/TBD | Not started | - |
 | 4. Gesture Interactions + Layout | 0/TBD | Not started | - |

@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 01-foundation-01-PLAN.md
-last_updated: "2026-03-13T08:56:48.347Z"
+stopped_at: Completed 01-foundation-02-PLAN.md
+last_updated: "2026-03-13T09:01:40.078Z"
 last_activity: 2026-03-13 — Roadmap created
 progress:
   total_phases: 4
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 2
-  completed_plans: 1
+  completed_plans: 2
   percent: 0
 ---
 
@@ -51,6 +51,7 @@ Progress: [░░░░░░░░░░] 0%
 
 *Updated after each plan completion*
 | Phase 01-foundation P01 | 2 | 2 tasks | 5 files |
+| Phase 01-foundation P02 | 2 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -64,6 +65,8 @@ Recent decisions affecting current work:
 - [Init]: AnimatePresence requires `useOutlet()` pattern, NOT wrapping `<Outlet>` directly
 - [Phase 01-foundation]: Used viewport_fit cast in vite.config.ts — vite-plugin-pwa types incomplete but property is valid PWA spec
 - [Phase 01-foundation]: Centralized all springs in transitions.ts, all variants in variants.ts — single source of truth
+- [Phase 01-foundation]: Modal overlay uses ref on m.div backdrop for click-outside detection
+- [Phase 01-foundation]: AnimatePresence pattern: always render, gate content with isOpen inside AnimatePresence (replaces if/return null)
 
 ### Pending Todos
 
@@ -76,6 +79,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-13T08:56:48.345Z
-Stopped at: Completed 01-foundation-01-PLAN.md
+Last session: 2026-03-13T09:01:40.076Z
+Stopped at: Completed 01-foundation-02-PLAN.md
 Resume file: None
