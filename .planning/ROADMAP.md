@@ -77,7 +77,13 @@ Plans:
   2. User can swipe left on any list item to reveal a delete action; tapping undo reverses the deletion
   3. Adding a task, logging a meal, or adding a protocol opens a bottom sheet — not a full-page navigation
   4. Tapping a protocol or meal item expands its details inline — the user stays on the current page
-**Plans**: TBD
+**Plans:** 4 plans
+
+Plans:
+- [ ] 04-00-PLAN.md — Install @use-gesture/react and create test scaffolds (Wave 0)
+- [ ] 04-01-PLAN.md — Upgrade Modal to BottomSheet with drag-to-dismiss and detents, extend Toast with undo action (Wave 1)
+- [ ] 04-02-PLAN.md — Create useSwipeAction hook and SwipeActionRow wrapper component (Wave 1)
+- [ ] 04-03-PLAN.md — Wire swipe gestures into pages, accordion expansion, undo-delete flow (Wave 2)
 
 ## Progress
 
@@ -89,4 +95,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | 1. Foundation | 2/2 | Complete    | 2026-03-13 |
 | 2. Navigation | 3/3 | Complete    | 2026-03-13 |
 | 3. UI Primitives + Animations | 4/4 | Complete   | 2026-03-13 |
-| 4. Gesture Interactions + Layout | 0/TBD | Not started | - |
+| 4. Gesture Interactions + Layout | 0/4 | Not started | - |
