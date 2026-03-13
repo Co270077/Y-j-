@@ -10,9 +10,8 @@ import ConfirmDialog from '../components/ui/ConfirmDialog'
 import { useScheduleStore } from '../stores/scheduleStore'
 import { useMinuteTick } from '../hooks/useClock'
 import type { Task, DayOfWeek, TaskCategory } from '../db/types'
-import { getCurrentDay, DAYS_ORDERED } from '../utils/time'
+import { getCurrentDay } from '../utils/time'
 import { showToast, showToastWithAction } from '../components/ui/Toast'
-import { hapticLight } from '../utils/haptics'
 import FAB from '../components/ui/FAB'
 
 export default function SchedulePage() {

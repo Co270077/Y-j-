@@ -1,5 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { describe, it, expect, beforeEach } from 'vitest'
 
 // SwipeActionRow: horizontal swipe gesture row
 // - Right swipe > 40% container width triggers onComplete

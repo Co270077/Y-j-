@@ -139,9 +139,6 @@ export default function ProtocolList({ protocols, onSelect, onToggleActive, onDe
                             </div>
                           ))}
                         </div>
-                        {protocol.notes && (
-                          <p className="text-xs text-text-muted mt-2 leading-relaxed">{protocol.notes}</p>
-                        )}
                         <div className="mt-3">
                           <m.button
                             onClick={(e) => {

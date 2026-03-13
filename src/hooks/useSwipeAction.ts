@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { useMotionValue, useTransform, animate } from 'motion/react'
+import { useMotionValue, useTransform, animate, type MotionValue } from 'motion/react'
 import { useDrag } from '@use-gesture/react'
 import { hapticSuccess } from '../utils/haptics'
 
@@ -12,9 +12,9 @@ interface UseSwipeActionOptions {
 
 interface UseSwipeActionReturn {
   bind: (...args: any[]) => any
-  x: ReturnType<typeof useMotionValue<number>>
-  rightBgOpacity: ReturnType<typeof useTransform>
-  leftBgOpacity: ReturnType<typeof useTransform>
+  x: MotionValue<number>
+  rightBgOpacity: MotionValue<number>
+  leftBgOpacity: MotionValue<number>
   isSwiping: boolean
   containerRef: React.RefObject<HTMLDivElement | null>
 }

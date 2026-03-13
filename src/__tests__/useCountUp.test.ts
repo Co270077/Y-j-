@@ -9,7 +9,7 @@ vi.mock('motion/react', () => ({
   useMotionValue: vi.fn(() => ({
     set: mockSet,
   })),
-  useSpring: vi.fn((motionValue) => ({
+  useSpring: vi.fn((_motionValue) => ({
     on: vi.fn(),
   })),
   useMotionValueEvent: vi.fn((_spring, _event, callback) => {

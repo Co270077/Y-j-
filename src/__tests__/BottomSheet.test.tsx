@@ -1,5 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { describe, it, expect, beforeEach } from 'vitest'
 
 // BottomSheet: modal sheet anchored to bottom of screen
 // - Renders at detent sizes: peek (~30%), half (~50%), full (~90%)
