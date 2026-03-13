@@ -1,4 +1,4 @@
-/** Foreground-only notification scheduler for 時間の流れ */
+/** Foreground-only notification scheduler for 養生 (Yōjō) */
 
 let scheduledTimers: ReturnType<typeof setTimeout>[] = []
 

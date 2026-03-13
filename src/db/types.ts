@@ -1,4 +1,4 @@
-// ===== 時間の流れ — Data Types =====
+// ===== 養生 (Yōjō) — Data Types =====
 
 export type DayOfWeek = 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun'
 

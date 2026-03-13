@@ -14,7 +14,7 @@ export default function Header({ title, subtitle, rightAction }: HeaderProps) {
       <div className="flex items-center justify-between px-5 h-14 max-w-lg mx-auto">
         <div>
           <h1 className="text-base font-semibold text-text-primary leading-tight">
-            {title || '時間の流れ'}
+            {title || '養生'}
           </h1>
           <p className="text-xs text-text-muted">
             {subtitle || today}

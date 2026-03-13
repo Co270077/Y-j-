@@ -18,9 +18,9 @@ const httpsConfig = fs.existsSync(path.join(certDir, 'localhost+3.pem'))
 // viewport_fit is a valid PWA manifest member for iOS safe-area support.
 // vite-plugin-pwa types don't include it yet — cast to extend the type.
 const manifest = {
-  name: '時間の流れ',
-  short_name: '時間の流れ',
-  description: 'Flow of Time — Biohacker Daily Optimization',
+  name: '養生 (Yōjō)',
+  short_name: '養生',
+  description: 'Yōjō — Biohacker Daily Optimization',
   theme_color: '#1A1A2E',
   background_color: '#2C2C2C',
   display: 'standalone',
@@ -54,7 +54,7 @@ export default defineConfig({
     setupFiles: [],
     include: ['src/**/*.test.{ts,tsx}'],
   },
-  base: '/',
+  base: '/Y-j-/',
   server: {
     https: httpsConfig,
     host: true,

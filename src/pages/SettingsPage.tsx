@@ -186,8 +186,8 @@ export default function SettingsPage() {
         {/* About */}
         <Card>
           <h3 className="text-xs text-text-muted uppercase tracking-wider font-medium mb-2">About</h3>
-          <p className="text-sm text-text-primary font-semibold">時間の流れ</p>
-          <p className="text-xs text-text-muted">Flow of Time · v1.0.0</p>
+          <p className="text-sm text-text-primary font-semibold">養生 (Yōjō)</p>
+          <p className="text-xs text-text-muted">Yōjō · v1.0.0</p>
           <p className="text-xs text-text-muted mt-1">Biohacker Daily Optimization PWA</p>
         </Card>
       </div>

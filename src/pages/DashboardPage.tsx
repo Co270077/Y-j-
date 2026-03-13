@@ -21,7 +21,7 @@ export default function DashboardPage() {
   return (
     <>
       <Header
-        title="時間の流れ"
+        title="養生"
         subtitle={today}
         rightAction={
           <div className="flex items-center gap-2">
