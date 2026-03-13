@@ -7,11 +7,13 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "serve": "npm run build && vite preview"
   },
   "dependencies": {
     "date-fns": "^4.1.0",
     "dexie": "^4.3.0",
+    "motion": "^12.36.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.13.1",
