@@ -7,6 +7,7 @@ import { hapticSuccess, hapticLight } from '../../utils/haptics'
 import { fadeIn } from '../../motion/variants'
 import { snappy } from '../../motion/transitions'
 import SubtaskList from './SubtaskList'
+import SwipeActionRow from '../ui/SwipeActionRow'
 
 interface TaskBlockProps {
   task: Task
@@ -15,6 +16,7 @@ interface TaskBlockProps {
   onToggleSubtask: (subtaskId: string) => void
   onEdit: () => void
   onDuplicate?: () => void
+  onDelete?: () => void
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -33,7 +35,7 @@ const CATEGORY_LABELS: Record<string, string> = {
   custom: 'Task',
 }
 
-export default function TaskBlock({ task, log, onToggleComplete, onToggleSubtask, onEdit, onDuplicate }: TaskBlockProps) {
+export default function TaskBlock({ task, log, onToggleComplete, onToggleSubtask, onEdit, onDuplicate, onDelete }: TaskBlockProps) {
   const [expanded, setExpanded] = useState(false)
   const isComplete = log?.isComplete || false
   const subtaskCompletions = log?.subtaskCompletions || {}
@@ -45,6 +47,10 @@ export default function TaskBlock({ task, log, onToggleComplete, onToggleSubtask
   const accentColor = task.color || CATEGORY_COLORS[task.category] || CATEGORY_COLORS.custom
 
   return (
+    <SwipeActionRow
+      onComplete={isComplete ? undefined : onToggleComplete}
+      onDelete={onDelete}
+    >
     <div
       className={`
         relative rounded-[var(--radius-md)] border transition-all duration-300
@@ -230,5 +236,6 @@ export default function TaskBlock({ task, log, onToggleComplete, onToggleSubtask
         </div>
       </div>
     </div>
+    </SwipeActionRow>
   )
 }

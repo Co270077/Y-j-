@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from 'react'
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import Header from '../components/layout/Header'
 import DaySwitcher from '../components/schedule/DaySwitcher'
@@ -9,10 +9,9 @@ import TaskModal from '../components/schedule/TaskModal'
 import ConfirmDialog from '../components/ui/ConfirmDialog'
 import { useScheduleStore } from '../stores/scheduleStore'
 import { useMinuteTick } from '../hooks/useClock'
-import { useSwipe } from '../hooks/useSwipe'
 import type { Task, DayOfWeek, TaskCategory } from '../db/types'
 import { getCurrentDay, DAYS_ORDERED } from '../utils/time'
-import { showToast } from '../components/ui/Toast'
+import { showToast, showToastWithAction } from '../components/ui/Toast'
 import { hapticLight } from '../utils/haptics'
 import FAB from '../components/ui/FAB'
 
@@ -23,6 +22,8 @@ export default function SchedulePage() {
   const [editingTask, setEditingTask] = useState<Task | null>(null)
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [categoryFilter, setCategoryFilter] = useState<TaskCategory | 'all'>('all')
+  const [hiddenTaskIds, setHiddenTaskIds] = useState<Set<number>>(new Set())
+  const pendingDelete = useRef<{ taskId: number; timer: ReturnType<typeof setTimeout> } | null>(null)
 
   useMinuteTick()
 
@@ -55,11 +56,12 @@ export default function SchedulePage() {
     return counts
   }, [dayTasks])
 
-  // Apply category filter to timeline
+  // Apply category filter and hide soft-deleted tasks
   const filteredTasks = useMemo(() => {
-    if (categoryFilter === 'all') return tasks
-    return tasks.filter(t => t.category === categoryFilter)
-  }, [tasks, categoryFilter])
+    let result = tasks.filter(t => t.id == null || !hiddenTaskIds.has(t.id))
+    if (categoryFilter !== 'all') result = result.filter(t => t.category === categoryFilter)
+    return result
+  }, [tasks, categoryFilter, hiddenTaskIds])
 
   const handleSave = async (taskData: Omit<Task, 'id' | 'createdAt'>) => {
     if (editingTask?.id) {
@@ -96,23 +98,53 @@ export default function SchedulePage() {
     setModalOpen(true)
   }
 
-  const goToNextDay = useCallback(() => {
-    const idx = DAYS_ORDERED.indexOf(selectedDay)
-    if (idx < DAYS_ORDERED.length - 1) {
-      hapticLight()
-      setSelectedDay(DAYS_ORDERED[idx + 1])
+  const handleSwipeDelete = useCallback((taskId: number) => {
+    // Commit any existing pending delete immediately
+    if (pendingDelete.current) {
+      clearTimeout(pendingDelete.current.timer)
+      deleteTask(pendingDelete.current.taskId)
+      pendingDelete.current = null
     }
-  }, [selectedDay])
 
-  const goToPrevDay = useCallback(() => {
-    const idx = DAYS_ORDERED.indexOf(selectedDay)
-    if (idx > 0) {
-      hapticLight()
-      setSelectedDay(DAYS_ORDERED[idx - 1])
+    // Soft-hide the task
+    setHiddenTaskIds(prev => new Set([...prev, taskId]))
+
+    const undoFn = () => {
+      if (pendingDelete.current?.taskId === taskId) {
+        clearTimeout(pendingDelete.current.timer)
+        pendingDelete.current = null
+      }
+      setHiddenTaskIds(prev => {
+        const next = new Set(prev)
+        next.delete(taskId)
+        return next
+      })
     }
-  }, [selectedDay])
 
-  const swipeProps = useSwipe({ onSwipeLeft: goToNextDay, onSwipeRight: goToPrevDay })
+    const timer = setTimeout(() => {
+      deleteTask(taskId)
+      pendingDelete.current = null
+      setHiddenTaskIds(prev => {
+        const next = new Set(prev)
+        next.delete(taskId)
+        return next
+      })
+    }, 5000)
+
+    pendingDelete.current = { taskId, timer }
+    showToastWithAction('Task deleted', 'Undo', undoFn, 5000)
+  }, [deleteTask])
+
+  // Commit pending delete on unmount
+  useEffect(() => {
+    return () => {
+      if (pendingDelete.current) {
+        clearTimeout(pendingDelete.current.timer)
+        deleteTask(pendingDelete.current.taskId)
+        pendingDelete.current = null
+      }
+    }
+  }, [deleteTask])
 
   const handleDuplicate = async (task: Task) => {
     await addTask({
@@ -161,17 +193,16 @@ export default function SchedulePage() {
         />
       )}
 
-      <div {...swipeProps}>
-        <Timeline
-          tasks={filteredTasks}
-          day={selectedDay}
-          dailyLogs={dailyLogs}
-          onToggleComplete={toggleTaskComplete}
-          onToggleSubtask={toggleSubtaskComplete}
-          onEditTask={handleEdit}
-          onDuplicateTask={handleDuplicate}
-        />
-      </div>
+      <Timeline
+        tasks={filteredTasks}
+        day={selectedDay}
+        dailyLogs={dailyLogs}
+        onToggleComplete={toggleTaskComplete}
+        onToggleSubtask={toggleSubtaskComplete}
+        onEditTask={handleEdit}
+        onDuplicateTask={handleDuplicate}
+        onDeleteTask={handleSwipeDelete}
+      />
 
       <TaskModal
         isOpen={modalOpen}

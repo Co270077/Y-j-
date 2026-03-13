@@ -20,6 +20,7 @@ interface TimelineProps {
   onToggleSubtask: (taskId: number, subtaskId: string) => void
   onEditTask: (task: Task) => void
   onDuplicateTask?: (task: Task) => void
+  onDeleteTask?: (taskId: number) => void
 }
 
 export default function Timeline({
@@ -30,6 +31,7 @@ export default function Timeline({
   onToggleSubtask,
   onEditTask,
   onDuplicateTask,
+  onDeleteTask,
 }: TimelineProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const scrollTargetRef = useRef<HTMLDivElement>(null)
@@ -100,6 +102,7 @@ export default function Timeline({
               onToggleSubtask={(subtaskId) => task.id && onToggleSubtask(task.id, subtaskId)}
               onEdit={() => onEditTask(task)}
               onDuplicate={onDuplicateTask ? () => onDuplicateTask(task) : undefined}
+              onDelete={onDeleteTask && task.id ? () => onDeleteTask(task.id!) : undefined}
             />
           </>
         )

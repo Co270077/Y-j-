@@ -5,6 +5,12 @@ interface SwipeHandlers {
   onSwipeRight?: () => void
 }
 
+/**
+ * @deprecated Use SwipeActionRow + useSwipeAction for item-level swipe gestures.
+ * useSwipe was used for page-level day switching on SchedulePage — replaced by
+ * DaySwitcher buttons to avoid conflicts with item swipe gestures.
+ */
+
 interface SwipeProps {
   onTouchStart: (e: React.TouchEvent) => void
   onTouchEnd: (e: React.TouchEvent) => void
