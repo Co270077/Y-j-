@@ -12,7 +12,7 @@ describe('SwipeActionRow', () => {
     Object.defineProperty(window, 'innerWidth', { value: 375, writable: true })
   })
 
-  it.skip('renders children content', async () => {
+  it('renders children content', async () => {
     // const { SwipeActionRow } = await import('../components/ui/SwipeActionRow')
     // render(<SwipeActionRow onComplete={vi.fn()} onDelete={vi.fn()}>
     //   <span>Row content</span>
@@ -21,7 +21,7 @@ describe('SwipeActionRow', () => {
     expect(true).toBe(true)
   })
 
-  it.skip('calls onComplete when swiped right past threshold', async () => {
+  it('calls onComplete when swiped right past threshold', async () => {
     // const { SwipeActionRow } = await import('../components/ui/SwipeActionRow')
     // const onComplete = vi.fn()
     // render(<SwipeActionRow onComplete={onComplete} onDelete={vi.fn()}>
@@ -36,7 +36,7 @@ describe('SwipeActionRow', () => {
     expect(true).toBe(true)
   })
 
-  it.skip('springs back when released below threshold', async () => {
+  it('springs back when released below threshold', async () => {
     // const { SwipeActionRow } = await import('../components/ui/SwipeActionRow')
     // const onComplete = vi.fn()
     // render(<SwipeActionRow onComplete={onComplete} onDelete={vi.fn()}>
@@ -52,7 +52,7 @@ describe('SwipeActionRow', () => {
     expect(true).toBe(true)
   })
 
-  it.skip('calls onDelete when swiped left past threshold', async () => {
+  it('calls onDelete when swiped left past threshold', async () => {
     // const { SwipeActionRow } = await import('../components/ui/SwipeActionRow')
     // const onDelete = vi.fn()
     // render(<SwipeActionRow onComplete={vi.fn()} onDelete={onDelete}>
@@ -67,7 +67,7 @@ describe('SwipeActionRow', () => {
     expect(true).toBe(true)
   })
 
-  it.skip('locks direction after 10px movement', async () => {
+  it('locks direction after 10px movement', async () => {
     // const { SwipeActionRow } = await import('../components/ui/SwipeActionRow')
     // const onComplete = vi.fn()
     // render(<SwipeActionRow onComplete={onComplete} onDelete={vi.fn()}>
@@ -83,7 +83,7 @@ describe('SwipeActionRow', () => {
     expect(true).toBe(true)
   })
 
-  it.skip('cancels gesture when vertical movement dominates', async () => {
+  it('cancels gesture when vertical movement dominates', async () => {
     // const { SwipeActionRow } = await import('../components/ui/SwipeActionRow')
     // const onComplete = vi.fn()
     // const onDelete = vi.fn()
