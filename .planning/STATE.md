@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Completed 02-00-PLAN.md
-last_updated: "2026-03-13T15:12:19.729Z"
+stopped_at: Completed 02-01-PLAN.md
+last_updated: "2026-03-13T15:14:07.236Z"
 last_activity: 2026-03-13 — Roadmap created
 progress:
   total_phases: 4
   completed_phases: 1
   total_plans: 5
-  completed_plans: 3
+  completed_plans: 4
   percent: 0
 ---
 
@@ -53,6 +53,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01-foundation P01 | 2 | 2 tasks | 5 files |
 | Phase 01-foundation P02 | 2 | 2 tasks | 5 files |
 | Phase 02-navigation P00 | 8 | 2 tasks | 6 files |
+| Phase 02-navigation P01 | 15 | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -70,6 +71,8 @@ Recent decisions affecting current work:
 - [Phase 01-foundation]: AnimatePresence pattern: always render, gate content with isOpen inside AnimatePresence (replaces if/return null)
 - [Phase 02-navigation]: vitest/config reference added to vite.config.ts so test block is type-checked alongside build config
 - [Phase 02-navigation]: jsdom environment with globals:true in vitest config removes per-file import boilerplate
+- [Phase 02-navigation]: Use useRef not useState for NavDirection to avoid re-renders; ref read synchronously at render time
+- [Phase 02-navigation]: layoutId pill (rounded rect inset-x-1 inset-y-1 bg-bamboo/15) replaces 2px top bar indicator for NAV-04
 
 ### Pending Todos
 
@@ -82,6 +85,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-13T15:12:19.727Z
-Stopped at: Completed 02-00-PLAN.md
+Last session: 2026-03-13T15:14:02.011Z
+Stopped at: Completed 02-01-PLAN.md
 Resume file: None

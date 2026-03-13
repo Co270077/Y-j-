@@ -43,7 +43,7 @@ Plans:
   2. The active tab indicator in the bottom nav slides as an animated pill — it does not jump
   3. Opening the Schedule page auto-scrolls to the current time block without user action
   4. Primary action buttons (add task, log meal, etc.) are reachable without stretching — positioned in the lower 60% of the screen on all pages
-**Plans:** 1/3 plans executed
+**Plans:** 2/3 plans executed
 
 Plans:
 - [ ] 02-00-PLAN.md — Install vitest test infrastructure and create test stubs for Phase 2
@@ -81,6 +81,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/2 | Complete    | 2026-03-13 |
-| 2. Navigation | 1/3 | In Progress|  |
+| 2. Navigation | 2/3 | In Progress|  |
 | 3. UI Primitives + Animations | 0/TBD | Not started | - |
 | 4. Gesture Interactions + Layout | 0/TBD | Not started | - |
