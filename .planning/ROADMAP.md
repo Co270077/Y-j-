@@ -46,8 +46,8 @@ Plans:
 **Plans:** 3/3 plans complete
 
 Plans:
-- [ ] 02-00-PLAN.md — Install vitest test infrastructure and create test stubs for Phase 2
-- [ ] 02-01-PLAN.md — Direction-aware page transitions and animated layoutId pill in bottom nav
+- [x] 02-00-PLAN.md — Install vitest test infrastructure and create test stubs for Phase 2
+- [ ] 02-01-PLAN.md — Direction-aware page transitions and animated layoutId pill in bottom nav (completed 2026-03-13)
 - [ ] 02-02-PLAN.md — Floating action buttons on action pages and Schedule auto-scroll enhancement
 
 ### Phase 3: UI Primitives + Animations
@@ -81,6 +81,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/2 | Complete    | 2026-03-13 |
-| 2. Navigation | 3/3 | Complete   | 2026-03-13 |
+| 2. Navigation | 3/3 | Complete    | 2026-03-13 |
 | 3. UI Primitives + Animations | 0/TBD | Not started | - |
 | 4. Gesture Interactions + Layout | 0/TBD | Not started | - |
