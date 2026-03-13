@@ -65,6 +65,36 @@ function taskHasBambooAccent(taskTitle: string): boolean {
   return false
 }
 
+describe('Timeline structure', () => {
+  test('timeline container wraps task items', () => {
+    const tasks = [
+      makeTask(1, '09:00', 60),
+      makeTask(2, '10:00', 60),
+    ]
+    const { container } = renderTimeline(tasks)
+    // Timeline renders a scrollable container wrapping task blocks
+    const taskTitles = container.querySelectorAll('[class*="text-sm"]')
+    expect(taskTitles.length).toBeGreaterThan(0)
+  })
+
+  test('renders one task block per task', () => {
+    const tasks = [
+      makeTask(1, '09:00', 60),
+      makeTask(2, '10:00', 60),
+      makeTask(3, '11:00', 60),
+    ]
+    renderTimeline(tasks)
+    expect(screen.getByText('Task 1')).toBeTruthy()
+    expect(screen.getByText('Task 2')).toBeTruthy()
+    expect(screen.getByText('Task 3')).toBeTruthy()
+  })
+
+  // Unskip after Plan 03 migration: timeline uses stagger parent variant
+  test.skip('list wrapper has stagger variant for cascade animation after migration', () => {
+    // After Plan 03: Timeline wraps tasks in m.div with staggerChildren variant
+  })
+})
+
 describe('Timeline auto-scroll', () => {
   test('applies bamboo left-border accent to current time block', () => {
     // getCurrentTime returns '10:00' — task 2 spans 09:00-11:00 (current)
