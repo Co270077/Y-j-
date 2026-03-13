@@ -33,3 +33,15 @@ export const completePulse: Variants = {
   initial: { scale: 1 },
   animate: { scale: [1, 1.05, 1], transition: snappy },
 }
+
+export const slideRight: Variants = {
+  initial: { opacity: 0, x: '100%' },
+  animate: { opacity: 1, x: 0, transition: gentle },
+  exit: { opacity: 0, x: '-30%', transition: snappy },
+}
+
+export const slideLeft: Variants = {
+  initial: { opacity: 0, x: '-100%' },
+  animate: { opacity: 1, x: 0, transition: gentle },
+  exit: { opacity: 0, x: '30%', transition: snappy },
+}
