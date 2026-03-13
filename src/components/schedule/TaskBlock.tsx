@@ -112,7 +112,7 @@ export default function TaskBlock({ task, log, onToggleComplete, onToggleSubtask
             )}
           </div>
 
-          {/* Complete button */}
+          {/* Complete button — 44px tap target with 28px visual circle */}
           <m.button
             onClick={(e) => {
               e.stopPropagation()
@@ -121,15 +121,15 @@ export default function TaskBlock({ task, log, onToggleComplete, onToggleSubtask
               onToggleComplete()
             }}
             whileTap={{ scale: 0.9, transition: snappy }}
-            className={`
-              mt-1.5 w-7 h-7 min-w-[28px] rounded-full border-2 flex items-center justify-center
-              cursor-pointer
+            className="relative mt-0 w-11 h-11 min-w-[44px] flex items-center justify-center cursor-pointer"
+          >
+            <div className={`
+              w-7 h-7 rounded-full border-2 flex items-center justify-center
               ${isComplete
                 ? 'border-bamboo bg-bamboo'
                 : 'border-stone/60 hover:border-bamboo/60'
               }
-            `}
-          >
+            `}>
             {isComplete && (
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-warm-white">
                 <m.polyline
@@ -140,6 +140,7 @@ export default function TaskBlock({ task, log, onToggleComplete, onToggleSubtask
                 />
               </svg>
             )}
+            </div>
           </m.button>
         </div>
 

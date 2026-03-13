@@ -130,7 +130,7 @@ export default function BottomSheet({ isOpen, onClose, title, children, detent =
                 <button
                   onClick={onClose}
                   aria-label="Close"
-                  className="w-8 h-8 flex items-center justify-center rounded-full bg-surface-raised text-text-muted hover:text-text-primary transition-colors"
+                  className="w-11 h-11 flex items-center justify-center rounded-full bg-surface-raised text-text-muted hover:text-text-primary transition-colors"
                 >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                     <line x1="18" y1="6" x2="6" y2="18" />
@@ -140,7 +140,7 @@ export default function BottomSheet({ isOpen, onClose, title, children, detent =
               </div>
 
               {/* Content */}
-              <div ref={contentRef} className="flex-1 overflow-y-auto px-5 pb-8">
+              <div ref={contentRef} className="flex-1 overflow-y-auto px-5" style={{ paddingBottom: 'calc(2rem + env(safe-area-inset-bottom, 0px))' }}>
                 {children}
               </div>
             </div>

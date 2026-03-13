@@ -160,14 +160,14 @@ export default function ProtocolList({ protocols, onSelect, onToggleActive, onDe
                   </AnimatePresence>
                 </div>
 
-                {/* Active toggle */}
+                {/* Active toggle — min 44px touch target */}
                 <button
                   onClick={(e) => {
                     e.stopPropagation()
                     if (protocol.id) onToggleActive(protocol.id)
                   }}
                   className={`
-                    px-2.5 py-1 rounded-full text-[10px] font-medium transition-all cursor-pointer
+                    px-3 py-2 min-h-[44px] min-w-[44px] rounded-full text-[10px] font-medium transition-all cursor-pointer flex items-center justify-center
                     ${protocol.isActive
                       ? 'bg-bamboo/20 text-bamboo'
                       : 'bg-surface-overlay text-text-muted hover:text-text-secondary'

@@ -104,8 +104,8 @@ export default function ToastContainer() {
 
   return (
     <>
-      {/* Regular toasts at top */}
-      <div className="fixed top-16 left-0 right-0 z-[300] flex flex-col items-center gap-2 px-5 pointer-events-none">
+      {/* Regular toasts at top (below header + safe area) */}
+      <div className="fixed left-0 right-0 z-[300] flex flex-col items-center gap-2 px-5 pointer-events-none" style={{ top: 'calc(3.5rem + env(safe-area-inset-top, 0px))' }}>
         <AnimatePresence>
           {regularToasts.map(toast => (
             <ToastItem key={toast.id} toast={toast} onRemove={removeToast} />
@@ -113,7 +113,7 @@ export default function ToastContainer() {
         </AnimatePresence>
       </div>
       {/* Action (undo) toasts above bottom nav */}
-      <div className="fixed bottom-20 left-0 right-0 z-[300] flex flex-col items-center gap-2 px-5 pointer-events-none">
+      <div className="fixed left-0 right-0 z-[300] flex flex-col items-center gap-2 px-5 pointer-events-none" style={{ bottom: 'calc(4.5rem + env(safe-area-inset-bottom, 0px))' }}>
         <AnimatePresence>
           {actionToasts.map(toast => (
             <ToastItem key={toast.id} toast={toast} onRemove={removeToast} />

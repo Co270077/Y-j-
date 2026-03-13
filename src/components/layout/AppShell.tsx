@@ -33,7 +33,7 @@ export default function AppShell() {
   return (
     <div className="flex flex-col min-h-screen min-h-dvh bg-charcoal overflow-hidden">
       <ToastContainer />
-      <main ref={mainRef} className="flex-1 pb-20 overflow-y-auto overscroll-contain">
+      <main ref={mainRef} className="flex-1 pb-[calc(4rem+env(safe-area-inset-bottom,0px))] overflow-y-auto overscroll-contain">
         <AnimatePresence mode="wait">
           <m.div key={location.pathname} variants={pageVariants} initial="initial" animate="animate" exit="exit">
             {outlet}
