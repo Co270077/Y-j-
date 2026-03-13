@@ -69,30 +69,30 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| FOUN-01 | — | Pending |
-| FOUN-02 | — | Pending |
-| FOUN-03 | — | Pending |
-| NAV-01 | — | Pending |
-| NAV-02 | — | Pending |
-| NAV-03 | — | Pending |
-| NAV-04 | — | Pending |
-| INTR-01 | — | Pending |
-| INTR-02 | — | Pending |
-| INTR-03 | — | Pending |
-| INTR-04 | — | Pending |
-| INTR-05 | — | Pending |
-| DATV-01 | — | Pending |
-| DATV-02 | — | Pending |
-| DATV-03 | — | Pending |
-| DATV-04 | — | Pending |
-| LAYT-01 | — | Pending |
-| LAYT-02 | — | Pending |
+| FOUN-01 | Phase 1 | Pending |
+| FOUN-02 | Phase 1 | Pending |
+| FOUN-03 | Phase 1 | Pending |
+| NAV-01 | Phase 2 | Pending |
+| NAV-02 | Phase 2 | Pending |
+| NAV-03 | Phase 2 | Pending |
+| NAV-04 | Phase 2 | Pending |
+| INTR-01 | Phase 3 | Pending |
+| INTR-02 | Phase 4 | Pending |
+| INTR-03 | Phase 4 | Pending |
+| INTR-04 | Phase 4 | Pending |
+| INTR-05 | Phase 3 | Pending |
+| DATV-01 | Phase 3 | Pending |
+| DATV-02 | Phase 3 | Pending |
+| DATV-03 | Phase 3 | Pending |
+| DATV-04 | Phase 3 | Pending |
+| LAYT-01 | Phase 4 | Pending |
+| LAYT-02 | Phase 4 | Pending |
 
 **Coverage:**
 - v1 requirements: 18 total
-- Mapped to phases: 0
-- Unmapped: 18 ⚠️
+- Mapped to phases: 18
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-03-13*
-*Last updated: 2026-03-13 after initial definition*
+*Last updated: 2026-03-13 after roadmap creation*
