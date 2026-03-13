@@ -1,28 +1,96 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import * as m from 'motion/react-m'
 import { AnimatePresence } from 'motion/react'
 import { registerToastHandler, unregisterToastHandler } from '../../utils/toast'
+import type { ToastAction } from '../../utils/toast'
 import { slideDown } from '../../motion/variants'
 
 // Re-export for convenience
 // eslint-disable-next-line react-refresh/only-export-components
-export { showToast } from '../../utils/toast'
+export { showToast, showToastWithAction } from '../../utils/toast'
 
 interface ToastMessage {
   id: string
   text: string
   type: 'success' | 'error' | 'info'
+  action?: ToastAction
+  duration?: number
+}
+
+function ToastItem({ toast, onRemove }: { toast: ToastMessage; onRemove: (id: string) => void }) {
+  const duration = toast.duration ?? 2500
+  const barRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!barRef.current) return
+    // Start at full width, transition to 0 on next frame
+    requestAnimationFrame(() => {
+      if (barRef.current) {
+        barRef.current.style.width = '0%'
+      }
+    })
+  }, [])
+
+  const handleAction = () => {
+    toast.action?.onAction()
+    onRemove(toast.id)
+  }
+
+  const hasAction = !!toast.action
+
+  return (
+    <m.div
+      key={toast.id}
+      variants={slideDown}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      className={`
+        relative px-4 py-2.5 rounded-[var(--radius-md)] text-sm font-medium
+        shadow-lg pointer-events-auto overflow-hidden
+        ${toast.type === 'success' ? 'bg-bamboo text-warm-white' :
+          toast.type === 'error' ? 'bg-danger text-warm-white' :
+          'bg-surface-raised text-text-primary border border-border'}
+      `}
+    >
+      <div className="flex items-center">
+        <span>{toast.text}</span>
+        {hasAction && (
+          <button
+            onClick={handleAction}
+            className="text-bamboo font-semibold ml-3 uppercase text-xs cursor-pointer"
+          >
+            {toast.action!.label}
+          </button>
+        )}
+      </div>
+      {hasAction && (
+        <div className="absolute bottom-0 left-0 right-0 h-0.5">
+          <div
+            ref={barRef}
+            className="h-full bg-bamboo/50 rounded-full w-full"
+            style={{ transition: `width ${duration}ms linear` }}
+          />
+        </div>
+      )}
+    </m.div>
+  )
 }
 
 export default function ToastContainer() {
   const [toasts, setToasts] = useState<ToastMessage[]>([])
 
-  const addToast = useCallback((text: string, type: ToastMessage['type'] = 'success') => {
+  const removeToast = useCallback((id: string) => {
+    setToasts(prev => prev.filter(t => t.id !== id))
+  }, [])
+
+  const addToast = useCallback((text: string, type: ToastMessage['type'] = 'success', action?: ToastAction, duration?: number) => {
     const id = Date.now().toString(36)
-    setToasts(prev => [...prev, { id, text, type }])
+    const effectiveDuration = duration ?? 2500
+    setToasts(prev => [...prev, { id, text, type, action, duration: effectiveDuration }])
     setTimeout(() => {
       setToasts(prev => prev.filter(t => t.id !== id))
-    }, 2500)
+    }, effectiveDuration)
   }, [])
 
   useEffect(() => {
@@ -30,28 +98,28 @@ export default function ToastContainer() {
     return () => { unregisterToastHandler() }
   }, [addToast])
 
+  // Separate regular toasts (top) from action toasts (above bottom nav)
+  const regularToasts = toasts.filter(t => !t.action)
+  const actionToasts = toasts.filter(t => !!t.action)
+
   return (
-    <div className="fixed top-16 left-0 right-0 z-[300] flex flex-col items-center gap-2 px-5 pointer-events-none">
-      <AnimatePresence>
-        {toasts.map(toast => (
-          <m.div
-            key={toast.id}
-            variants={slideDown}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            className={`
-              px-4 py-2.5 rounded-[var(--radius-md)] text-sm font-medium
-              shadow-lg pointer-events-auto
-              ${toast.type === 'success' ? 'bg-bamboo text-warm-white' :
-                toast.type === 'error' ? 'bg-danger text-warm-white' :
-                'bg-surface-raised text-text-primary border border-border'}
-            `}
-          >
-            {toast.text}
-          </m.div>
-        ))}
-      </AnimatePresence>
-    </div>
+    <>
+      {/* Regular toasts at top */}
+      <div className="fixed top-16 left-0 right-0 z-[300] flex flex-col items-center gap-2 px-5 pointer-events-none">
+        <AnimatePresence>
+          {regularToasts.map(toast => (
+            <ToastItem key={toast.id} toast={toast} onRemove={removeToast} />
+          ))}
+        </AnimatePresence>
+      </div>
+      {/* Action (undo) toasts above bottom nav */}
+      <div className="fixed bottom-20 left-0 right-0 z-[300] flex flex-col items-center gap-2 px-5 pointer-events-none">
+        <AnimatePresence>
+          {actionToasts.map(toast => (
+            <ToastItem key={toast.id} toast={toast} onRemove={removeToast} />
+          ))}
+        </AnimatePresence>
+      </div>
+    </>
   )
 }
