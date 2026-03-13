@@ -13,7 +13,7 @@ Four phases transform an existing functional PWA into a native-feeling mobile ap
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation** - Animation infrastructure correctly wired before any UI touches it (completed 2026-03-13)
-- [ ] **Phase 2: Navigation** - All routes transition natively; bottom nav active state animates
+- [x] **Phase 2: Navigation** - All routes transition natively; bottom nav active state animates (completed 2026-03-13)
 - [ ] **Phase 3: UI Primitives + Animations** - Every tap target has feedback; data comes alive on screen
 - [ ] **Phase 4: Gesture Interactions + Layout** - Swipe gestures and bottom sheets replace high-friction flows
 
@@ -43,7 +43,7 @@ Plans:
   2. The active tab indicator in the bottom nav slides as an animated pill — it does not jump
   3. Opening the Schedule page auto-scrolls to the current time block without user action
   4. Primary action buttons (add task, log meal, etc.) are reachable without stretching — positioned in the lower 60% of the screen on all pages
-**Plans:** 2/3 plans executed
+**Plans:** 3/3 plans complete
 
 Plans:
 - [ ] 02-00-PLAN.md — Install vitest test infrastructure and create test stubs for Phase 2
@@ -81,6 +81,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/2 | Complete    | 2026-03-13 |
-| 2. Navigation | 2/3 | In Progress|  |
+| 2. Navigation | 3/3 | Complete   | 2026-03-13 |
 | 3. UI Primitives + Animations | 0/TBD | Not started | - |
 | 4. Gesture Interactions + Layout | 0/TBD | Not started | - |
