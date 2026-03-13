@@ -1,4 +1,5 @@
 import { useRef, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import type { Task, DayOfWeek, DailyLog } from '../../db/types'
 import { minutesSinceMidnight, getCurrentTime } from '../../utils/time'
 import TaskBlock from './TaskBlock'
@@ -23,21 +24,31 @@ export default function Timeline({
   onDuplicateTask,
 }: TimelineProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
-  const currentTimeRef = useRef<HTMLDivElement>(null)
+  const scrollTargetRef = useRef<HTMLDivElement>(null)
+  const location = useLocation()
 
-  // Auto-scroll to current time on mount
+  // Auto-scroll to current/next time block on route navigation or day change
   useEffect(() => {
-    if (currentTimeRef.current) {
-      currentTimeRef.current.scrollIntoView({ block: 'center', behavior: 'smooth' })
-    }
-  }, [day])
+    const timer = setTimeout(() => {
+      scrollTargetRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 80) // 80ms delay so route transition settles before scroll
+    return () => clearTimeout(timer)
+  }, [location.pathname, day])
 
   const currentMinutes = minutesSinceMidnight(getCurrentTime())
 
-  // Find the next incomplete task
   const sortedTasks = tasks
     .filter(t => t.days.includes(day))
     .sort((a, b) => a.startTime.localeCompare(b.startTime))
+
+  // Determine scroll target: current task > next upcoming > last task (late night)
+  const scrollTargetTask = sortedTasks.find(task => {
+    const start = minutesSinceMidnight(task.startTime)
+    const end = start + task.durationMinutes
+    return start <= currentMinutes && end > currentMinutes
+  }) ?? sortedTasks.find(task => {
+    return minutesSinceMidnight(task.startTime) > currentMinutes
+  }) ?? sortedTasks[sortedTasks.length - 1]
 
   if (sortedTasks.length === 0) {
     return (
@@ -61,9 +72,14 @@ export default function Timeline({
         const isCurrentTask = taskMinutes <= currentMinutes &&
           taskMinutes + task.durationMinutes > currentMinutes
         const log = dailyLogs.find(l => l.taskId === task.id)
+        const isScrollTarget = task === scrollTargetTask
 
         return (
-          <div key={task.id} ref={isCurrentTask ? currentTimeRef : undefined}>
+          <div
+            key={task.id}
+            ref={isScrollTarget ? scrollTargetRef : undefined}
+            className={isScrollTarget ? 'border-l-[3px] border-bamboo pl-2 -ml-2 rounded-sm' : ''}
+          >
             {/* Current time indicator */}
             {isCurrentTask && (
               <div className="flex items-center gap-2 mb-1.5">
