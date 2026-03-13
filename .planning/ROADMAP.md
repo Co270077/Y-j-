@@ -60,7 +60,13 @@ Plans:
   3. Macro counters and dashboard stat numbers animate with a count-up effect when values change
   4. List items on all pages enter the screen with a staggered cascade (not all at once)
   5. Content that hasn't loaded yet shows a shimmer skeleton — no blank areas or layout jumps
-**Plans**: TBD
+**Plans:** 4 plans
+
+Plans:
+- [ ] 03-00-PLAN.md — Test scaffolds for all Phase 3 requirements (Wave 0)
+- [ ] 03-01-PLAN.md — Tap feedback on Button, Toggle, Card, SubtaskList, TaskBlock (Wave 1)
+- [ ] 03-02-PLAN.md — useCountUp hook, ProgressRing spring animation, Skeleton component (Wave 1)
+- [ ] 03-03-PLAN.md — Stagger cascades on all lists, dashboard count-up + skeleton loading (Wave 2)
 
 ### Phase 4: Gesture Interactions + Layout
 **Goal**: High-friction flows are replaced with swipe gestures and bottom sheets — users never leave context to complete a common action
@@ -82,5 +88,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/2 | Complete    | 2026-03-13 |
 | 2. Navigation | 3/3 | Complete    | 2026-03-13 |
-| 3. UI Primitives + Animations | 0/TBD | Not started | - |
+| 3. UI Primitives + Animations | 0/4 | Planning complete | - |
 | 4. Gesture Interactions + Layout | 0/TBD | Not started | - |
