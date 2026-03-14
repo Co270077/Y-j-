@@ -136,28 +136,28 @@ export default function BottomSheet({ isOpen, onClose, title, children, detent =
             exit={{ y: vh, transition: { ...snappy } }}
           >
             <div className="w-full max-w-lg bg-charcoal border-t border-border rounded-t-[var(--radius-xl)] max-h-[90vh] flex flex-col">
-              {/* Handle bar — drag target */}
+              {/* Handle bar + Header — entire area is drag target */}
               <div
                 {...bind()}
-                className="flex justify-center pt-3 pb-1 cursor-grab active:cursor-grabbing"
+                className="cursor-grab active:cursor-grabbing"
                 style={{ touchAction: 'none' }}
               >
-                <div className="w-10 h-1 rounded-full bg-surface-overlay" />
-              </div>
-
-              {/* Header */}
-              <div className="flex items-center justify-between px-5 pb-3">
-                <h2 id={titleId} className="text-lg font-semibold text-text-primary">{title}</h2>
-                <button
-                  onClick={handleDismiss}
-                  aria-label="Close"
-                  className="w-11 h-11 flex items-center justify-center rounded-full bg-surface-raised text-text-muted hover:text-text-primary transition-colors"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                    <line x1="18" y1="6" x2="6" y2="18" />
-                    <line x1="6" y1="6" x2="18" y2="18" />
-                  </svg>
-                </button>
+                <div className="flex justify-center pt-3 pb-3">
+                  <div className="w-10 h-1 rounded-full bg-surface-overlay" />
+                </div>
+                <div className="flex items-center justify-between px-5 pb-3">
+                  <h2 id={titleId} className="text-lg font-semibold text-text-primary">{title}</h2>
+                  <button
+                    onClick={handleDismiss}
+                    aria-label="Close"
+                    className="w-11 h-11 flex items-center justify-center rounded-full bg-surface-raised text-text-muted hover:text-text-primary transition-colors"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                      <line x1="18" y1="6" x2="6" y2="18" />
+                      <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                  </button>
+                </div>
               </div>
 
               {/* Content */}
