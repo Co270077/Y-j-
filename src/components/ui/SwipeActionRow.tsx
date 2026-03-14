@@ -52,7 +52,7 @@ export default function SwipeActionRow({
             left: 0,
             bottom: 0,
             width: '100%',
-            backgroundColor: 'rgb(22 163 74)', // green-600
+            backgroundColor: 'var(--color-success)',
             display: 'flex',
             alignItems: 'center',
             paddingLeft: '1rem',
@@ -85,7 +85,7 @@ export default function SwipeActionRow({
             right: 0,
             bottom: 0,
             width: '100%',
-            backgroundColor: 'rgb(220 38 38)', // red-600
+            backgroundColor: 'var(--color-danger)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'flex-end',

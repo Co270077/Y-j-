@@ -1,4 +1,4 @@
-import { useEffect, useRef, useId } from 'react'
+import { useEffect, useRef, useId, useState } from 'react'
 import * as m from 'motion/react-m'
 import { AnimatePresence, useMotionValue, useTransform, animate } from 'motion/react'
 import { useDrag } from '@use-gesture/react'
@@ -18,7 +18,14 @@ export default function BottomSheet({ isOpen, onClose, title, children, detent =
   const contentRef = useRef<HTMLDivElement>(null)
   const titleId = useId()
 
-  const vh = typeof window !== 'undefined' ? window.innerHeight || 600 : 600
+  const [vh, setVh] = useState(() => typeof window !== 'undefined' ? window.innerHeight || 600 : 600)
+
+  // Update vh on resize (keyboard open, orientation change)
+  useEffect(() => {
+    const onResize = () => setVh(window.innerHeight)
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
   const DETENTS = {
     peek: vh * 0.6,
     half: vh * 0.5,
@@ -48,11 +55,26 @@ export default function BottomSheet({ isOpen, onClose, title, children, detent =
     return () => { document.body.style.overflow = '' }
   }, [isOpen])
 
-  // Escape key
+  // Escape key + focus trap
   useEffect(() => {
     if (!isOpen) return
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
+      if (e.key === 'Tab' && dialogRef.current) {
+        const focusable = dialogRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        )
+        if (focusable.length === 0) return
+        const first = focusable[0]
+        const last = focusable[focusable.length - 1]
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault()
+          last.focus()
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault()
+          first.focus()
+        }
+      }
     }
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
@@ -128,7 +150,7 @@ export default function BottomSheet({ isOpen, onClose, title, children, detent =
               <div className="flex items-center justify-between px-5 pb-3">
                 <h2 id={titleId} className="text-lg font-semibold text-text-primary">{title}</h2>
                 <button
-                  onClick={onClose}
+                  onClick={handleDismiss}
                   aria-label="Close"
                   className="w-11 h-11 flex items-center justify-center rounded-full bg-surface-raised text-text-muted hover:text-text-primary transition-colors"
                 >

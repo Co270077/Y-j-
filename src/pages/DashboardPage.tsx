@@ -29,7 +29,7 @@ export default function DashboardPage() {
             <button
               onClick={() => navigate('/settings')}
               aria-label="Settings"
-              className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-surface-raised transition-colors cursor-pointer text-text-muted"
+              className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-surface-raised transition-colors cursor-pointer text-text-muted"
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="3" />
