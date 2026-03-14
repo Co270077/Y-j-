@@ -1,11 +1,6 @@
-import { useEffect } from 'react'
+import { useEffect, lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import AppShell from './components/layout/AppShell'
-import DashboardPage from './pages/DashboardPage'
-import SchedulePage from './pages/SchedulePage'
-import ProtocolsPage from './pages/ProtocolsPage'
-import MealsPage from './pages/MealsPage'
-import SettingsPage from './pages/SettingsPage'
 import { NavigationProvider } from './contexts/NavigationContext'
 import { useSettingsStore } from './stores/settingsStore'
 import { useScheduleStore } from './stores/scheduleStore'
@@ -13,6 +8,12 @@ import { useProtocolStore } from './stores/protocolStore'
 import { useMealStore } from './stores/mealStore'
 import { scheduleTaskNotifications } from './utils/notificationScheduler'
 import { useDailyReset } from './hooks/useDailyReset'
+
+const DashboardPage = lazy(() => import('./pages/DashboardPage'))
+const SchedulePage = lazy(() => import('./pages/SchedulePage'))
+const ProtocolsPage = lazy(() => import('./pages/ProtocolsPage'))
+const MealsPage = lazy(() => import('./pages/MealsPage'))
+const SettingsPage = lazy(() => import('./pages/SettingsPage'))
 
 export default function App() {
   const loadSettings = useSettingsStore(s => s.load)
@@ -43,16 +44,18 @@ export default function App() {
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '')}>
       <NavigationProvider>
-        <Routes>
-          <Route element={<AppShell />}>
-            <Route path="/" element={<DashboardPage />} />
-            <Route path="/schedule" element={<SchedulePage />} />
-            <Route path="/protocols" element={<ProtocolsPage />} />
-            <Route path="/meals" element={<MealsPage />} />
-            <Route path="/settings" element={<SettingsPage />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Route>
-        </Routes>
+        <Suspense fallback={null}>
+          <Routes>
+            <Route element={<AppShell />}>
+              <Route path="/" element={<DashboardPage />} />
+              <Route path="/schedule" element={<SchedulePage />} />
+              <Route path="/protocols" element={<ProtocolsPage />} />
+              <Route path="/meals" element={<MealsPage />} />
+              <Route path="/settings" element={<SettingsPage />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Route>
+          </Routes>
+        </Suspense>
       </NavigationProvider>
     </BrowserRouter>
   )

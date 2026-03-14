@@ -240,8 +240,8 @@ export default function MealsPage() {
                               style={{ overflow: 'hidden' }}
                             >
                               <div className="flex flex-col gap-1 mb-3">
-                                {tpl.foods.map((food, i) => (
-                                  <div key={i} className="flex items-center justify-between">
+                                {tpl.foods.map((food) => (
+                                  <div key={food.id} className="flex items-center justify-between">
                                     <div className="flex items-center gap-2">
                                       <div className="w-1 h-1 rounded-full bg-cat-meal" />
                                       <span className="text-xs text-text-secondary">{food.name}</span>
