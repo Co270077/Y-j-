@@ -7,7 +7,6 @@ import { snappy } from '../../motion/transitions'
 const tabs = [
   { path: '/', label: 'Dashboard', icon: DashboardIcon },
   { path: '/schedule', label: 'Schedule', icon: ScheduleIcon },
-  { path: '/protocols', label: 'Protocols', icon: ProtocolIcon },
   { path: '/meals', label: 'Meals', icon: MealIcon },
 ]
 
@@ -67,20 +66,6 @@ function ScheduleIcon({ active }: { active: boolean }) {
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2 : 1.5} strokeLinecap="round" strokeLinejoin="round">
       <circle cx="12" cy="12" r="10" />
       <polyline points="12 6 12 12 16 14" />
-    </svg>
-  )
-}
-
-function ProtocolIcon({ active }: { active: boolean }) {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2 : 1.5} strokeLinecap="round" strokeLinejoin="round">
-      <path d="M9 3H5a2 2 0 0 0-2 2v4" />
-      <path d="M9 3h6" />
-      <path d="M15 3h4a2 2 0 0 1 2 2v4" />
-      <path d="M21 15v4a2 2 0 0 1-2 2h-4" />
-      <path d="M9 21H5a2 2 0 0 1-2-2v-4" />
-      <line x1="12" y1="8" x2="12" y2="16" />
-      <line x1="8" y1="12" x2="16" y2="12" />
     </svg>
   )
 }
