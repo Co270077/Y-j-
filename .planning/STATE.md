@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-03-13)
 Phase: 1 of 4 (Foundation)
 Plan: 0 of TBD in current phase
 Status: Ready to plan
-Last activity: 2026-03-14 - Completed quick task 1: Overhaul visual theme to Monochrome Geometric / Cyber-Brutalist aesthetic
+Last activity: 2026-03-13 - Completed quick task 3: Remove Protocols section from app (redundant with Schedule)
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -116,6 +116,7 @@ None yet.
 |---|-------------|------|--------|-----------|
 | 1 | Overhaul visual theme to Monochrome Geometric / Cyber-Brutalist aesthetic | 2026-03-14 | 5d28fd2 | [1-overhaul-visual-theme-to-monochrome-geom](./quick/1-overhaul-visual-theme-to-monochrome-geom/) |
 | 2 | Fix settings menu scroll not working | 2026-03-14 | 896d403 | [2-fix-settings-menu-scroll-not-working-pro](./quick/2-fix-settings-menu-scroll-not-working-pro/) |
+| 3 | Remove Protocols section from app (redundant with Schedule) | 2026-03-13 | 4c3956b | [3-remove-protocols-section-from-app-redund](./quick/3-remove-protocols-section-from-app-redund/) |
 
 ## Session Continuity
 
