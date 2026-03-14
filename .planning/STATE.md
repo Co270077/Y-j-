@@ -115,6 +115,7 @@ None yet.
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
 | 1 | Overhaul visual theme to Monochrome Geometric / Cyber-Brutalist aesthetic | 2026-03-14 | 5d28fd2 | [1-overhaul-visual-theme-to-monochrome-geom](./quick/1-overhaul-visual-theme-to-monochrome-geom/) |
+| 2 | Fix settings menu scroll not working | 2026-03-14 | 896d403 | [2-fix-settings-menu-scroll-not-working-pro](./quick/2-fix-settings-menu-scroll-not-working-pro/) |
 
 ## Session Continuity
 
