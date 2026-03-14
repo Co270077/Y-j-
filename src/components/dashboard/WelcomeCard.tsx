@@ -17,9 +17,6 @@ export default function WelcomeCard() {
           <Button size="sm" onClick={() => navigate('/schedule', { state: { openNewTask: true } })}>
             Add first task
           </Button>
-          <Button variant="secondary" size="sm" onClick={() => navigate('/protocols')}>
-            Set up protocol
-          </Button>
         </div>
       </div>
     </Card>

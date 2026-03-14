@@ -8,7 +8,6 @@ import Button from '../components/ui/Button'
 import ConfirmDialog from '../components/ui/ConfirmDialog'
 import { useSettingsStore } from '../stores/settingsStore'
 import { useScheduleStore } from '../stores/scheduleStore'
-import { useProtocolStore } from '../stores/protocolStore'
 import { useMealStore } from '../stores/mealStore'
 import { requestNotificationPermission, getNotificationPermission } from '../utils/notifications'
 import { db } from '../db/database'
@@ -19,7 +18,6 @@ export default function SettingsPage() {
   const settings = useSettingsStore(s => s.settings)
   const update = useSettingsStore(s => s.update)
   const tasks = useScheduleStore(s => s.tasks)
-  const protocols = useProtocolStore(s => s.protocols)
   const templates = useMealStore(s => s.templates)
 
   if (!settings) return null
@@ -34,13 +32,12 @@ export default function SettingsPage() {
 
   const handleExport = async () => {
     const tasksData = await db.tasks.toArray()
-    const protocolsData = await db.protocols.toArray()
     const mealTemplates = await db.mealTemplates.toArray()
     const mealPlans = await db.mealPlans.toArray()
     const settingsData = await db.settings.toArray()
     const dailyLogs = await db.dailyLogs.toArray()
 
-    const data = { tasks: tasksData, protocols: protocolsData, mealTemplates, mealPlans, settings: settingsData, dailyLogs, exportDate: new Date().toISOString() }
+    const data = { tasks: tasksData, mealTemplates, mealPlans, settings: settingsData, dailyLogs, exportDate: new Date().toISOString() }
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
@@ -63,13 +60,11 @@ export default function SettingsPage() {
         const data = JSON.parse(text)
         // Clear and re-import
         await db.tasks.clear()
-        await db.protocols.clear()
         await db.mealTemplates.clear()
         await db.mealPlans.clear()
         await db.dailyLogs.clear()
 
         if (data.tasks) await db.tasks.bulkAdd(data.tasks)
-        if (data.protocols) await db.protocols.bulkAdd(data.protocols)
         if (data.mealTemplates) await db.mealTemplates.bulkAdd(data.mealTemplates)
         if (data.mealPlans) await db.mealPlans.bulkAdd(data.mealPlans)
         if (data.dailyLogs) await db.dailyLogs.bulkAdd(data.dailyLogs)
@@ -89,7 +84,6 @@ export default function SettingsPage() {
   const handleClearData = async () => {
     try {
       await db.tasks.clear()
-      await db.protocols.clear()
       await db.mealTemplates.clear()
       await db.mealPlans.clear()
       await db.dailyLogs.clear()
@@ -102,7 +96,7 @@ export default function SettingsPage() {
   }
 
   const notifPermission = getNotificationPermission()
-  const totalItems = tasks.length + protocols.length + templates.length
+  const totalItems = tasks.length + templates.length
 
   return (
     <>
@@ -166,7 +160,7 @@ export default function SettingsPage() {
         <Card>
           <h3 className="text-xs text-text-muted uppercase tracking-wider font-medium mb-3">Data</h3>
           <p className="text-[10px] text-text-muted mb-3">
-            {tasks.length} task{tasks.length !== 1 ? 's' : ''} · {protocols.length} protocol{protocols.length !== 1 ? 's' : ''} · {templates.length} template{templates.length !== 1 ? 's' : ''}
+            {tasks.length} task{tasks.length !== 1 ? 's' : ''} · {templates.length} template{templates.length !== 1 ? 's' : ''}
           </p>
           <div className="flex flex-col gap-2">
             <Button variant="secondary" size="md" fullWidth onClick={handleExport}>
@@ -195,7 +189,7 @@ export default function SettingsPage() {
       <ConfirmDialog
         isOpen={confirmClear}
         title="Clear All Data"
-        message="This will permanently delete all tasks, protocols, meal templates, and daily logs. This cannot be undone. Consider exporting a backup first."
+        message="This will permanently delete all tasks, meal templates, and daily logs. This cannot be undone. Consider exporting a backup first."
         confirmLabel="Clear Everything"
         variant="danger"
         onConfirm={handleClearData}

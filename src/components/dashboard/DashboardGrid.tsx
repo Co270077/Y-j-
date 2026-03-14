@@ -3,7 +3,6 @@ import * as m from 'motion/react-m'
 import { AnimatePresence } from 'motion/react'
 import UpNextCard from './UpNextCard'
 import ProgressCard from './ProgressCard'
-import ProtocolCard from './ProtocolCard'
 import MealCard from './MealCard'
 import StreakCard from './StreakCard'
 import WeeklyAdherenceCard from './WeeklyAdherenceCard'
@@ -11,7 +10,6 @@ import TimelinePeek from './TimelinePeek'
 import WelcomeCard from './WelcomeCard'
 import Skeleton from '../ui/Skeleton'
 import { useScheduleStore } from '../../stores/scheduleStore'
-import { useProtocolStore } from '../../stores/protocolStore'
 import { useSettingsStore } from '../../stores/settingsStore'
 import { useMinuteTick } from '../../hooks/useClock'
 import { getCurrentDay } from '../../utils/time'
@@ -28,7 +26,6 @@ export default function DashboardGrid() {
   const dailyLogs = useScheduleStore(s => s.dailyLogs)
   const toggleTaskComplete = useScheduleStore(s => s.toggleTaskComplete)
   const toggleSubtaskComplete = useScheduleStore(s => s.toggleSubtaskComplete)
-  const protocols = useProtocolStore(s => s.protocols)
   const settings = useSettingsStore(s => s.settings)
 
   const handleQuickComplete = async (taskId: number) => {
@@ -44,8 +41,8 @@ export default function DashboardGrid() {
 
   const today = getCurrentDay()
   const todayTasks = tasks.filter(t => t.days.includes(today))
-  const isEmpty = tasks.length === 0 && protocols.length === 0
-  const isLoaded = tasks.length > 0 || protocols.length > 0 || settings !== null
+  const isEmpty = tasks.length === 0
+  const isLoaded = tasks.length > 0 || settings !== null
 
   return (
     <div className="max-w-lg mx-auto geo-pattern-grid">
@@ -101,13 +98,6 @@ export default function DashboardGrid() {
                 <MealCard
                   eatingWindow={settings?.eatingWindow || null}
                   onNavigateToMeals={() => navigate('/meals')}
-                />
-              </m.div>
-
-              <m.div variants={scaleIn}>
-                <ProtocolCard
-                  protocols={protocols}
-                  onNavigateToProtocols={() => navigate('/protocols')}
                 />
               </m.div>
 
