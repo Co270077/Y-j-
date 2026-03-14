@@ -3,6 +3,7 @@ import * as m from 'motion/react-m'
 import { AnimatePresence, useMotionValue, useTransform, animate } from 'motion/react'
 import { useDrag } from '@use-gesture/react'
 import { snappy, gentle } from '../../motion/transitions'
+import { lockScroll, unlockScroll } from '../../utils/scrollLock'
 
 interface BottomSheetProps {
   isOpen: boolean
@@ -45,14 +46,12 @@ export default function BottomSheet({ isOpen, onClose, title, children, detent =
     }
   }, [isOpen, currentDetentY, vh, y])
 
-  // Body scroll lock
+  // Body scroll lock (ref-counted to support stacked modals)
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
+      lockScroll()
+      return () => unlockScroll()
     }
-    return () => { document.body.style.overflow = '' }
   }, [isOpen])
 
   // Escape key + focus trap

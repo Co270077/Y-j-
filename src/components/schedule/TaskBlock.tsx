@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import * as m from 'motion/react-m'
 import { AnimatePresence } from 'motion/react'
 import type { Task, DailyLog } from '../../db/types'
@@ -37,6 +37,7 @@ const CATEGORY_LABELS: Record<string, string> = {
 
 export default function TaskBlock({ task, log, onToggleComplete, onToggleSubtask, onEdit, onDuplicate, onDelete }: TaskBlockProps) {
   const [expanded, setExpanded] = useState(false)
+  const completingRef = useRef(false)
   const isComplete = log?.isComplete || false
   const subtaskCompletions = log?.subtaskCompletions || {}
 
@@ -116,6 +117,9 @@ export default function TaskBlock({ task, log, onToggleComplete, onToggleSubtask
           <m.button
             onClick={(e) => {
               e.stopPropagation()
+              if (completingRef.current) return
+              completingRef.current = true
+              setTimeout(() => { completingRef.current = false }, 400)
               if (!isComplete) hapticSuccess()
               else hapticLight()
               onToggleComplete()

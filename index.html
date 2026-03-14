@@ -25,6 +25,23 @@
   </head>
   <body>
     <div id="root"></div>
+    <!-- GitHub Pages SPA redirect receiver: converts /?/path back to /base/path -->
+    <script>
+      (function() {
+        var redirect = sessionStorage.redirect;
+        delete sessionStorage.redirect;
+        if (redirect && redirect !== location.href) {
+          history.replaceState(null, '', redirect);
+        } else {
+          var q = window.location.search;
+          if (q.length > 2 && q.charAt(1) === '/') {
+            var decoded = q.slice(2).split('&').map(function(s) { return s.replace(/~and~/g, '&'); }).join('?');
+            var basePath = window.location.pathname;
+            history.replaceState(null, '', basePath + decoded + window.location.hash);
+          }
+        }
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

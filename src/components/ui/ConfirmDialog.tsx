@@ -3,6 +3,7 @@ import * as m from 'motion/react-m'
 import { AnimatePresence } from 'motion/react'
 import { scaleIn } from '../../motion/variants'
 import Button from './Button'
+import { lockScroll, unlockScroll } from '../../utils/scrollLock'
 
 interface ConfirmDialogProps {
   isOpen: boolean
@@ -33,14 +34,12 @@ export default function ConfirmDialog({
     }
   }, [isOpen])
 
-  // Body scroll lock
+  // Body scroll lock (ref-counted to support stacked modals)
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
+      lockScroll()
+      return () => unlockScroll()
     }
-    return () => { document.body.style.overflow = '' }
   }, [isOpen])
 
   // Escape key + focus trap

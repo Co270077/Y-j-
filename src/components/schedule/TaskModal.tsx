@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import BottomSheet from '../ui/BottomSheet'
 import Input from '../ui/Input'
 import Button from '../ui/Button'
@@ -34,6 +34,7 @@ export default function TaskModal({ isOpen, onClose, onSave, onDelete, initialTa
   const [notify, setNotify] = useState(true)
   const [subtasks, setSubtasks] = useState<Subtask[]>([])
   const [newSubtask, setNewSubtask] = useState('')
+  const savingRef = useRef(false)
 
   useEffect(() => {
     if (initialTask) {
@@ -56,6 +57,7 @@ export default function TaskModal({ isOpen, onClose, onSave, onDelete, initialTa
       setSubtasks([])
     }
     setNewSubtask('')
+    savingRef.current = false
   }, [initialTask, isOpen])
 
   const toggleDay = (day: DayOfWeek) => {
@@ -82,6 +84,8 @@ export default function TaskModal({ isOpen, onClose, onSave, onDelete, initialTa
 
   const handleSave = () => {
     if (!title.trim() || days.length === 0) return
+    if (savingRef.current) return
+    savingRef.current = true
     onSave({
       title: title.trim(),
       description: description.trim(),

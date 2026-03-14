@@ -79,23 +79,36 @@ function ToastItem({ toast, onRemove }: { toast: ToastMessage; onRemove: (id: st
 
 export default function ToastContainer() {
   const [toasts, setToasts] = useState<ToastMessage[]>([])
+  const timersRef = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map())
 
   const removeToast = useCallback((id: string) => {
     setToasts(prev => prev.filter(t => t.id !== id))
+    const timer = timersRef.current.get(id)
+    if (timer) {
+      clearTimeout(timer)
+      timersRef.current.delete(id)
+    }
   }, [])
 
   const addToast = useCallback((text: string, type: ToastMessage['type'] = 'success', action?: ToastAction, duration?: number) => {
     const id = Date.now().toString(36)
     const effectiveDuration = duration ?? 2500
     setToasts(prev => [...prev, { id, text, type, action, duration: effectiveDuration }])
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setToasts(prev => prev.filter(t => t.id !== id))
+      timersRef.current.delete(id)
     }, effectiveDuration)
+    timersRef.current.set(id, timer)
   }, [])
 
   useEffect(() => {
     registerToastHandler(addToast)
-    return () => { unregisterToastHandler() }
+    return () => {
+      unregisterToastHandler()
+      // Clear all pending timers on unmount
+      timersRef.current.forEach(timer => clearTimeout(timer))
+      timersRef.current.clear()
+    }
   }, [addToast])
 
   // Separate regular toasts (top) from action toasts (above bottom nav)
