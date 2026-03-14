@@ -1,4 +1,5 @@
-import { useEffect, useRef, useId, useState } from 'react'
+import { useEffect, useRef, useId, useState, useCallback } from 'react'
+import { createPortal } from 'react-dom'
 import * as m from 'motion/react-m'
 import { AnimatePresence, useMotionValue, useTransform, animate } from 'motion/react'
 import { useDrag } from '@use-gesture/react'
@@ -15,38 +16,55 @@ interface BottomSheetProps {
 
 export default function BottomSheet({ isOpen, onClose, title, children, detent = 'half' }: BottomSheetProps) {
   const overlayRef = useRef<HTMLDivElement>(null)
-  const dialogRef = useRef<HTMLDivElement>(null)
+  const sheetRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
   const titleId = useId()
+  const dismissingRef = useRef(false)
 
   const [vh, setVh] = useState(() => typeof window !== 'undefined' ? window.innerHeight || 600 : 600)
 
-  // Update vh on resize (keyboard open, orientation change)
   useEffect(() => {
     const onResize = () => setVh(window.innerHeight)
     window.addEventListener('resize', onResize)
     return () => window.removeEventListener('resize', onResize)
   }, [])
+
+  // Detent positions (y from top of screen)
   const DETENTS = {
-    peek: vh * 0.6,
-    half: vh * 0.5,
-    full: vh * 0.1,
+    peek: vh * 0.65,
+    half: vh * 0.45,
+    full: vh * 0.08,
   }
 
-  const currentDetentY = DETENTS[detent]
+  const startY = DETENTS[detent]
   const y = useMotionValue(vh)
   const backdropOpacity = useTransform(y, [DETENTS.full, vh], [0.5, 0])
 
-  // Open / close animation
+  // Snap to nearest detent (supports swiping up to full)
+  const snapToNearest = useCallback((currentY: number) => {
+    const detentValues = [DETENTS.full, DETENTS.half, DETENTS.peek]
+    let closest = startY
+    let minDist = Infinity
+    for (const d of detentValues) {
+      const dist = Math.abs(currentY - d)
+      if (dist < minDist) {
+        minDist = dist
+        closest = d
+      }
+    }
+    animate(y, closest, { type: 'spring', ...snappy })
+  }, [DETENTS.full, DETENTS.half, DETENTS.peek, startY, y])
+
+  // Animate in when opened
   useEffect(() => {
     if (isOpen) {
-      animate(y, currentDetentY, { type: 'spring', ...gentle })
-    } else {
-      animate(y, vh, { type: 'spring', ...snappy })
+      dismissingRef.current = false
+      y.set(vh)
+      animate(y, startY, { type: 'spring', ...gentle })
     }
-  }, [isOpen, currentDetentY, vh, y])
+  }, [isOpen, startY, vh, y])
 
-  // Body scroll lock (ref-counted to support stacked modals)
+  // Scroll lock
   useEffect(() => {
     if (isOpen) {
       lockScroll()
@@ -58,9 +76,9 @@ export default function BottomSheet({ isOpen, onClose, title, children, detent =
   useEffect(() => {
     if (!isOpen) return
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
-      if (e.key === 'Tab' && dialogRef.current) {
-        const focusable = dialogRef.current.querySelectorAll<HTMLElement>(
+      if (e.key === 'Escape') handleDismiss()
+      if (e.key === 'Tab' && sheetRef.current) {
+        const focusable = sheetRef.current.querySelectorAll<HTMLElement>(
           'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
         )
         if (focusable.length === 0) return
@@ -77,105 +95,131 @@ export default function BottomSheet({ isOpen, onClose, title, children, detent =
     }
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [isOpen, onClose])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen])
 
   // Auto-focus
   useEffect(() => {
-    if (!isOpen || !dialogRef.current) return
+    if (!isOpen || !sheetRef.current) return
     const focusTarget =
-      dialogRef.current.querySelector<HTMLElement>('input, select, textarea') ||
-      dialogRef.current.querySelector<HTMLElement>('button')
+      sheetRef.current.querySelector<HTMLElement>('input, select, textarea') ||
+      sheetRef.current.querySelector<HTMLElement>('button')
     focusTarget?.focus()
   }, [isOpen])
 
-  const handleDismiss = () => {
-    onClose()
-  }
+  const handleDismiss = useCallback(() => {
+    if (dismissingRef.current) return
+    dismissingRef.current = true
+    animate(y, vh, { type: 'spring', ...snappy }).then(() => {
+      onClose()
+      dismissingRef.current = false
+    })
+  }, [y, vh, onClose])
 
   const bind = useDrag(
-    ({ active, movement: [, my], velocity: [, vy], last }) => {
-      // Only drag if content is scrolled to top
-      if (contentRef.current && contentRef.current.scrollTop > 0 && my > 0) return
+    ({ active, movement: [, my], velocity: [, vy], direction: [, dy], last, memo }) => {
+      // Capture starting y position on drag start
+      if (memo === undefined) memo = y.get()
+      const currentY = memo + my
+
+      // Only allow drag-down if content is scrolled
+      if (contentRef.current && contentRef.current.scrollTop > 0 && my > 0) return memo
 
       if (active) {
-        y.set(Math.max(DETENTS.full, currentDetentY + my))
+        // Clamp: can't go above full detent, rubber-band below start
+        const clamped = Math.max(DETENTS.full, currentY)
+        y.set(clamped)
       } else if (last) {
-        if (my > vh * 0.3 || vy > 0.5) {
+        // Dismiss if dragged far enough down or fast flick down
+        if (dy > 0 && (my > vh * 0.2 || vy > 0.5)) {
           handleDismiss()
         } else {
-          animate(y, currentDetentY, { type: 'spring', ...snappy })
+          // Snap to nearest detent
+          snapToNearest(y.get())
         }
       }
+
+      return memo
     },
     { axis: 'y', filterTaps: true }
   )
 
-  return (
+  const sheet = (
     <AnimatePresence>
       {isOpen && (
         <>
+          {/* Backdrop */}
           <m.div
             data-testid="sheet-backdrop"
-            className="fixed inset-0 z-[100] bg-black backdrop-blur-sm"
-            style={{ opacity: backdropOpacity }}
+            className="fixed inset-0 z-[100] bg-black"
+            style={{ opacity: backdropOpacity, pointerEvents: isOpen ? 'auto' : 'none' }}
             initial={{ opacity: 0 }}
-            exit={{ opacity: 0 }}
+            exit={{ opacity: 0, transition: { duration: 0.2 } }}
             ref={overlayRef}
             onClick={(e) => {
               if (e.target === overlayRef.current) handleDismiss()
             }}
           />
-          <m.div
-            ref={dialogRef}
+
+          {/* Sheet panel — positioned via y MotionValue, NOT AnimatePresence */}
+          <div
+            ref={sheetRef}
             role="dialog"
             aria-modal="true"
             aria-labelledby={titleId}
             data-testid="sheet-panel"
-            style={{ y }}
-            className="fixed top-0 left-0 right-0 z-[101] flex justify-center overflow-hidden"
-            exit={{ y: vh, transition: { ...snappy } }}
+            className="fixed inset-x-0 bottom-0 z-[101] flex justify-center"
+            style={{ top: 0, pointerEvents: isOpen ? 'auto' : 'none' }}
           >
-            <div className="w-full max-w-lg bg-charcoal border-t border-border rounded-t-[var(--radius-xl)] max-h-[90vh] flex flex-col">
-              {/* Handle bar + Header — entire area is drag target */}
-              <div
-                {...bind()}
-                className="cursor-grab active:cursor-grabbing"
-                style={{ touchAction: 'none' }}
-              >
-                <div className="flex justify-center pt-3 pb-3">
-                  <div className="w-10 h-1 rounded-full bg-surface-overlay" />
-                </div>
-                <div className="flex items-center justify-between px-5 pb-3">
-                  <h2 id={titleId} className="text-lg font-semibold text-text-primary">{title}</h2>
-                  <button
-                    onClick={handleDismiss}
-                    aria-label="Close"
-                    className="w-11 h-11 flex items-center justify-center rounded-full bg-surface-raised text-text-muted hover:text-text-primary transition-colors"
-                  >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                      <line x1="18" y1="6" x2="6" y2="18" />
-                      <line x1="6" y1="6" x2="18" y2="18" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-
-              {/* Content with overlapping drag zone */}
-              <div className="relative flex-1 overflow-hidden">
-                {/* Invisible drag extension — overlaps top of content area */}
+            <m.div
+              style={{ y }}
+              className="w-full max-w-lg flex flex-col"
+            >
+              <div className="bg-charcoal border-t border-border rounded-t-[var(--radius-xl)] max-h-[92vh] flex flex-col">
+                {/* Drag handle area — covers handle bar + header */}
                 <div
                   {...bind()}
-                  className="absolute inset-x-0 top-0 h-10 z-10 cursor-grab active:cursor-grabbing"
+                  className="cursor-grab active:cursor-grabbing select-none"
                   style={{ touchAction: 'none' }}
-                />
-                <div ref={contentRef} className="h-full overflow-y-auto px-5 pt-2" style={{ paddingBottom: 'calc(2rem + env(safe-area-inset-bottom, 0px))' }}>
-                  {children}
+                >
+                  <div className="flex justify-center pt-3 pb-3">
+                    <div className="w-10 h-1 rounded-full bg-surface-overlay" />
+                  </div>
+                  <div className="flex items-center justify-between px-5 pb-3">
+                    <h2 id={titleId} className="text-lg font-semibold text-text-primary">{title}</h2>
+                    <button
+                      onClick={handleDismiss}
+                      aria-label="Close"
+                      className="w-11 h-11 flex items-center justify-center rounded-full bg-surface-raised text-text-muted hover:text-text-primary transition-colors"
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                      </svg>
+                    </button>
+                  </div>
+                  {/* Extended drag zone into content */}
+                  <div className="h-3" />
+                </div>
+
+                {/* Content */}
+                <div className="relative flex-1 overflow-hidden -mt-3">
+                  <div
+                    {...bind()}
+                    className="absolute inset-x-0 top-0 h-8 z-10 cursor-grab active:cursor-grabbing"
+                    style={{ touchAction: 'none' }}
+                  />
+                  <div ref={contentRef} className="h-full overflow-y-auto px-5 pt-1" style={{ paddingBottom: 'calc(2rem + env(safe-area-inset-bottom, 0px))' }}>
+                    {children}
+                  </div>
                 </div>
               </div>
-            </div>
-          </m.div>
+            </m.div>
+          </div>
         </>
       )}
     </AnimatePresence>
   )
+
+  return createPortal(sheet, document.body)
 }
