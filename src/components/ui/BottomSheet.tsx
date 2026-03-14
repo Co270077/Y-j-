@@ -160,9 +160,17 @@ export default function BottomSheet({ isOpen, onClose, title, children, detent =
                 </div>
               </div>
 
-              {/* Content */}
-              <div ref={contentRef} className="flex-1 overflow-y-auto px-5" style={{ paddingBottom: 'calc(2rem + env(safe-area-inset-bottom, 0px))' }}>
-                {children}
+              {/* Content with overlapping drag zone */}
+              <div className="relative flex-1 overflow-hidden">
+                {/* Invisible drag extension — overlaps top of content area */}
+                <div
+                  {...bind()}
+                  className="absolute inset-x-0 top-0 h-10 z-10 cursor-grab active:cursor-grabbing"
+                  style={{ touchAction: 'none' }}
+                />
+                <div ref={contentRef} className="h-full overflow-y-auto px-5 pt-2" style={{ paddingBottom: 'calc(2rem + env(safe-area-inset-bottom, 0px))' }}>
+                  {children}
+                </div>
               </div>
             </div>
           </m.div>
