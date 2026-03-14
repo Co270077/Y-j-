@@ -89,7 +89,7 @@ export default function BottomSheet({ isOpen, onClose, title, children, detent =
   }, [isOpen])
 
   const handleDismiss = () => {
-    animate(y, vh, { type: 'spring', ...snappy }).then(onClose)
+    onClose()
   }
 
   const bind = useDrag(
