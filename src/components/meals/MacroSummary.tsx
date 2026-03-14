@@ -37,7 +37,7 @@ export default function MacroSummary({ calories, protein, carbs, fat, compact = 
   return (
     <div>
       {/* Macro bar */}
-      <div className="flex h-2 rounded-full overflow-hidden bg-charcoal mb-2">
+      <div className="flex h-2 overflow-hidden bg-gray-800 mb-2">
         <m.div className="bg-cat-workout" animate={{ width: `${proteinPct}%` }} transition={snappy} />
         <m.div className="bg-cat-supplement" animate={{ width: `${carbsPct}%` }} transition={snappy} />
         <m.div className="bg-cat-meal" animate={{ width: `${fatPct}%` }} transition={snappy} />
@@ -45,19 +45,19 @@ export default function MacroSummary({ calories, protein, carbs, fat, compact = 
 
       <div className="grid grid-cols-4 gap-1">
         <div className="text-center">
-          <p className="text-sm font-bold text-cat-meal">{animatedCal}</p>
+          <p className="text-sm font-bold text-white">{animatedCal}</p>
           <p className="text-[10px] text-text-muted">Cal</p>
         </div>
         <div className="text-center">
-          <p className="text-sm font-bold text-cat-workout">{animatedP}g</p>
+          <p className="text-sm font-bold text-gray-300">{animatedP}g</p>
           <p className="text-[10px] text-text-muted">Protein</p>
         </div>
         <div className="text-center">
-          <p className="text-sm font-bold text-cat-supplement">{animatedC}g</p>
+          <p className="text-sm font-bold text-gray-300">{animatedC}g</p>
           <p className="text-[10px] text-text-muted">Carbs</p>
         </div>
         <div className="text-center">
-          <p className="text-sm font-bold text-cat-meal">{animatedF}g</p>
+          <p className="text-sm font-bold text-gray-300">{animatedF}g</p>
           <p className="text-[10px] text-text-muted">Fat</p>
         </div>
       </div>

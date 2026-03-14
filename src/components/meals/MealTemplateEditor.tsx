@@ -99,7 +99,7 @@ export default function MealTemplateEditor({ isOpen, onClose, onSave, onDelete, 
         <div>
           <label className="text-xs font-medium text-text-secondary block mb-2">Foods</label>
           {foods.map(f => (
-            <div key={f.id} className="flex items-center gap-2 mb-2 p-2.5 bg-charcoal rounded-[var(--radius-md)]">
+            <div key={f.id} className="flex items-center gap-2 mb-2 p-2.5 bg-black rounded-[var(--radius-md)]">
               <div className="flex-1 min-w-0">
                 <p className="text-sm text-text-primary">{f.name}</p>
                 <p className="text-[10px] text-text-muted">{Math.round(f.calories)} cal · P{Math.round(f.protein)}g · C{Math.round(f.carbs)}g · F{Math.round(f.fat)}g</p>
@@ -113,7 +113,7 @@ export default function MealTemplateEditor({ isOpen, onClose, onSave, onDelete, 
           ))}
 
           {addingFood ? (
-            <div className="p-3 bg-charcoal rounded-[var(--radius-md)] flex flex-col gap-2 mt-2">
+            <div className="p-3 bg-black rounded-[var(--radius-md)] flex flex-col gap-2 mt-2">
               <Input placeholder="Food name" value={foodName} onChange={e => setFoodName(e.target.value)} />
               <div className="grid grid-cols-4 gap-2">
                 <Input placeholder="Cal" type="number" value={foodCalories} onChange={e => setFoodCalories(e.target.value)} />
@@ -135,9 +135,9 @@ export default function MealTemplateEditor({ isOpen, onClose, onSave, onDelete, 
 
         {/* Macro summary */}
         {foods.length > 0 && (
-          <div className="grid grid-cols-4 gap-2 p-3 bg-charcoal rounded-[var(--radius-md)]">
+          <div className="grid grid-cols-4 gap-2 p-3 bg-black rounded-[var(--radius-md)]">
             <div className="text-center">
-              <p className="text-xs font-semibold text-cat-meal">{Math.round(totals.calories)}</p>
+              <p className="text-xs font-semibold text-white">{Math.round(totals.calories)}</p>
               <p className="text-[10px] text-text-muted">Cal</p>
             </div>
             <div className="text-center">

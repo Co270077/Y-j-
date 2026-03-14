@@ -13,7 +13,7 @@ export default function MealCard({ eatingWindow, onNavigateToMeals }: MealCardPr
       <Card onClick={onNavigateToMeals}>
         <p className="text-xs text-text-muted uppercase tracking-wider font-medium mb-2">Eating Window</p>
         <p className="text-xs text-text-muted">Not configured</p>
-        <p className="text-[10px] text-bamboo mt-1">Tap to set up</p>
+        <p className="text-[10px] text-white mt-1">Tap to set up</p>
       </Card>
     )
   }
@@ -49,8 +49,8 @@ export default function MealCard({ eatingWindow, onNavigateToMeals }: MealCardPr
     <Card onClick={onNavigateToMeals}>
       <p className="text-xs text-text-muted uppercase tracking-wider font-medium mb-2">Eating Window</p>
       <div className="flex items-center gap-2 mb-1.5">
-        <div className={`w-2 h-2 rounded-full ${isOpen ? 'bg-bamboo animate-pulse' : 'bg-stone-dark'}`} />
-        <span className={`text-xs font-medium ${isOpen ? 'text-bamboo' : 'text-text-muted'}`}>
+        <div className={`w-2 h-2 rounded-sm ${isOpen ? 'bg-white animate-pulse' : 'bg-gray-500'}`} />
+        <span className={`text-xs font-medium ${isOpen ? 'text-white' : 'text-text-muted'}`}>
           {isOpen ? 'Open' : 'Fasting'}
         </span>
         <span className="text-[9px] text-text-muted/60 ml-auto">{eatingWindow.protocol}</span>
@@ -58,9 +58,9 @@ export default function MealCard({ eatingWindow, onNavigateToMeals }: MealCardPr
 
       {/* Progress bar */}
       {isOpen && (
-        <div className="h-1 rounded-full bg-charcoal overflow-hidden mb-1.5">
+        <div className="h-1 bg-gray-800 overflow-hidden mb-1.5">
           <div
-            className="h-full rounded-full bg-bamboo transition-all duration-500"
+            className="h-full bg-white transition-all duration-500"
             style={{ width: `${windowProgress}%` }}
           />
         </div>

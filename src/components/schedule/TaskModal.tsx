@@ -139,7 +139,7 @@ export default function TaskModal({ isOpen, onClose, onSave, onDelete, initialTa
             onChange={e => setDescription(e.target.value)}
             placeholder="Additional notes..."
             rows={2}
-            className="w-full px-3 py-2.5 text-sm bg-surface-raised border border-border rounded-[var(--radius-md)] text-text-primary placeholder:text-text-muted outline-none focus:border-bamboo/60 transition-colors resize-none"
+            className="w-full px-3 py-2.5 text-sm bg-surface-raised border border-gray-700 rounded-[var(--radius-md)] text-text-primary placeholder:text-text-muted outline-none focus:border-white/40 transition-colors resize-none"
           />
         </div>
 
@@ -158,7 +158,7 @@ export default function TaskModal({ isOpen, onClose, onSave, onDelete, initialTa
             <select
               value={durationMinutes}
               onChange={e => setDurationMinutes(Number(e.target.value))}
-              className="w-full px-3 py-2.5 text-sm bg-surface-raised border border-border rounded-[var(--radius-md)] text-text-primary outline-none focus:border-bamboo/60 transition-colors"
+              className="w-full px-3 py-2.5 text-sm bg-surface-raised border border-gray-700 rounded-[var(--radius-md)] text-text-primary outline-none focus:border-white/40 transition-colors"
             >
               <option value={5}>5 min</option>
               <option value={10}>10 min</option>
@@ -188,7 +188,7 @@ export default function TaskModal({ isOpen, onClose, onSave, onDelete, initialTa
                     flex-1 py-2 rounded-[var(--radius-sm)] text-xs font-medium
                     transition-all duration-150 cursor-pointer
                     ${selected
-                      ? 'bg-bamboo text-warm-white'
+                      ? 'bg-white text-black'
                       : 'bg-surface-overlay text-text-muted hover:text-text-secondary'
                     }
                   `}
@@ -202,25 +202,25 @@ export default function TaskModal({ isOpen, onClose, onSave, onDelete, initialTa
           <div className="flex gap-2 mt-2">
             <button
               onClick={() => setDays([...DAYS_ORDERED])}
-              className="text-[10px] text-text-muted hover:text-bamboo transition-colors cursor-pointer"
+              className="text-[10px] text-text-muted hover:text-white transition-colors cursor-pointer"
             >
               All days
             </button>
             <button
               onClick={() => setDays(['mon', 'tue', 'wed', 'thu', 'fri'])}
-              className="text-[10px] text-text-muted hover:text-bamboo transition-colors cursor-pointer"
+              className="text-[10px] text-text-muted hover:text-white transition-colors cursor-pointer"
             >
               Weekdays
             </button>
             <button
               onClick={() => setDays(['sat', 'sun'])}
-              className="text-[10px] text-text-muted hover:text-bamboo transition-colors cursor-pointer"
+              className="text-[10px] text-text-muted hover:text-white transition-colors cursor-pointer"
             >
               Weekends
             </button>
             <button
               onClick={() => setDays([])}
-              className="text-[10px] text-text-muted hover:text-bamboo transition-colors cursor-pointer"
+              className="text-[10px] text-text-muted hover:text-white transition-colors cursor-pointer"
             >
               Clear
             </button>
@@ -239,8 +239,8 @@ export default function TaskModal({ isOpen, onClose, onSave, onDelete, initialTa
                   px-3 py-1.5 rounded-full text-xs font-medium
                   transition-all duration-150 cursor-pointer border
                   ${category === cat.value
-                    ? 'border-transparent text-warm-white'
-                    : 'border-border text-text-muted hover:text-text-secondary'
+                    ? 'border-transparent text-black'
+                    : 'border-gray-700 text-text-muted hover:text-text-secondary'
                   }
                 `}
                 style={category === cat.value ? { backgroundColor: cat.color } : undefined}
@@ -274,7 +274,7 @@ export default function TaskModal({ isOpen, onClose, onSave, onDelete, initialTa
               onChange={e => setNewSubtask(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && addSubtask()}
               placeholder="Add subtask..."
-              className="flex-1 px-3 py-2 text-sm bg-surface-raised border border-border rounded-[var(--radius-md)] text-text-primary placeholder:text-text-muted outline-none focus:border-bamboo/60 transition-colors"
+              className="flex-1 px-3 py-2 text-sm bg-surface-raised border border-gray-700 rounded-[var(--radius-md)] text-text-primary placeholder:text-text-muted outline-none focus:border-white/40 transition-colors"
             />
             <Button variant="secondary" size="sm" onClick={addSubtask}>
               Add

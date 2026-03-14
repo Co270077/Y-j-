@@ -58,7 +58,7 @@ export default function EatingWindowConfig({ isOpen, onClose, onSave, current }:
                 key={p.value}
                 onClick={() => handleProtocolChange(p.value)}
                 className={`px-3 py-2 rounded-[var(--radius-md)] text-xs font-medium transition-all cursor-pointer ${
-                  protocol === p.value ? 'bg-bamboo text-warm-white' : 'bg-surface-overlay text-text-muted'
+                  protocol === p.value ? 'bg-white text-black' : 'bg-surface-overlay text-text-muted'
                 }`}
               >
                 {p.label}
@@ -103,9 +103,9 @@ function WindowSummary({ windowStart, windowEnd }: { windowStart: string; window
   const eatingPct = (eatingMinutes / 1440) * 100
 
   return (
-    <div className="p-3 bg-charcoal rounded-[var(--radius-md)]">
+    <div className="p-3 bg-black rounded-[var(--radius-md)]">
       <div className="flex justify-between text-xs mb-2">
-        <span className="text-bamboo font-medium">
+        <span className="text-white font-medium">
           Eating: {eatingHours}h{eatingMins > 0 ? ` ${eatingMins}m` : ''}
         </span>
         <span className="text-text-muted font-medium">
@@ -113,7 +113,7 @@ function WindowSummary({ windowStart, windowEnd }: { windowStart: string; window
         </span>
       </div>
       <div className="flex h-2 rounded-full overflow-hidden bg-surface-overlay">
-        <div className="bg-bamboo rounded-full transition-all duration-300" style={{ width: `${eatingPct}%` }} />
+        <div className="bg-white transition-all duration-300" style={{ width: `${eatingPct}%` }} />
       </div>
     </div>
   )

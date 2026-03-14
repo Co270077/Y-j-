@@ -17,10 +17,10 @@ export default function Input({ label, className = '', id: externalId, ...props 
         id={inputId}
         className={`
           w-full px-3 py-2.5 text-sm
-          bg-surface-raised border border-border
+          bg-surface-raised border border-gray-700
           rounded-[var(--radius-md)]
           text-text-primary placeholder:text-text-muted
-          outline-none focus:border-bamboo/60
+          outline-none focus:border-white/40
           transition-colors
           ${className}
         `}

@@ -25,7 +25,7 @@ export default function SubtaskList({ subtasks, completions, onToggle }: Subtask
                 onToggle(st.id)
               }}
               whileTap={{ scale: 0.97, transition: snappy }}
-              className="flex items-center gap-2.5 py-1.5 px-2 rounded-[var(--radius-sm)] hover:bg-charcoal/30 text-left cursor-pointer"
+              className="flex items-center gap-2.5 py-1.5 px-2 rounded-[var(--radius-sm)] hover:bg-white/5 text-left cursor-pointer"
             >
               {/* Checkbox */}
               <m.div
@@ -34,13 +34,13 @@ export default function SubtaskList({ subtasks, completions, onToggle }: Subtask
                 className={`
                   w-4.5 h-4.5 min-w-[18px] min-h-[18px] rounded-sm border flex items-center justify-center
                   ${isDone
-                    ? 'bg-bamboo border-bamboo'
-                    : 'border-stone bg-transparent'
+                    ? 'bg-white border-white'
+                    : 'border-gray-500 bg-transparent'
                   }
                 `}
               >
                 {isDone && (
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-warm-white">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-black">
                     <polyline points="20 6 9 17 4 12" />
                   </svg>
                 )}

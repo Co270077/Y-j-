@@ -12,8 +12,8 @@ interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'onA
 }
 
 const variantStyles: Record<Variant, string> = {
-  primary: 'bg-bamboo text-warm-white hover:bg-bamboo-dark active:bg-bamboo-dark',
-  secondary: 'bg-surface-raised text-text-primary border border-border hover:bg-surface-overlay',
+  primary: 'bg-white text-black hover:bg-gray-100 active:bg-gray-100',
+  secondary: 'bg-surface-raised text-text-primary border border-gray-700 hover:bg-surface-overlay',
   ghost: 'bg-transparent text-text-secondary hover:text-text-primary hover:bg-surface-raised',
   danger: 'bg-danger/15 text-danger hover:bg-danger/25',
 }

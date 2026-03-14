@@ -93,7 +93,7 @@ export default function ConfirmDialog({
               initial="initial"
               animate="animate"
               exit="exit"
-              className="w-full max-w-sm bg-charcoal border border-border rounded-[var(--radius-lg)] p-5"
+              className="w-full max-w-sm bg-black border border-gray-700 rounded-[var(--radius-md)] p-5"
             >
               <h3 id="confirm-dialog-title" className="text-base font-semibold text-text-primary mb-1">{title}</h3>
               <p id="confirm-dialog-message" className="text-sm text-text-secondary mb-5">{message}</p>

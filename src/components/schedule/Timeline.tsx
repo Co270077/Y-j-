@@ -90,9 +90,9 @@ export default function Timeline({
             {/* Current time indicator */}
             {isCurrentTask && (
               <div className="flex items-center gap-2 mb-1.5">
-                <div className="w-2 h-2 rounded-full bg-bamboo animate-pulse" />
-                <div className="flex-1 h-px bg-bamboo/40" />
-                <span className="text-[10px] text-bamboo font-medium">NOW</span>
+                <div className="w-2 h-2 rounded-sm bg-white animate-pulse" />
+                <div className="flex-1 h-px bg-white/40" />
+                <span className="text-[10px] text-white font-medium">NOW</span>
               </div>
             )}
             <TaskBlock
@@ -112,7 +112,7 @@ export default function Timeline({
             <m.div
               key={task.id}
               ref={isScrollTarget ? scrollTargetRef : undefined}
-              className={isScrollTarget ? 'border-l-[3px] border-bamboo pl-2 -ml-2 rounded-sm' : ''}
+              className={isScrollTarget ? 'border-l-[3px] border-white pl-2 -ml-2 rounded-sm' : ''}
               variants={slideUp}
             >
               {inner}
@@ -124,7 +124,7 @@ export default function Timeline({
           <div
             key={task.id}
             ref={isScrollTarget ? scrollTargetRef : undefined}
-            className={isScrollTarget ? 'border-l-[3px] border-bamboo pl-2 -ml-2 rounded-sm' : ''}
+            className={isScrollTarget ? 'border-l-[3px] border-white pl-2 -ml-2 rounded-sm' : ''}
           >
             {inner}
           </div>

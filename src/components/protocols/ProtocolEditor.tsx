@@ -187,12 +187,12 @@ export default function ProtocolEditor({ isOpen, onClose, onSave, onDelete, init
           </label>
 
           {supplements.map(s => (
-            <div key={s.id} className="flex items-center gap-2 mb-2 p-2.5 bg-charcoal rounded-[var(--radius-md)]">
+            <div key={s.id} className="flex items-center gap-2 mb-2 p-2.5 bg-black rounded-[var(--radius-md)]">
               <div className="flex-1 min-w-0">
                 <p className="text-sm text-text-primary font-medium">{s.name}</p>
                 <p className="text-[10px] text-text-muted">{s.dose} · {getTimingLabel(s.timingRule)}{s.withFood ? ' · with food' : ''}</p>
               </div>
-              <button onClick={() => editSupplement(s)} className="text-text-muted hover:text-bamboo transition-colors cursor-pointer p-1">
+              <button onClick={() => editSupplement(s)} className="text-text-muted hover:text-white transition-colors cursor-pointer p-1">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                   <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
                   <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
@@ -208,7 +208,7 @@ export default function ProtocolEditor({ isOpen, onClose, onSave, onDelete, init
 
           {/* Add/edit supplement form */}
           {editingSupplement ? (
-            <div className="p-3 bg-charcoal rounded-[var(--radius-md)] flex flex-col gap-3 mt-2">
+            <div className="p-3 bg-black rounded-[var(--radius-md)] flex flex-col gap-3 mt-2">
               <div className="flex gap-2">
                 <div className="flex-1"><Input placeholder="Name" value={suppName} onChange={e => setSuppName(e.target.value)} /></div>
                 <div className="w-28"><Input placeholder="Dose" value={suppDose} onChange={e => setSuppDose(e.target.value)} /></div>
@@ -220,7 +220,7 @@ export default function ProtocolEditor({ isOpen, onClose, onSave, onDelete, init
                 <select
                   value={suppTimingType}
                   onChange={e => setSuppTimingType(e.target.value as TimingRule['type'])}
-                  className="w-full px-3 py-2 text-sm bg-surface-raised border border-border rounded-[var(--radius-md)] text-text-primary outline-none"
+                  className="w-full px-3 py-2 text-sm bg-surface-raised border border-gray-700 rounded-[var(--radius-md)] text-text-primary outline-none"
                 >
                   {TIMING_TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
                 </select>
@@ -234,7 +234,7 @@ export default function ProtocolEditor({ isOpen, onClose, onSave, onDelete, init
                 <select
                   value={suppMeal}
                   onChange={e => setSuppMeal(e.target.value as typeof suppMeal)}
-                  className="w-full px-3 py-2 text-sm bg-surface-raised border border-border rounded-[var(--radius-md)] text-text-primary outline-none"
+                  className="w-full px-3 py-2 text-sm bg-surface-raised border border-gray-700 rounded-[var(--radius-md)] text-text-primary outline-none"
                 >
                   {MEALS.map(m => <option key={m} value={m}>{m.charAt(0).toUpperCase() + m.slice(1)}</option>)}
                 </select>
@@ -245,7 +245,7 @@ export default function ProtocolEditor({ isOpen, onClose, onSave, onDelete, init
               )}
 
               <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" checked={suppWithFood} onChange={e => setSuppWithFood(e.target.checked)} className="accent-bamboo" />
+                <input type="checkbox" checked={suppWithFood} onChange={e => setSuppWithFood(e.target.checked)} className="accent-white" />
                 <span className="text-xs text-text-secondary">Take with food</span>
               </label>
 
@@ -274,7 +274,7 @@ export default function ProtocolEditor({ isOpen, onClose, onSave, onDelete, init
                 key={type}
                 onClick={() => setCycleType(type)}
                 className={`flex-1 py-2 rounded-[var(--radius-md)] text-xs font-medium transition-all cursor-pointer ${
-                  cycleType === type ? 'bg-bamboo text-warm-white' : 'bg-surface-overlay text-text-muted'
+                  cycleType === type ? 'bg-white text-black' : 'bg-surface-overlay text-text-muted'
                 }`}
               >
                 {type === 'daily' ? 'Daily' : type === 'on_off' ? 'On/Off' : 'Specific'}
@@ -287,12 +287,12 @@ export default function ProtocolEditor({ isOpen, onClose, onSave, onDelete, init
               <div className="flex-1">
                 <label className="text-[10px] text-text-muted block mb-1">Days On</label>
                 <input type="number" min={1} max={30} value={daysOn} onChange={e => setDaysOn(Number(e.target.value))}
-                  className="w-full px-3 py-2 text-sm bg-surface-raised border border-border rounded-[var(--radius-md)] text-text-primary outline-none" />
+                  className="w-full px-3 py-2 text-sm bg-surface-raised border border-gray-700 rounded-[var(--radius-md)] text-text-primary outline-none" />
               </div>
               <div className="flex-1">
                 <label className="text-[10px] text-text-muted block mb-1">Days Off</label>
                 <input type="number" min={1} max={30} value={daysOff} onChange={e => setDaysOff(Number(e.target.value))}
-                  className="w-full px-3 py-2 text-sm bg-surface-raised border border-border rounded-[var(--radius-md)] text-text-primary outline-none" />
+                  className="w-full px-3 py-2 text-sm bg-surface-raised border border-gray-700 rounded-[var(--radius-md)] text-text-primary outline-none" />
               </div>
             </div>
           )}
@@ -304,7 +304,7 @@ export default function ProtocolEditor({ isOpen, onClose, onSave, onDelete, init
                   key={day}
                   onClick={() => setSpecificDays(prev => prev.includes(day) ? prev.filter(d => d !== day) : [...prev, day])}
                   className={`flex-1 py-2 rounded-[var(--radius-sm)] text-xs font-medium transition-all cursor-pointer ${
-                    specificDays.includes(day) ? 'bg-bamboo text-warm-white' : 'bg-surface-overlay text-text-muted'
+                    specificDays.includes(day) ? 'bg-white text-black' : 'bg-surface-overlay text-text-muted'
                   }`}
                 >
                   {DAY_LABELS[day]}

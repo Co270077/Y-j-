@@ -48,7 +48,7 @@ export default function DashboardGrid() {
   const isLoaded = tasks.length > 0 || protocols.length > 0 || settings !== null
 
   return (
-    <div className="max-w-lg mx-auto">
+    <div className="max-w-lg mx-auto geo-pattern-grid">
       <AnimatePresence mode="wait">
         {!isLoaded ? (
           <m.div key="skeleton" variants={fadeIn} initial="initial" animate="animate" exit="exit">

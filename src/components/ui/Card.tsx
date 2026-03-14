@@ -15,8 +15,8 @@ export default function Card({ children, className = '', onClick, padding = true
         onClick={onClick}
         whileTap={{ scale: 0.98, transition: snappy }}
         className={`
-          bg-surface-raised border border-border-light card-shadow
-          rounded-[var(--radius-lg)]
+          bg-surface-raised border border-gray-700
+          rounded-[var(--radius-md)]
           ${padding ? 'p-4' : ''}
           cursor-pointer
           ${className}
@@ -30,8 +30,8 @@ export default function Card({ children, className = '', onClick, padding = true
   return (
     <div
       className={`
-        bg-surface-raised border border-border-light card-shadow
-        rounded-[var(--radius-lg)]
+        bg-surface-raised border border-gray-700
+        rounded-[var(--radius-md)]
         ${padding ? 'p-4' : ''}
         ${className}
       `}

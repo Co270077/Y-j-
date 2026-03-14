@@ -37,7 +37,7 @@ export default function TimelinePeek({ tasks, dailyLogs }: TimelinePeekProps) {
         <p className="text-xs text-text-muted uppercase tracking-wider font-medium">Coming Up</p>
         <button
           onClick={() => navigate('/schedule')}
-          className="text-[10px] text-bamboo font-medium cursor-pointer"
+          className="text-[10px] text-white font-medium cursor-pointer"
         >
           See all
         </button>

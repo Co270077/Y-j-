@@ -33,7 +33,7 @@ export default function TaskFilter({ activeFilter, onFilterChange, taskCounts }:
               px-3 py-1.5 rounded-full text-[11px] font-medium whitespace-nowrap
               transition-all duration-150 cursor-pointer
               ${activeFilter === f.value
-                ? 'bg-bamboo/20 text-bamboo'
+                ? 'bg-white/15 text-white'
                 : 'bg-transparent text-text-muted hover:text-text-secondary'
               }
             `}

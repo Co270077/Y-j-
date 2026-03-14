@@ -175,7 +175,7 @@ export default function BottomSheet({ isOpen, onClose, title, children, detent =
               style={{ y }}
               className="w-full max-w-lg flex flex-col"
             >
-              <div className="bg-charcoal border-t border-border rounded-t-[var(--radius-xl)] max-h-[92vh] flex flex-col">
+              <div className="bg-black border-t border-gray-700 rounded-t-[var(--radius-lg)] max-h-[92vh] flex flex-col">
                 {/* Drag handle area — covers handle bar + header */}
                 <div
                   {...bind()}
@@ -190,7 +190,7 @@ export default function BottomSheet({ isOpen, onClose, title, children, detent =
                     <button
                       onClick={handleDismiss}
                       aria-label="Close"
-                      className="w-11 h-11 flex items-center justify-center rounded-full bg-surface-raised text-text-muted hover:text-text-primary transition-colors"
+                      className="w-11 h-11 flex items-center justify-center rounded-sm bg-surface-raised text-text-muted hover:text-text-primary transition-colors"
                     >
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                         <line x1="18" y1="6" x2="6" y2="18" />

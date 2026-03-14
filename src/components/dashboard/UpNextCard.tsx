@@ -54,16 +54,16 @@ export default function UpNextCard({ tasks, dailyLogs, onNavigateToSchedule, onC
       <div className="px-5 mb-2">
         <div
           onClick={onNavigateToSchedule}
-          className="p-5 rounded-[var(--radius-lg)] bg-surface-raised border border-border-light card-shadow cursor-pointer active:scale-[0.99] transition-transform"
+          className="p-5 rounded-[var(--radius-md)] bg-surface-raised border border-gray-700 cursor-pointer active:scale-[0.99] transition-transform"
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-bamboo/15 flex items-center justify-center">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-bamboo">
+            <div className="w-10 h-10 rounded-sm bg-white/10 flex items-center justify-center">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
                 <polyline points="20 6 9 17 4 12" />
               </svg>
             </div>
             <div>
-              <p className="text-sm font-semibold text-bamboo">All tasks complete</p>
+              <p className="text-sm font-semibold text-white">All tasks complete</p>
               <p className="text-xs text-text-muted">{completed}/{total} done for today</p>
             </div>
           </div>
@@ -105,10 +105,10 @@ export default function UpNextCard({ tasks, dailyLogs, onNavigateToSchedule, onC
 
   return (
     <div className="px-5 mb-2">
-      <div className="rounded-[var(--radius-lg)] bg-surface-raised border border-border-light card-shadow overflow-hidden">
+      <div className="rounded-[var(--radius-md)] bg-surface-raised border border-gray-700 overflow-hidden">
         {/* Time progress bar */}
         {isNow && (
-          <div className="h-0.5 bg-charcoal">
+          <div className="h-0.5 bg-black">
             <div
               className={`h-full ${CATEGORY_COLORS[currentTask.category]} transition-all duration-1000 ease-linear`}
               style={{ width: `${timeProgress}%` }}
@@ -125,9 +125,9 @@ export default function UpNextCard({ tasks, dailyLogs, onNavigateToSchedule, onC
                 {currentTask.category}
               </span>
             </div>
-            <div className={`px-2.5 py-1 rounded-full text-[10px] font-semibold ${
+            <div className={`px-2.5 py-1 rounded-sm text-[10px] font-semibold ${
               isNow
-                ? 'bg-bamboo/20 text-bamboo'
+                ? 'bg-white/15 text-white'
                 : isOverdue
                   ? 'bg-danger/15 text-danger'
                   : 'bg-surface-overlay text-text-muted'
@@ -169,10 +169,10 @@ export default function UpNextCard({ tasks, dailyLogs, onNavigateToSchedule, onC
                       <div className={`w-4.5 h-4.5 rounded border-[1.5px] flex items-center justify-center shrink-0 transition-all ${
                         done
                           ? `${CATEGORY_COLORS[currentTask.category]} border-transparent`
-                          : 'border-stone/50 group-hover:border-stone/80'
+                          : 'border-gray-500/50 group-hover:border-gray-500/80'
                       }`}>
                         {done && (
-                          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-warm-white">
+                          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-black">
                             <polyline points="20 6 9 17 4 12" />
                           </svg>
                         )}
@@ -190,7 +190,7 @@ export default function UpNextCard({ tasks, dailyLogs, onNavigateToSchedule, onC
           {/* Complete button */}
           <button
             onClick={handleComplete}
-            className="mt-4 w-full py-2.5 rounded-[var(--radius-md)] bg-bamboo text-warm-white text-sm font-semibold hover:bg-bamboo-dark active:scale-[0.98] transition-all cursor-pointer"
+            className="mt-4 w-full py-2.5 rounded-[var(--radius-md)] bg-white text-black text-sm font-semibold hover:bg-gray-100 active:scale-[0.98] transition-all cursor-pointer"
           >
             Mark Complete
           </button>
@@ -200,10 +200,10 @@ export default function UpNextCard({ tasks, dailyLogs, onNavigateToSchedule, onC
         {nextTask && (
           <button
             onClick={onNavigateToSchedule}
-            className="w-full px-4 py-2.5 border-t border-border-light bg-charcoal/30 flex items-center gap-3 cursor-pointer hover:bg-charcoal/50 transition-colors"
+            className="w-full px-4 py-2.5 border-t border-gray-800 bg-black/30 flex items-center gap-3 cursor-pointer hover:bg-black/50 transition-colors"
           >
             <span className="text-[10px] text-text-muted font-medium uppercase tracking-wider shrink-0">Next</span>
-            <div className={`w-1.5 h-1.5 rounded-full ${CATEGORY_COLORS[nextTask.category]} shrink-0`} />
+            <div className="w-1.5 h-1.5 rounded-sm bg-gray-500 shrink-0" />
             <span className="text-xs text-text-secondary truncate flex-1 text-left">{nextTask.title}</span>
             <span className="text-[10px] text-text-muted shrink-0">{formatTimeDisplay(nextTask.startTime)}</span>
           </button>

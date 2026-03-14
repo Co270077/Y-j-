@@ -40,21 +40,21 @@ export default function WeeklyAdherenceCard({ tasks, dailyLogs }: WeeklyAdherenc
                 {/* Background bar (total tasks) */}
                 <div
                   className={`w-full rounded-sm transition-all duration-300 ${
-                    isToday ? 'bg-bamboo/20' : 'bg-surface-overlay'
+                    isToday ? 'bg-white/15' : 'bg-surface-overlay'
                   }`}
                   style={{ height: `${height}%`, minHeight: '2px' }}
                 >
                   {/* Completed overlay */}
                   {completedHeight > 0 && (
                     <div
-                      className="w-full bg-bamboo rounded-sm absolute bottom-0 left-0 transition-all duration-300"
+                      className="w-full bg-white rounded-sm absolute bottom-0 left-0 transition-all duration-300"
                       style={{ height: `${completedHeight}%`, minHeight: '2px' }}
                     />
                   )}
                 </div>
               </div>
               <span className={`text-[9px] font-medium ${
-                isToday ? 'text-bamboo' : 'text-text-muted'
+                isToday ? 'text-white' : 'text-text-muted'
               }`}>
                 {DAY_LABELS[day]}
               </span>

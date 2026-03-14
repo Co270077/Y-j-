@@ -16,7 +16,7 @@ export default function Toggle({ checked, onChange, label }: ToggleProps) {
         aria-checked={checked}
         onClick={() => onChange(!checked)}
         animate={{
-          backgroundColor: checked ? 'var(--color-bamboo)' : 'var(--color-surface-overlay)',
+          backgroundColor: checked ? 'var(--color-white)' : 'var(--color-surface-overlay)',
         }}
         transition={snappy}
         whileTap={{ scale: 0.97, transition: snappy }}
@@ -25,7 +25,7 @@ export default function Toggle({ checked, onChange, label }: ToggleProps) {
         <m.span
           animate={{ x: checked ? 20 : 0 }}
           transition={snappy}
-          className="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-warm-white shadow-sm"
+          className="absolute top-0.5 left-0.5 w-5 h-5 rounded-sm bg-black"
         />
       </m.button>
     </label>

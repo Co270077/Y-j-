@@ -24,9 +24,9 @@ export default function DaySwitcher({ selectedDay, onDayChange }: DaySwitcherPro
               flex-1 min-w-[42px] py-2 rounded-[var(--radius-md)] text-xs font-medium
               transition-all duration-150 cursor-pointer
               ${isSelected
-                ? 'bg-bamboo text-warm-white shadow-sm'
+                ? 'bg-white text-black'
                 : isToday
-                  ? 'bg-surface-raised text-bamboo border border-bamboo/30'
+                  ? 'bg-surface-raised text-white border border-white/30'
                   : 'bg-transparent text-text-muted hover:text-text-secondary'
               }
             `}

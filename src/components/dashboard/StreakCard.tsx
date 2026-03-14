@@ -22,7 +22,7 @@ export default function StreakCard({ tasks, dailyLogs }: StreakCardProps) {
     <Card>
       <p className="text-xs text-text-muted uppercase tracking-wider font-medium mb-2">Remaining</p>
       <div className="flex items-baseline gap-1">
-        <span className={`text-2xl font-bold ${remaining === 0 && total > 0 ? 'text-bamboo' : 'text-text-primary'}`}>
+        <span className={`text-2xl font-bold ${remaining === 0 && total > 0 ? 'text-white' : 'text-text-primary'}`}>
           {remaining === 0 && total > 0 ? '0' : animatedRemaining}
         </span>
         <span className="text-xs text-text-muted">

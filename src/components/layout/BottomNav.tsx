@@ -16,7 +16,7 @@ export default function BottomNav() {
   const { navigateTo } = useNavigation()
 
   return (
-    <nav aria-label="Main navigation" className="fixed bottom-0 left-0 right-0 z-50 safe-area-bottom bg-charcoal border-t border-border">
+    <nav aria-label="Main navigation" className="fixed bottom-0 left-0 right-0 z-50 safe-area-bottom bg-black border-t border-gray-700">
       <div className="flex items-center justify-around h-16 max-w-lg mx-auto">
         {tabs.map(({ path, label, icon: Icon }) => {
           const isActive = location.pathname === path
@@ -26,14 +26,14 @@ export default function BottomNav() {
               onClick={() => { hapticLight(); navigateTo(path, 'tab') }}
               aria-current={isActive ? 'page' : undefined}
               className={`relative flex flex-col items-center justify-center gap-1 flex-1 h-full transition-colors cursor-pointer ${
-                isActive ? 'text-bamboo' : 'text-stone hover:text-stone-light'
+                isActive ? 'text-white' : 'text-gray-500 hover:text-gray-300'
               }`}
             >
               {/* Animated pill indicator */}
               {isActive && (
                 <m.div
                   layoutId="active-tab-indicator"
-                  className="absolute inset-x-1 inset-y-1 rounded-xl bg-bamboo/15"
+                  className="absolute inset-x-1 inset-y-1 bg-white/10"
                   transition={snappy}
                 />
               )}

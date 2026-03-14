@@ -56,8 +56,8 @@ export default function TaskBlock({ task, log, onToggleComplete, onToggleSubtask
       className={`
         relative rounded-[var(--radius-md)] border transition-all duration-300
         ${isComplete
-          ? 'bg-surface-raised/50 border-border-light'
-          : 'bg-surface-raised border-border-light'
+          ? 'bg-surface-raised/50 border-gray-800'
+          : 'bg-surface-raised border-gray-800'
         }
       `}
       style={{ opacity: isComplete ? 0.55 : 1 }}
@@ -102,7 +102,7 @@ export default function TaskBlock({ task, log, onToggleComplete, onToggleSubtask
             {/* Subtask progress bar */}
             {totalSubtasks > 0 && !expanded && (
               <div className="flex items-center gap-2 mt-2">
-                <div className="flex-1 h-1 rounded-full bg-charcoal overflow-hidden">
+                <div className="flex-1 h-1 bg-gray-800 overflow-hidden">
                   <div
                     className="h-full rounded-full transition-all duration-500 ease-out"
                     style={{ width: `${progressPct}%`, backgroundColor: accentColor }}
@@ -128,14 +128,14 @@ export default function TaskBlock({ task, log, onToggleComplete, onToggleSubtask
             className="relative mt-0 w-11 h-11 min-w-[44px] flex items-center justify-center cursor-pointer"
           >
             <div className={`
-              w-7 h-7 rounded-full border-2 flex items-center justify-center
+              w-7 h-7 rounded-sm border-2 flex items-center justify-center
               ${isComplete
-                ? 'border-bamboo bg-bamboo'
-                : 'border-stone/60 hover:border-bamboo/60'
+                ? 'border-white bg-white'
+                : 'border-gray-500/60 hover:border-white/60'
               }
             `}>
             {isComplete && (
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-warm-white">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-black">
                 <m.polyline
                   points="20 6 9 17 4 12"
                   initial={{ pathLength: 0, opacity: 0 }}
@@ -177,7 +177,7 @@ export default function TaskBlock({ task, log, onToggleComplete, onToggleSubtask
               {/* Subtask progress (shown in expanded view) */}
               {totalSubtasks > 0 && (
                 <div className="flex items-center gap-2 mt-2">
-                  <div className="flex-1 h-1.5 rounded-full bg-charcoal overflow-hidden">
+                  <div className="flex-1 h-1.5 bg-gray-800 overflow-hidden">
                     <div
                       className="h-full rounded-full transition-all duration-500 ease-out"
                       style={{ width: `${progressPct}%`, backgroundColor: accentColor }}
@@ -195,7 +195,7 @@ export default function TaskBlock({ task, log, onToggleComplete, onToggleSubtask
                     onEdit()
                   }}
                   whileTap={{ scale: 0.97, transition: snappy }}
-                  className="flex items-center gap-1.5 text-[10px] text-text-muted hover:text-bamboo transition-colors font-medium uppercase tracking-wider cursor-pointer"
+                  className="flex items-center gap-1.5 text-[10px] text-text-muted hover:text-white transition-colors font-medium uppercase tracking-wider cursor-pointer"
                 >
                   <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
@@ -210,7 +210,7 @@ export default function TaskBlock({ task, log, onToggleComplete, onToggleSubtask
                       onDuplicate()
                     }}
                     whileTap={{ scale: 0.97, transition: snappy }}
-                    className="flex items-center gap-1.5 text-[10px] text-text-muted hover:text-bamboo transition-colors font-medium uppercase tracking-wider cursor-pointer"
+                    className="flex items-center gap-1.5 text-[10px] text-text-muted hover:text-white transition-colors font-medium uppercase tracking-wider cursor-pointer"
                   >
                     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                       <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />

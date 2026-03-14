@@ -146,7 +146,7 @@ export default function ProtocolList({ protocols, onSelect, onToggleActive, onDe
                               onSelect(protocol)
                             }}
                             whileTap={{ scale: 0.97, transition: snappy }}
-                            className="flex items-center gap-1.5 text-[10px] text-text-muted hover:text-bamboo transition-colors font-medium uppercase tracking-wider cursor-pointer"
+                            className="flex items-center gap-1.5 text-[10px] text-text-muted hover:text-white transition-colors font-medium uppercase tracking-wider cursor-pointer"
                           >
                             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                               <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
@@ -169,7 +169,7 @@ export default function ProtocolList({ protocols, onSelect, onToggleActive, onDe
                   className={`
                     px-3 py-2 min-h-[44px] min-w-[44px] rounded-full text-[10px] font-medium transition-all cursor-pointer flex items-center justify-center
                     ${protocol.isActive
-                      ? 'bg-bamboo/20 text-bamboo'
+                      ? 'bg-white/15 text-white'
                       : 'bg-surface-overlay text-text-muted hover:text-text-secondary'
                     }
                   `}

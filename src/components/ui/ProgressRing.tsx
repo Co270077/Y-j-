@@ -16,8 +16,8 @@ export default function ProgressRing({
   progress,
   size = 64,
   strokeWidth = 4,
-  color = 'var(--color-bamboo)',
-  bgColor = 'var(--color-charcoal-lighter)',
+  color = 'var(--color-accent)',
+  bgColor = 'var(--color-gray-800)',
   children,
 }: ProgressRingProps) {
   const radius = (size - strokeWidth) / 2

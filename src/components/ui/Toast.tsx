@@ -48,9 +48,9 @@ function ToastItem({ toast, onRemove }: { toast: ToastMessage; onRemove: (id: st
       className={`
         relative px-4 py-2.5 rounded-[var(--radius-md)] text-sm font-medium
         shadow-lg pointer-events-auto overflow-hidden
-        ${toast.type === 'success' ? 'bg-bamboo text-warm-white' :
-          toast.type === 'error' ? 'bg-danger text-warm-white' :
-          'bg-surface-raised text-text-primary border border-border'}
+        ${toast.type === 'success' ? 'bg-surface-raised text-white border border-gray-700' :
+          toast.type === 'error' ? 'bg-surface-raised text-white border border-gray-700' :
+          'bg-surface-raised text-text-primary border border-gray-700'}
       `}
     >
       <div className="flex items-center">
@@ -58,7 +58,7 @@ function ToastItem({ toast, onRemove }: { toast: ToastMessage; onRemove: (id: st
         {hasAction && (
           <button
             onClick={handleAction}
-            className="text-bamboo font-semibold ml-3 uppercase text-xs cursor-pointer"
+            className="text-white font-semibold ml-3 uppercase text-xs cursor-pointer"
           >
             {toast.action!.label}
           </button>
@@ -68,7 +68,7 @@ function ToastItem({ toast, onRemove }: { toast: ToastMessage; onRemove: (id: st
         <div className="absolute bottom-0 left-0 right-0 h-0.5">
           <div
             ref={barRef}
-            className="h-full bg-bamboo/50 rounded-full w-full"
+            className="h-full bg-white/50 rounded-full w-full"
             style={{ transition: `width ${duration}ms linear` }}
           />
         </div>
