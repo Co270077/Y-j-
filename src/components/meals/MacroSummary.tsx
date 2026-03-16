@@ -11,10 +11,10 @@ interface MacroSummaryProps {
 }
 
 export default function MacroSummary({ calories, protein, carbs, fat, compact = false }: MacroSummaryProps) {
-  const cal = Math.round(calories)
-  const p = Math.round(protein)
-  const c = Math.round(carbs)
-  const f = Math.round(fat)
+  const cal = Math.round(calories || 0)
+  const p = Math.round(protein || 0)
+  const c = Math.round(carbs || 0)
+  const f = Math.round(fat || 0)
 
   const animatedCal = useCountUp(cal)
   const animatedP = useCountUp(p)

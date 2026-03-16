@@ -112,14 +112,25 @@ export default function MealsPage() {
 
   const visibleTemplates = templates.filter(t => t.id == null || !hiddenTemplateIds.has(t.id))
 
+  // Compute macro totals from foods (fallback if total fields are missing)
+  const getMacros = (tpl: MealTemplate) => ({
+    calories: tpl.totalCalories ?? tpl.foods.reduce((s, f) => s + (f.calories || 0), 0),
+    protein: tpl.totalProtein ?? tpl.foods.reduce((s, f) => s + (f.protein || 0), 0),
+    carbs: tpl.totalCarbs ?? tpl.foods.reduce((s, f) => s + (f.carbs || 0), 0),
+    fat: tpl.totalFat ?? tpl.foods.reduce((s, f) => s + (f.fat || 0), 0),
+  })
+
   // Calculate daily macro totals across all visible templates
   const dailyTotals = visibleTemplates.reduce(
-    (acc, tpl) => ({
-      calories: acc.calories + tpl.totalCalories,
-      protein: acc.protein + tpl.totalProtein,
-      carbs: acc.carbs + tpl.totalCarbs,
-      fat: acc.fat + tpl.totalFat,
-    }),
+    (acc, tpl) => {
+      const m = getMacros(tpl)
+      return {
+        calories: acc.calories + m.calories,
+        protein: acc.protein + m.protein,
+        carbs: acc.carbs + m.carbs,
+        fat: acc.fat + m.fat,
+      }
+    },
     { calories: 0, protein: 0, carbs: 0, fat: 0 }
   )
 
@@ -219,15 +230,18 @@ export default function MealsPage() {
                         <p className="text-xs text-text-muted mb-2">{tpl.foods.length} food{tpl.foods.length !== 1 ? 's' : ''}</p>
 
                         {/* Collapsed: compact macro summary */}
-                        {!isExpanded && (
-                          <MacroSummary
-                            calories={tpl.totalCalories}
-                            protein={tpl.totalProtein}
-                            carbs={tpl.totalCarbs}
-                            fat={tpl.totalFat}
-                            compact
-                          />
-                        )}
+                        {!isExpanded && (() => {
+                          const m = getMacros(tpl)
+                          return (
+                            <MacroSummary
+                              calories={m.calories}
+                              protein={m.protein}
+                              carbs={m.carbs}
+                              fat={m.fat}
+                              compact
+                            />
+                          )
+                        })()}
 
                         {/* Expanded: full food list + macro detail + edit button */}
                         <AnimatePresence initial={false}>
@@ -252,12 +266,17 @@ export default function MealsPage() {
                                   </div>
                                 ))}
                               </div>
-                              <MacroSummary
-                                calories={tpl.totalCalories}
-                                protein={tpl.totalProtein}
-                                carbs={tpl.totalCarbs}
-                                fat={tpl.totalFat}
-                              />
+                              {(() => {
+                                const m = getMacros(tpl)
+                                return (
+                                  <MacroSummary
+                                    calories={m.calories}
+                                    protein={m.protein}
+                                    carbs={m.carbs}
+                                    fat={m.fat}
+                                  />
+                                )
+                              })()}
                               <div className="mt-3">
                                 <m.button
                                   onClick={(e) => {
